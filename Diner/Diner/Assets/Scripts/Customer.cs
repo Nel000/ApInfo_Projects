@@ -9,9 +9,13 @@ public class Customer : MonoBehaviour
     private Vector2 target;
 
     [SerializeField] private GameObject[] tables;
+    [SerializeField] private GameObject[] seats;
 
     private Vector2[] targets;
 
+    [SerializeField] private Vector2 waitWall;
+
+    [SerializeField] private int tableNum = 4;
     private int targetNum;
     
     private bool canMove;
@@ -22,9 +26,7 @@ public class Customer : MonoBehaviour
         targetNum = 0;
         canMove = true;
 
-        CheckTables();
-
-        StartCoroutine(Move(targets[0]));
+        StartCoroutine(Move(waitWall));
     }
 
     // Update is called once per frame
@@ -33,26 +35,35 @@ public class Customer : MonoBehaviour
         
     }
 
-    public void CheckTables()
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        for (int i = 0; i < tables.Length; i++)
+        Debug.Log("Waiting...");
+
+        CheckTables();
+    }
+
+    private void CheckTables()
+    {
+        for (int i = 0; i < tableNum; i++)
         {
             if (tables[i].GetComponent<Table>().IsEmpty)
                 targetNum++;
-                
         }
 
         targets = new Vector2[targetNum];
 
         for (int j = 0; j < targetNum; j++)
         {
-            targets[j] = tables[j].transform.position;
+            targets[j] = seats[j].transform.position;
         }
+        
+        if (targetNum > 0)
+            StartCoroutine(Move(targets[3]));
     }
 
     private IEnumerator Move(Vector2 target)
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.5f);
         do
         {
             transform.position = Vector2.MoveTowards(

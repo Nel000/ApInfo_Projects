@@ -58,7 +58,7 @@ public class Customer : MonoBehaviour
         }
         
         if (targetNum > 0)
-            StartCoroutine(Move(targets[3]));
+            StartCoroutine(Move(targets[0]));
     }
 
     private IEnumerator Move(Vector2 target)

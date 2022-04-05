@@ -11,20 +11,29 @@ public class Customer : MonoBehaviour
     [SerializeField] private GameObject[] tables;
     [SerializeField] private GameObject[] seats;
 
-    private Vector2[] targets;
+    [SerializeField] private Vector2[] targets;
 
     [SerializeField] private Vector2 waitWall;
 
     [SerializeField] private int tableNum = 4;
     private int targetNum;
+    private int targetDiff;
     
     private bool canMove;
+    private bool hasChecked;
 
     // Start is called before the first frame update
     void Start()
     {   
         targetNum = 0;
+        targetDiff = 0;
         canMove = true;
+
+        for (int i = 0; i < tableNum; i++)
+        {
+            tables[i] = GameObject.Find($"Table {i + 1}");
+            seats[i] = GameObject.Find($"Seat {i + 1}");
+        }
 
         StartCoroutine(Move(waitWall));
     }
@@ -39,7 +48,8 @@ public class Customer : MonoBehaviour
     {
         Debug.Log("Waiting...");
 
-        CheckTables();
+        if(!hasChecked)
+            CheckTables();
     }
 
     private void CheckTables()
@@ -48,17 +58,21 @@ public class Customer : MonoBehaviour
         {
             if (tables[i].GetComponent<Table>().IsEmpty)
                 targetNum++;
+            else
+                targetDiff++;
         }
 
         targets = new Vector2[targetNum];
 
-        for (int j = 0; j < targetNum; j++)
+        for (int j = 0; j < tableNum - targetDiff; j++)
         {
-            targets[j] = seats[j].transform.position;
+            targets[j] = seats[j + targetDiff].transform.position;
         }
         
         if (targetNum > 0)
             StartCoroutine(Move(targets[0]));
+
+        hasChecked = true;
     }
 
     private IEnumerator Move(Vector2 target)

@@ -6,10 +6,13 @@ public class Waiter : MonoBehaviour
 {
     private float speed = 10.0f;
 
+    private bool isMoving;
+    public bool IsMoving { get { return isMoving; } }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        isMoving = false;
     }
 
     // Update is called once per frame
@@ -22,6 +25,8 @@ public class Waiter : MonoBehaviour
     {
         Debug.Log("Waiter moving...");
 
+        isMoving = true;
+
         do
         {
             transform.position = Vector2.MoveTowards(
@@ -29,5 +34,7 @@ public class Waiter : MonoBehaviour
             yield return null;
         }
         while (Vector2.Distance(transform.position, target) > 0.1f);
+
+        isMoving = false;
     }
 }

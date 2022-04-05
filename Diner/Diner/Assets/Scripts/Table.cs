@@ -26,7 +26,13 @@ public class Table : MonoBehaviour
     {
         Debug.Log("Clicked table");
 
-        StartCoroutine(
-            waiter.GetComponent<Waiter>().Move(servePos.transform.position));
+        if (!waiter.GetComponent<Waiter>().IsMoving)
+            StartCoroutine(
+                waiter.GetComponent<Waiter>().Move(servePos.transform.position));
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        isEmpty = false;
     }
 }

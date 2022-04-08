@@ -9,9 +9,12 @@ public class Waiter : MonoBehaviour
     private bool isMoving;
     public bool IsMoving { get { return isMoving; } }
 
+    [SerializeField] private string currentTable;
+
     // Start is called before the first frame update
     void Start()
     {
+        currentTable = "";
         isMoving = false;
     }
 
@@ -21,10 +24,34 @@ public class Waiter : MonoBehaviour
         
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.GetComponent<Table>())
+        {
+            currentTable = other.name;
+            CheckCurrentTable();
+        }
+    }
+
+    private void CheckCurrentTable()
+    {
+        foreach (GameObject customer in FindObjectOfType<GameManager>().Customers)
+        {
+            if (currentTable == customer.GetComponent<Customer>().Table)
+            {
+                // Attend customer
+                Debug.Log(
+                    $"Waiter is attending {customer.name} at {currentTable}");
+                customer.GetComponent<Customer>().MakeRequest();
+            }
+        }
+    }
+
     public IEnumerator Move(Vector2 target)
     {
         Debug.Log("Waiter moving...");
 
+        currentTable = "";
         isMoving = true;
 
         do

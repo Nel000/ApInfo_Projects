@@ -109,10 +109,19 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   targets: []
-  waitWalls:
+  movePoints:
   - {x: 6, y: -3.15}
-  - {x: 7.5, y: -4.15}
+  - {x: 7, y: -4.15}
+  - {x: -4.5, y: -10}
   tableNum: 4
+  table: 
+  canMove: 0
+  hasChecked: 0
+  isWaiting: 0
+  isAttended: 0
+  isServed: 0
+  waitTime: 0
+  maxTime: 20
 --- !u!61 &6400955670052035661
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -13,18 +13,32 @@ public class Customer : MonoBehaviour
 
     [SerializeField] private Vector2[] targets;
 
-    [SerializeField] private Vector2[] waitWalls;
+    [SerializeField] private Vector2[] movePoints;
 
     [SerializeField] private int tableNum = 4;
     private int targetNum;
     private int targetDiff;
+
+    [SerializeField] private string table;
+    public string Table { get {return table; } }
     
     [SerializeField] private bool canMove;
     [SerializeField] private bool hasChecked;
+    [SerializeField] private bool isWaiting;
+    [SerializeField] private bool isAttended;
+    public bool IsAttended { get { return isAttended; } }
+
+    public bool IsLeaving { get; private set; }
+
+    [SerializeField] private bool isServed;
+
+    [SerializeField] private int waitTime;
+    [SerializeField] private int maxTime = 50; 
 
     // Start is called before the first frame update
     void Start()
     {   
+        table = "";
         targetNum = 0;
         targetDiff = 0;
         canMove = true;
@@ -35,7 +49,7 @@ public class Customer : MonoBehaviour
             seats[i] = GameObject.Find($"Seat {i + 1}");
         }
 
-        StartCoroutine(Move(waitWalls[1]));
+        StartCoroutine(Move(movePoints[1]));
     }
 
     // Update is called once per frame
@@ -46,29 +60,38 @@ public class Customer : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Waiting...");
-
         if (other.name == "WaitWallSec")
         {
             Debug.Log("WaitWall sec");
 
             if (FindObjectOfType<GameManager>().WaitLine == 0)
-                StartCoroutine(Move(waitWalls[0]));
+                StartCoroutine(Move(movePoints[0]));
             else
+            {
                 FindObjectOfType<GameManager>().WaitLine++;
+                Debug.Log("Waiting...");
+            }    
         }
         else if (other.name == "WaitWall")
         {
             Debug.Log("WaitWall main");
 
             //if(!hasChecked)
-            CheckTables();
+            StartCoroutine(CheckTables());
+        }
+        else if (other.GetComponent<Table>())
+        {
+            table = other.name;
+            isWaiting = true;
+            StartCoroutine(Wait());
         }
     }
-
-    private void CheckTables()
+    
+    private IEnumerator CheckTables()
     {
-        for (int i = 0; i < tableNum; i++)
+        bool foundEmptyTable = false;
+
+        /*for (int i = 0; i < tableNum; i++)
         {
             if (tables[i].GetComponent<Table>().IsEmpty)
                 targetNum++;
@@ -87,11 +110,46 @@ public class Customer : MonoBehaviour
             StartCoroutine(Move(targets[0]));
         else
         {
+            Debug.Log("Waiting...");
             FindObjectOfType<GameManager>().WaitLine++;
             //CheckTables();
+        }*/
+
+        do
+        {
+            /*for (int i = 0; i < tables.Length; i++)
+            {
+                if (tables[i].GetComponent<Table>().IsEmpty && !foundEmptyTable)
+                {
+                    foundEmptyTable = true;
+                    StartCoroutine(Move(
+                        GameObject.Find($"Seat {tables[i].name}").transform.position));
+                }
+            }*/
+            foreach (GameObject table in tables)
+            {
+                if (table.GetComponent<Table>().IsEmpty && !foundEmptyTable)
+                {
+                    foundEmptyTable = true;
+                    StartCoroutine(Move(
+                        GameObject.Find($"Seat {table.name}").transform.position));
+                }
+            }
+            if (!foundEmptyTable)
+            {
+                yield return new WaitForSeconds(1.0f);
+                StartCoroutine(CheckTables());
+            }
         }
+        while (!foundEmptyTable);
 
         //hasChecked = true;
+    }
+
+    public void MakeRequest()
+    {
+        isAttended = true;
+        waitTime = 0;
     }
 
     private IEnumerator Move(Vector2 target)
@@ -104,5 +162,31 @@ public class Customer : MonoBehaviour
             yield return null;
         }
         while (Vector2.Distance(transform.position, target) > 0.1f);
+    }
+    
+    private IEnumerator Wait()
+    {
+        do
+        {
+            waitTime++;
+            yield return new WaitForSeconds(1.0f);
+        }
+        while (waitTime < maxTime && !isServed);
+
+        if (isServed)
+        {
+            // Eat and leave after some time
+        }
+        else if (waitTime >= maxTime && !isServed)
+        {
+            // Leave immediately
+            IsLeaving = true;
+
+            Debug.Log($"{name} heads out");
+            StartCoroutine(Move(movePoints[2]));
+            FindObjectOfType<GameManager>().Customers.Remove(gameObject);
+            GameObject.Find(table).GetComponent<Table>().IsEmpty = true;
+            Destroy(gameObject, 2.0f);
+        }
     }
 }

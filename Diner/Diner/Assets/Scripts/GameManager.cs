@@ -6,11 +6,16 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private int availableSeats = 4;
+    [SerializeField] private int totalCustomers = 0;
+
     public int AvailableSeats
     { 
         get { return availableSeats; }
         set { availableSeats = value; }
     }
+
+    [SerializeField] private List<GameObject> customers = new List<GameObject>();
+    public List<GameObject> Customers { get { return customers; } }
 
     private System.Random rand;
 
@@ -36,6 +41,7 @@ public class GameManager : MonoBehaviour
         rand = new System.Random();
         waitLine = 0;
 
+        //customers.Add(GameObject.Find("Customer 1"));
         StartCoroutine(CreateCustomer());
     }
 
@@ -50,7 +56,11 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(rand.Next(5, 10));
         if (WaitLine < 2)
         {
-            Instantiate(customer);
+            totalCustomers++;
+
+            GameObject currentCustomer = Instantiate(customer);
+            currentCustomer.name = $"Customer {totalCustomers}";
+            customers.Add(currentCustomer);
             StartCoroutine(CreateCustomer());
         }
     }

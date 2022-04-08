@@ -5,7 +5,7 @@ using UnityEngine;
 public class Table : MonoBehaviour
 {
     [SerializeField] private bool isEmpty;
-    public bool IsEmpty { get { return isEmpty; } }
+    public bool IsEmpty { get { return isEmpty; } set {isEmpty = value; } }
 
     [SerializeField] private GameObject waiter;
     [SerializeField] private GameObject servePos;
@@ -33,6 +33,15 @@ public class Table : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        isEmpty = false;
+        if (other.GetComponent<Customer>() 
+            && !other.GetComponent<Customer>().IsLeaving)
+        {
+            Debug.Log($"Customer is on {name}");
+            isEmpty = false;
+        }    
+        else if (other.GetComponent<Waiter>())
+        {
+            Debug.Log($"Waiter is on {name}");
+        }
     }
 }

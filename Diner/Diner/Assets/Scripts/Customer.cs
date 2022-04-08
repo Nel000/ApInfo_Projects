@@ -13,14 +13,14 @@ public class Customer : MonoBehaviour
 
     [SerializeField] private Vector2[] targets;
 
-    [SerializeField] private Vector2 waitWall;
+    [SerializeField] private Vector2[] waitWalls;
 
     [SerializeField] private int tableNum = 4;
     private int targetNum;
     private int targetDiff;
     
-    private bool canMove;
-    private bool hasChecked;
+    [SerializeField] private bool canMove;
+    [SerializeField] private bool hasChecked;
 
     // Start is called before the first frame update
     void Start()
@@ -35,7 +35,7 @@ public class Customer : MonoBehaviour
             seats[i] = GameObject.Find($"Seat {i + 1}");
         }
 
-        StartCoroutine(Move(waitWall));
+        StartCoroutine(Move(waitWalls[1]));
     }
 
     // Update is called once per frame
@@ -48,8 +48,22 @@ public class Customer : MonoBehaviour
     {
         Debug.Log("Waiting...");
 
-        if(!hasChecked)
+        if (other.name == "WaitWallSec")
+        {
+            Debug.Log("WaitWall sec");
+
+            if (FindObjectOfType<GameManager>().WaitLine == 0)
+                StartCoroutine(Move(waitWalls[0]));
+            else
+                FindObjectOfType<GameManager>().WaitLine++;
+        }
+        else if (other.name == "WaitWall")
+        {
+            Debug.Log("WaitWall main");
+
+            //if(!hasChecked)
             CheckTables();
+        }
     }
 
     private void CheckTables()
@@ -71,13 +85,18 @@ public class Customer : MonoBehaviour
         
         if (targetNum > 0)
             StartCoroutine(Move(targets[0]));
+        else
+        {
+            FindObjectOfType<GameManager>().WaitLine++;
+            //CheckTables();
+        }
 
-        hasChecked = true;
+        //hasChecked = true;
     }
 
     private IEnumerator Move(Vector2 target)
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
         do
         {
             transform.position = Vector2.MoveTowards(

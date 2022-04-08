@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
         } 
         set
         {
-            if (waitLine < 2)
+            if (waitLine <= 2)
                 waitLine = value;
         }
     }

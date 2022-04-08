@@ -22,6 +22,10 @@ public class Customer : MonoBehaviour
     [SerializeField] private string table;
     public string Table { get {return table; } }
     
+    [SerializeField] private bool clearedToMove;
+    [SerializeField] private bool goingToSeat;
+    public bool GoingToSeat { get { return goingToSeat; } }
+
     [SerializeField] private bool canMove;
     [SerializeField] private bool hasChecked;
     [SerializeField] private bool isWaiting;
@@ -38,6 +42,8 @@ public class Customer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {   
+        clearedToMove = true;
+        goingToSeat = false;
         table = "";
         targetNum = 0;
         targetDiff = 0;
@@ -68,8 +74,10 @@ public class Customer : MonoBehaviour
                 StartCoroutine(Move(movePoints[0]));
             else
             {
-                FindObjectOfType<GameManager>().WaitLine++;
                 Debug.Log("Waiting...");
+
+                FindObjectOfType<GameManager>().WaitLine++;
+                StartCoroutine(LineWait());
             }    
         }
         else if (other.name == "WaitWall")
@@ -82,11 +90,22 @@ public class Customer : MonoBehaviour
         else if (other.GetComponent<Table>())
         {
             table = other.name;
+            goingToSeat = false;
             isWaiting = true;
             StartCoroutine(Wait());
         }
     }
     
+    private IEnumerator LineWait()
+    {
+        Debug.Log("Waiting in line");
+        yield return new WaitForSeconds(1.0f);
+        if (FindObjectOfType<GameManager>().WaitLine == 1)
+            StartCoroutine(Move(movePoints[0]));
+        else
+            StartCoroutine(LineWait());
+    }
+
     private IEnumerator CheckTables()
     {
         bool foundEmptyTable = false;
@@ -115,33 +134,42 @@ public class Customer : MonoBehaviour
             //CheckTables();
         }*/
 
-        do
+        clearedToMove = true;
+
+        foreach(GameObject oC in FindObjectOfType<GameManager>().Customers)
         {
-            /*for (int i = 0; i < tables.Length; i++)
+            if (oC.GetComponent<Customer>().GoingToSeat)
             {
-                if (tables[i].GetComponent<Table>().IsEmpty && !foundEmptyTable)
-                {
-                    foundEmptyTable = true;
-                    StartCoroutine(Move(
-                        GameObject.Find($"Seat {tables[i].name}").transform.position));
-                }
-            }*/
-            foreach (GameObject table in tables)
-            {
-                if (table.GetComponent<Table>().IsEmpty && !foundEmptyTable)
-                {
-                    foundEmptyTable = true;
-                    StartCoroutine(Move(
-                        GameObject.Find($"Seat {table.name}").transform.position));
-                }
-            }
-            if (!foundEmptyTable)
-            {
-                yield return new WaitForSeconds(1.0f);
-                StartCoroutine(CheckTables());
+                clearedToMove = false;
             }
         }
-        while (!foundEmptyTable);
+
+        foreach (GameObject table in tables)
+        {
+            if (table.GetComponent<Table>().IsEmpty && !foundEmptyTable
+                && clearedToMove)
+            {
+                foundEmptyTable = true;
+
+                if(FindObjectOfType<GameManager>().WaitLine > 0)
+                    FindObjectOfType<GameManager>().WaitLine--;
+
+                goingToSeat = true;
+                StartCoroutine(Move(
+                    GameObject.Find($"Seat {table.name}").transform.position));
+            }
+        }
+
+        if (!foundEmptyTable)
+        {
+            Debug.Log("Waiting...");
+
+            if (FindObjectOfType<GameManager>().WaitLine < 1)
+                FindObjectOfType<GameManager>().WaitLine++;
+
+            yield return new WaitForSeconds(1.0f);
+            StartCoroutine(CheckTables());
+        }
 
         //hasChecked = true;
     }

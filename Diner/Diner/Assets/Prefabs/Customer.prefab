@@ -115,13 +115,15 @@ MonoBehaviour:
   - {x: -4.5, y: -10}
   tableNum: 4
   table: 
+  clearedToMove: 0
+  goingToSeat: 0
   canMove: 0
   hasChecked: 0
   isWaiting: 0
   isAttended: 0
   isServed: 0
   waitTime: 0
-  maxTime: 20
+  maxTime: 30
 --- !u!61 &6400955670052035661
 BoxCollider2D:
   m_ObjectHideFlags: 0

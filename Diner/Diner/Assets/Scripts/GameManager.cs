@@ -61,7 +61,8 @@ public class GameManager : MonoBehaviour
             GameObject currentCustomer = Instantiate(customer);
             currentCustomer.name = $"Customer {totalCustomers}";
             customers.Add(currentCustomer);
-            StartCoroutine(CreateCustomer());
         }
+
+        StartCoroutine(CreateCustomer());
     }
 }

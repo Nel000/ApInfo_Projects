@@ -863,7 +863,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 5.3
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -34033,6 +34033,12 @@ MonoBehaviour:
   customers: []
   waitLine: 0
   customer: {fileID: 6400955670052035665, guid: 61dc4e2f0946aa94d9c95d55a1c19e1c, type: 3}
+  meals:
+  - {fileID: 6135344033742018621, guid: 7c8dfd1e28241364f93e85a9170d77a4, type: 3}
+  - {fileID: 8514384937187297882, guid: e599ccad1e3477b48847948cdebb3955, type: 3}
+  - {fileID: 8422250118680083431, guid: 0370c2f6769128941a41c0381745b6b4, type: 3}
+  - {fileID: 5782229194995942520, guid: 4d2d07d3652edba499b3a8f053f51700, type: 3}
+  - {fileID: 6854445815800112803, guid: 9c8aec5e3bb831245b4ed25d42fa15a0, type: 3}
 --- !u!4 &1582718744
 Transform:
   m_ObjectHideFlags: 0

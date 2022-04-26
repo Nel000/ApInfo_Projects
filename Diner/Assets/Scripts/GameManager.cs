@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,6 +34,9 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject customer;
 
+    [SerializeField] private GameObject[] meals;
+    public GameObject[] Meals { get { return meals; } }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -64,5 +66,10 @@ public class GameManager : MonoBehaviour
         }
 
         StartCoroutine(CreateCustomer());
+    }
+
+    public GameObject DefineMeal()
+    {
+        return meals[rand.Next(0, meals.Length)];
     }
 }

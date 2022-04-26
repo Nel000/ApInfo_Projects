@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Table : MonoBehaviour
@@ -26,7 +24,7 @@ public class Table : MonoBehaviour
     {
         Debug.Log("Clicked table");
 
-        if (!waiter.GetComponent<Waiter>().IsMoving)
+        if (!waiter.GetComponent<Waiter>().IsMoving && !isEmpty)
             StartCoroutine(
                 waiter.GetComponent<Waiter>().Move(servePos.transform.position));
     }

@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class Customer : MonoBehaviour
 {
+    private GameManager gm;
+
     private float speed = 5.0f;
 
     private Vector2 target;
+
+    [SerializeField] private GameObject mealBalloon;
 
     [SerializeField] private GameObject[] tables;
     [SerializeField] private GameObject[] seats;
@@ -39,9 +43,13 @@ public class Customer : MonoBehaviour
     [SerializeField] private int waitTime;
     [SerializeField] private int maxTime = 50; 
 
+    [SerializeField] private GameObject meal;
+
     // Start is called before the first frame update
     void Start()
     {   
+        gm = FindObjectOfType<GameManager>();
+
         clearedToMove = true;
         goingToSeat = false;
         table = "";
@@ -54,6 +62,8 @@ public class Customer : MonoBehaviour
             tables[i] = GameObject.Find($"Table {i + 1}");
             seats[i] = GameObject.Find($"Seat {i + 1}");
         }
+
+        meal = gm.DefineMeal();
 
         StartCoroutine(Move(movePoints[1]));
     }
@@ -176,8 +186,13 @@ public class Customer : MonoBehaviour
 
     public void MakeRequest()
     {
+        Debug.Log("Customer is being attended.");
+
         isAttended = true;
         waitTime = 0;
+
+        mealBalloon.SetActive(true);
+        Instantiate(meal, mealBalloon.transform);
     }
 
     private IEnumerator Move(Vector2 target)
@@ -211,6 +226,8 @@ public class Customer : MonoBehaviour
             IsLeaving = true;
 
             Debug.Log($"{name} heads out");
+            mealBalloon.SetActive(false);
+            Destroy(meal);
             StartCoroutine(Move(movePoints[2]));
             FindObjectOfType<GameManager>().Customers.Remove(gameObject);
             GameObject.Find(table).GetComponent<Table>().IsEmpty = true;

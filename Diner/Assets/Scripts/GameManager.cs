@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private int maxTime = 500;
+    [SerializeField] private int currentTime;
+
     [SerializeField] private int availableSeats = 4;
     [SerializeField] private int totalCustomers = 0;
 
@@ -15,6 +19,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private List<GameObject> customers = new List<GameObject>();
     public List<GameObject> Customers { get { return customers; } }
+
+    [SerializeField] private Text timeValue;
 
     private System.Random rand;
 
@@ -40,17 +46,35 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        currentTime = -1;
         rand = new System.Random();
         waitLine = 0;
 
-        //customers.Add(GameObject.Find("Customer 1"));
+        StartCoroutine(RaiseTime());
         StartCoroutine(CreateCustomer());
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    private IEnumerator RaiseTime()
+    {
+        do
+        {
+            currentTime++;
+            timeValue.text = (currentTime * Time.timeScale).ToString();
+            yield return new WaitForSecondsRealtime(1.0f);
+        }
+        while (currentTime < maxTime);
+
+        if (currentTime >= maxTime)
+        {
+            Debug.Log("Time's up!");
+            currentTime = maxTime;
+        }
     }
 
     private IEnumerator CreateCustomer()

@@ -80,14 +80,14 @@ public class Customer : MonoBehaviour
         {
             Debug.Log("WaitWall sec");
 
-            if (FindObjectOfType<GameManager>().WaitLine == 0)
+            if (gm.WaitLine == 0)
                 StartCoroutine(Move(movePoints[0]));
             else
             {
                 Debug.Log("Waiting...");
 
-                FindObjectOfType<GameManager>().WaitLine++;
-                StartCoroutine(LineWait());
+                gm.WaitLine++;
+                StartCoroutine(LineWait(0));
             }    
         }
         else if (other.name == "WaitWall")
@@ -95,7 +95,7 @@ public class Customer : MonoBehaviour
             Debug.Log("WaitWall main");
 
             //if(!hasChecked)
-            StartCoroutine(CheckTables());
+            StartCoroutine(CheckTables(0));
         }
         else if (other.GetComponent<Table>())
         {
@@ -106,17 +106,23 @@ public class Customer : MonoBehaviour
         }
     }
     
-    private IEnumerator LineWait()
+    private IEnumerator LineWait(int waitTime)
     {
         Debug.Log("Waiting in line");
         yield return new WaitForSeconds(1.0f);
-        if (FindObjectOfType<GameManager>().WaitLine == 1)
+        if (gm.WaitLine == 1)
             StartCoroutine(Move(movePoints[0]));
         else
-            StartCoroutine(LineWait());
+            if (waitTime >= maxTime)
+            {
+                gm.WaitLine--;
+                Leave();
+            }
+            else
+                StartCoroutine(LineWait(waitTime + 1));
     }
 
-    private IEnumerator CheckTables()
+    private IEnumerator CheckTables(int waitTime)
     {
         bool foundEmptyTable = false;
 
@@ -146,7 +152,7 @@ public class Customer : MonoBehaviour
 
         clearedToMove = true;
 
-        foreach(GameObject oC in FindObjectOfType<GameManager>().Customers)
+        foreach(GameObject oC in gm.Customers)
         {
             if (oC.GetComponent<Customer>().GoingToSeat)
             {
@@ -161,8 +167,8 @@ public class Customer : MonoBehaviour
             {
                 foundEmptyTable = true;
 
-                if(FindObjectOfType<GameManager>().WaitLine > 0)
-                    FindObjectOfType<GameManager>().WaitLine--;
+                if(gm.WaitLine > 0)
+                    gm.WaitLine--;
 
                 goingToSeat = true;
                 StartCoroutine(Move(
@@ -172,13 +178,21 @@ public class Customer : MonoBehaviour
 
         if (!foundEmptyTable)
         {
-            Debug.Log("Waiting...");
+            if (waitTime >= maxTime)
+            {
+                gm.WaitLine--;
+                Leave();
+            }
+            else
+            {
+                Debug.Log("Waiting...");
 
-            if (FindObjectOfType<GameManager>().WaitLine < 1)
-                FindObjectOfType<GameManager>().WaitLine++;
+                if (gm.WaitLine < 1)
+                    gm.WaitLine++;
 
-            yield return new WaitForSeconds(1.0f);
-            StartCoroutine(CheckTables());
+                yield return new WaitForSeconds(1.0f);
+                StartCoroutine(CheckTables(waitTime + 1));
+            }
         }
 
         //hasChecked = true;
@@ -223,15 +237,21 @@ public class Customer : MonoBehaviour
         else if (waitTime >= maxTime && !isServed)
         {
             // Leave immediately
-            IsLeaving = true;
-
-            Debug.Log($"{name} heads out");
-            mealBalloon.SetActive(false);
-            Destroy(meal);
-            StartCoroutine(Move(movePoints[2]));
-            FindObjectOfType<GameManager>().Customers.Remove(gameObject);
             GameObject.Find(table).GetComponent<Table>().IsEmpty = true;
-            Destroy(gameObject, 2.0f);
+            mealBalloon.SetActive(false);
+            
+            Leave();
         }
+    }
+
+    private void Leave()
+    {
+        // Leave immediately
+        IsLeaving = true;
+
+        Debug.Log($"{name} heads out");
+        StartCoroutine(Move(movePoints[2]));
+        gm.Customers.Remove(gameObject);
+        Destroy(gameObject, 2.0f);
     }
 }

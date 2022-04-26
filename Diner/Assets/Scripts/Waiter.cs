@@ -37,7 +37,8 @@ public class Waiter : MonoBehaviour
     {
         foreach (GameObject customer in FindObjectOfType<GameManager>().Customers)
         {
-            if (currentTable == customer.GetComponent<Customer>().Table)
+            if (currentTable == customer.GetComponent<Customer>().Table
+                && !customer.GetComponent<Customer>().IsAttended)
             {
                 // Attend customer
                 Debug.Log(

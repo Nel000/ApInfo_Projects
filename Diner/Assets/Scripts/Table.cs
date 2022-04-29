@@ -14,19 +14,14 @@ public class Table : MonoBehaviour
         isEmpty = true;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnMouseDown()
     {
         Debug.Log("Clicked table");
 
-        if (!waiter.GetComponent<Waiter>().IsMoving && !isEmpty)
-            StartCoroutine(
-                waiter.GetComponent<Waiter>().Move(servePos.transform.position));
+        if (!waiter.GetComponent<Waiter>().IsMoving && !isEmpty 
+            && !FindObjectOfType<GameManager>().IsLocked)
+            StartCoroutine(waiter.GetComponent<Waiter>().Move(
+                servePos.transform.position));
     }
 
     private void OnTriggerEnter2D(Collider2D other)

@@ -48,8 +48,11 @@ public class Balcony : MonoBehaviour
                 waitPosition.transform.position));
         else
         {
-            gm.IsLocked = true;
-            menu.SetActive(true);
+            if (!gm.IsLocked)
+            {
+                gm.IsLocked = true;
+                menu.SetActive(true);
+            }
         }
     }
 

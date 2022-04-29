@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Back to start");
 
-        if (!waiter.GetComponent<Waiter>().IsMoving)
+        if (!waiter.GetComponent<Waiter>().IsMoving && !IsLocked)
             StartCoroutine(
                 waiter.GetComponent<Waiter>().Move(transform.position));
     }

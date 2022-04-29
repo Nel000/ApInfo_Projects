@@ -92,9 +92,8 @@ public class Balcony : MonoBehaviour
 
     private IEnumerator PrepareMeal(Meal mealToPrepare, int index)
     {
-        yield return new WaitForSeconds(0.5f);
-        
         mealsToPrepare.Add(mealToPrepare);
+        yield return new WaitForSeconds(mealToPrepare.PrepTme);
         PositionMeal(mealToPrepare, index, 0);
     }
 
@@ -114,7 +113,8 @@ public class Balcony : MonoBehaviour
             mealsToPrepare.Remove(preparedMeal);
             preparedMeals.Add(preparedMeal);
             positions[balconyIndex].IsOccupied = true;
-            Instantiate(
+            
+            positions[balconyIndex].PlacedMeal = Instantiate(
                 gm.Meals[mealIndex], positions[balconyIndex].transform);
         }
     }

@@ -16,6 +16,7 @@ public class Balcony : MonoBehaviour
 
     [SerializeField] private bool isOnBalcony;
 
+    [SerializeField] private List<Meal> mealsToPrepare = new List<Meal>();
     [SerializeField] private List<Meal> preparedMeals = new List<Meal>();
 
     private Meal hamburger = new Meal(30, 30);
@@ -85,30 +86,36 @@ public class Balcony : MonoBehaviour
 
     public void SelectMeal(int index)
     {
-        StartCoroutine(PrepareMeal(meals[index]));
+        Debug.Log($"Preparing meal #{index}");
+        StartCoroutine(PrepareMeal(meals[index], index));
     }
 
-    private IEnumerator PrepareMeal(Meal preparedMeal)
+    private IEnumerator PrepareMeal(Meal mealToPrepare, int index)
     {
-        yield return null;
-        preparedMeals.Add(preparedMeal);
-        PositionMeal(0);
+        yield return new WaitForSeconds(0.5f);
+        
+        mealsToPrepare.Add(mealToPrepare);
+        PositionMeal(mealToPrepare, index, 0);
     }
 
-    private void PositionMeal(int index)
+    private void PositionMeal(
+        Meal preparedMeal, int mealIndex, int balconyIndex)
     {
-        if (positions[index].IsOccupied && index <= positions.Length)
+        if (positions[balconyIndex].IsOccupied && balconyIndex < positions.Length)
         {
-            PositionMeal(index + 1);
+            PositionMeal(preparedMeal, mealIndex, balconyIndex + 1);
         }
-        else if (index > positions.Length)
+        else if (balconyIndex >= positions.Length)
         {
             // Wait until there is a free position
         }
         else
         {
-            positions[index].IsOccupied = true;
-            Instantiate(gm.Meals[index], positions[index].transform);
+            mealsToPrepare.Remove(preparedMeal);
+            preparedMeals.Add(preparedMeal);
+            positions[balconyIndex].IsOccupied = true;
+            Instantiate(
+                gm.Meals[mealIndex], positions[balconyIndex].transform);
         }
     }
 }

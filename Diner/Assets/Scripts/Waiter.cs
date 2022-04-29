@@ -6,7 +6,7 @@ public class Waiter : MonoBehaviour
 {
     private float speed = 10.0f;
 
-    private bool isMoving;
+    [SerializeField] private bool isMoving;
     public bool IsMoving { get { return isMoving; } }
 
     [SerializeField] private string currentTable;

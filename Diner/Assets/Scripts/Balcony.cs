@@ -26,6 +26,8 @@ public class Balcony : MonoBehaviour
 
     public Meal[] meals = new Meal[5];
 
+    [SerializeField] private Text[] time = new Text[5];
+
     private void Start()
     {
         gm = FindObjectOfType<GameManager>();
@@ -36,6 +38,11 @@ public class Balcony : MonoBehaviour
         meals[2] = pizza;
         meals[3] = salad;
         meals[4] = spaghettiAndMeatballs;
+
+        for (int i = 0; i < meals.Length; i++)
+        {
+            time[i].text = ($"Time: {meals[i].PrepTme.ToString()}s");
+        }
     }
 
     private void OnMouseDown()

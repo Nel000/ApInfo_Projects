@@ -1,10 +1,11 @@
 public struct Meal
 {
-    int score, prepTme;
+    public int Score { get; }
+    public int PrepTme { get; }
 
     public Meal(int score, int prepTime)
     {
-        this.score = score;
-        this.prepTme = prepTime;
+        Score = score;
+        PrepTme = prepTime;
     }
 }

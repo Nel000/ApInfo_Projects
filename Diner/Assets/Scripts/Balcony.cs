@@ -18,11 +18,11 @@ public class Balcony : MonoBehaviour
 
     [SerializeField] private List<Meal> preparedMeals = new List<Meal>();
 
-    private Meal hamburger = new Meal(20, 30);
-    private Meal pasta = new Meal(20, 30);
-    private Meal pizza = new Meal(20, 30);
-    private Meal salad = new Meal(20, 30);
-    private Meal spaghettiAndMeatballs = new Meal(20, 30);
+    private Meal hamburger = new Meal(30, 30);
+    private Meal pasta = new Meal(30, 40);
+    private Meal pizza = new Meal(30, 70);
+    private Meal salad = new Meal(30, 20);
+    private Meal spaghettiAndMeatballs = new Meal(30, 50);
 
     public Meal[] meals = new Meal[5];
 

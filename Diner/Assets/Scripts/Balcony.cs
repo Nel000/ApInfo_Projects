@@ -14,7 +14,7 @@ public class Balcony : MonoBehaviour
     [SerializeField] private PlacementPoint[] positions;
     [SerializeField] private Transform waitPosition;
 
-    [SerializeField] private bool isOnBalcony;
+    public bool IsOnBalcony { get; private set; }
 
     [SerializeField] private List<Meal> mealsToPrepare = new List<Meal>();
     [SerializeField] private List<Meal> preparedMeals = new List<Meal>();
@@ -51,7 +51,7 @@ public class Balcony : MonoBehaviour
         // Move to balcony
         Debug.Log("Clicked balcony");
 
-        if (!waiter.GetComponent<Waiter>().IsMoving && !isOnBalcony)
+        if (!waiter.GetComponent<Waiter>().IsMoving && !IsOnBalcony)
             StartCoroutine(waiter.GetComponent<Waiter>().Move(
                 waitPosition.transform.position));
         else
@@ -69,7 +69,7 @@ public class Balcony : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             Debug.Log("On balcony");
-            isOnBalcony = true;
+            IsOnBalcony = true;
 
             menu.SetActive(true);
             gm.IsLocked = true;
@@ -80,36 +80,50 @@ public class Balcony : MonoBehaviour
     {
         if(other.gameObject.tag == "Player")
         {
-            isOnBalcony = false;
+            IsOnBalcony = false;
         }
     }
 
     public void SelectMeal(int index)
     {
-        Debug.Log($"Preparing meal #{index}");
+        Debug.Log($"Preparing meal #{index + 1}.");
         StartCoroutine(PrepareMeal(meals[index], index));
     }
 
     private IEnumerator PrepareMeal(Meal mealToPrepare, int index)
     {
-        mealsToPrepare.Add(mealToPrepare);
-        yield return new WaitForSeconds(mealToPrepare.PrepTme);
-        PositionMeal(mealToPrepare, index, 0);
+        if(mealsToPrepare.Count < positions.Length + 2)
+        {
+            mealsToPrepare.Add(mealToPrepare);
+            yield return new WaitForSeconds(mealToPrepare.PrepTme);
+            StartCoroutine(PositionMeal(mealToPrepare, index, 0));
+        }
+        else
+        {
+            Debug.Log($"Can't prepare meal #{index + 1}.");
+        }
     }
 
-    private void PositionMeal(
+    private IEnumerator PositionMeal(
         Meal preparedMeal, int mealIndex, int balconyIndex)
     {
-        if (positions[balconyIndex].IsOccupied && balconyIndex < positions.Length)
+        if (balconyIndex < positions.Length 
+            && positions[balconyIndex].IsOccupied)
         {
-            PositionMeal(preparedMeal, mealIndex, balconyIndex + 1);
+            StartCoroutine(
+                PositionMeal(preparedMeal, mealIndex, balconyIndex + 1));
         }
         else if (balconyIndex >= positions.Length)
         {
             // Wait until there is a free position
+            yield return new WaitForSeconds(1.0f);
+            Debug.Log($"Waiting to position meal #{mealIndex + 1}...");
+            StartCoroutine(
+                PositionMeal(preparedMeal, mealIndex, 0));
         }
         else
         {
+            Debug.Log($"Meal positioned at position #{balconyIndex + 1}.");
             mealsToPrepare.Remove(preparedMeal);
             preparedMeals.Add(preparedMeal);
             positions[balconyIndex].IsOccupied = true;

@@ -601,6 +601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b8d86f0501f96e4fba47adbe8f3448d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  balcony: {fileID: 1919238277}
 --- !u!61 &272046031
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2841,6 +2842,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b8d86f0501f96e4fba47adbe8f3448d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  balcony: {fileID: 1919238277}
 --- !u!61 &1225455353
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -35454,6 +35456,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b8d86f0501f96e4fba47adbe8f3448d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  balcony: {fileID: 1919238277}
 --- !u!61 &1558386956
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -36214,7 +36217,6 @@ MonoBehaviour:
   - {fileID: 272046030}
   - {fileID: 1225455352}
   waitPosition: {fileID: 497843945}
-  isOnBalcony: 0
   time:
   - {fileID: 204067544}
   - {fileID: 526212507}

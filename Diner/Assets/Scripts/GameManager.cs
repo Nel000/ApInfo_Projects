@@ -5,10 +5,14 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    private Waiter waiter;
+    public Waiter Waiter;
+    public Balcony Balcony;
 
     [SerializeField] private int maxTime = 500;
     [SerializeField] private int currentTime;
+
+    [SerializeField] private int currentScore;
+    public int CurrentScore { get => currentScore; set => currentScore = value; }
 
     [SerializeField] private int availableSeats = 4;
     [SerializeField] private int totalCustomers = 0;
@@ -50,7 +54,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        waiter = FindObjectOfType<Waiter>();
+        Waiter = FindObjectOfType<Waiter>();
+        Balcony = FindObjectOfType<Balcony>();
 
         currentTime = -1;
         rand = new System.Random();
@@ -70,9 +75,9 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Back to start");
 
-        if (!waiter.GetComponent<Waiter>().IsMoving && !IsLocked)
+        if (!Waiter.GetComponent<Waiter>().IsMoving && !IsLocked)
             StartCoroutine(
-                waiter.GetComponent<Waiter>().Move(transform.position));
+                Waiter.GetComponent<Waiter>().Move(transform.position));
     }
 
     private IEnumerator RaiseTime()

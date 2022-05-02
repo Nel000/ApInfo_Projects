@@ -208,7 +208,7 @@ MonoBehaviour:
   isAttended: 0
   isServed: 0
   waitTime: 0
-  maxTime: 30
+  maxTime: 50
   meal: {fileID: 0}
 --- !u!61 &6400955670052035661
 BoxCollider2D:

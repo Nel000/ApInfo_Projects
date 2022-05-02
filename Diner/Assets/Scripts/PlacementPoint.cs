@@ -8,6 +8,8 @@ public class PlacementPoint : MonoBehaviour
 
     public GameObject PlacedMeal { get; set; }
 
+    public int MealIndex { get; set; }
+
     private void OnMouseDown()
     {
         if (!FindObjectOfType<GameManager>().IsLocked && PlacedMeal != null
@@ -15,6 +17,8 @@ public class PlacementPoint : MonoBehaviour
         {
             IsOccupied = false;
             Destroy(PlacedMeal);
+
+            balcony.Waiter.AddToInventory(MealIndex);
         }
     }
 }

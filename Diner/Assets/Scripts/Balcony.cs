@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Balcony : MonoBehaviour
 {
     private GameManager gm;
-    private Waiter waiter;
+    public Waiter Waiter { get; private set; }
 
     [SerializeField] private GameObject menu;
     [SerializeField] private GameObject[] menuMeals;
@@ -20,10 +20,10 @@ public class Balcony : MonoBehaviour
     [SerializeField] private List<Meal> preparedMeals = new List<Meal>();
 
     private Meal hamburger = new Meal(30, 30);
-    private Meal pasta = new Meal(30, 40);
-    private Meal pizza = new Meal(30, 70);
-    private Meal salad = new Meal(30, 20);
-    private Meal spaghettiAndMeatballs = new Meal(30, 50);
+    private Meal pasta = new Meal(40, 40);
+    private Meal pizza = new Meal(70, 70);
+    private Meal salad = new Meal(20, 20);
+    private Meal spaghettiAndMeatballs = new Meal(50, 50);
 
     public Meal[] meals = new Meal[5];
 
@@ -32,7 +32,7 @@ public class Balcony : MonoBehaviour
     private void Start()
     {
         gm = FindObjectOfType<GameManager>();
-        waiter = FindObjectOfType<Waiter>();
+        Waiter = FindObjectOfType<Waiter>();
 
         meals[0] = hamburger;
         meals[1] = pasta;
@@ -51,8 +51,8 @@ public class Balcony : MonoBehaviour
         // Move to balcony
         Debug.Log("Clicked balcony");
 
-        if (!waiter.GetComponent<Waiter>().IsMoving && !IsOnBalcony)
-            StartCoroutine(waiter.GetComponent<Waiter>().Move(
+        if (!Waiter.GetComponent<Waiter>().IsMoving && !IsOnBalcony)
+            StartCoroutine(Waiter.GetComponent<Waiter>().Move(
                 waitPosition.transform.position));
         else
         {
@@ -128,6 +128,7 @@ public class Balcony : MonoBehaviour
             preparedMeals.Add(preparedMeal);
             positions[balconyIndex].IsOccupied = true;
             
+            positions[balconyIndex].MealIndex = mealIndex;
             positions[balconyIndex].PlacedMeal = Instantiate(
                 gm.Meals[mealIndex], positions[balconyIndex].transform);
         }

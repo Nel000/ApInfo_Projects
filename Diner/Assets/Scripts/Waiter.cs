@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Waiter : MonoBehaviour
 {
+    [SerializeField] private InventorySlot inventorySlot;
+    public InventorySlot InventorySlot { get => inventorySlot; }
+
     private float speed = 10.0f;
 
     [SerializeField] private bool isMoving;
@@ -37,13 +40,22 @@ public class Waiter : MonoBehaviour
     {
         foreach (GameObject customer in FindObjectOfType<GameManager>().Customers)
         {
-            if (currentTable == customer.GetComponent<Customer>().Table
-                && !customer.GetComponent<Customer>().IsAttended)
+            if (currentTable == customer.GetComponent<Customer>().Table)
             {
-                // Attend customer
-                Debug.Log(
-                    $"Waiter is attending {customer.name} at {currentTable}");
-                customer.GetComponent<Customer>().MakeRequest();
+                if (!customer.GetComponent<Customer>().IsAttended)
+                {
+                    // Attend customer
+                    Debug.Log(
+                        $"Waiter is attending {customer.name} at {currentTable}");
+                    customer.GetComponent<Customer>().MakeRequest();
+                }
+                else if (customer.GetComponent<Customer>().IsAttended)
+                {
+                    // Serve customer
+                    Debug.Log(
+                        $"Waiter served {customer.name} at {currentTable}");
+                    customer.GetComponent<Customer>().GetServed();
+                }
             }
         }
     }
@@ -64,5 +76,12 @@ public class Waiter : MonoBehaviour
         while (Vector2.Distance(transform.position, target) > 0.1f);
 
         isMoving = false;
+    }
+
+    public void AddToInventory(int i)
+    {
+        Debug.Log($"Added meal #{i} to inventory.");
+        inventorySlot.IsEmpty = false;
+        inventorySlot.UpdateInventory(inventorySlot.MealImages[i]);
     }
 }

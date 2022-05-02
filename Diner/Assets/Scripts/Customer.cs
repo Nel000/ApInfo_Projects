@@ -209,6 +209,47 @@ public class Customer : MonoBehaviour
         Instantiate(meal, mealBalloon.transform);
     }
 
+    public void GetServed()
+    {
+        Debug.Log(
+            $"{gm.Waiter.InventorySlot.SlotImage.name}, {meal.name + "(Clone)"}");
+        // If served meal equals requested meal
+        if (gm.Waiter.InventorySlot.SlotImage.name == meal.name + "(Clone)")
+        {
+            StartCoroutine(Eat());
+        }
+        // Else, leave immediately
+        else
+        {
+            gm.CurrentScore -= 20;
+            GameObject.Find(table).GetComponent<Table>().IsEmpty = true;
+            mealBalloon.SetActive(false);
+            Leave();
+        }
+    }
+
+    private IEnumerator Eat()
+    {
+        int time = 0, eatTime = 10;
+        do
+        {
+            Debug.Log("Eating...");
+            time++;
+            yield return new WaitForSeconds(1.0f);
+        }
+        while (time < eatTime);
+
+        EvaluateMeal();
+    }
+
+    public void EvaluateMeal()
+    {
+        gm.CurrentScore += 5;
+        GameObject.Find(table).GetComponent<Table>().IsEmpty = true;
+        mealBalloon.SetActive(false);
+        Leave();
+    }
+
     private IEnumerator Move(Vector2 target)
     {
         yield return new WaitForSeconds(0.2f);

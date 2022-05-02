@@ -8,6 +8,8 @@ public class Customer : MonoBehaviour
 
     private float speed = 5.0f;
 
+    [SerializeField] private int defaultScore = 10;
+
     private Vector2 target;
 
     [SerializeField] private GameObject mealBalloon;
@@ -115,6 +117,7 @@ public class Customer : MonoBehaviour
         else
             if (waitTime >= maxTime)
             {
+                gm.CurrentScore -= defaultScore;
                 gm.WaitLine--;
                 Leave();
             }
@@ -180,6 +183,7 @@ public class Customer : MonoBehaviour
         {
             if (waitTime >= maxTime)
             {
+                gm.CurrentScore -= defaultScore;
                 gm.WaitLine--;
                 Leave();
             }
@@ -224,7 +228,7 @@ public class Customer : MonoBehaviour
             gm.CurrentScore -= 20;
             GameObject.Find(table).GetComponent<Table>().IsEmpty = true;
             mealBalloon.SetActive(false);
-            Leave();
+            Invoke("Leave", 0.1f);
         }
     }
 
@@ -280,7 +284,7 @@ public class Customer : MonoBehaviour
             // Leave immediately
             GameObject.Find(table).GetComponent<Table>().IsEmpty = true;
             mealBalloon.SetActive(false);
-            
+            gm.CurrentScore -= defaultScore;
             Leave();
         }
     }

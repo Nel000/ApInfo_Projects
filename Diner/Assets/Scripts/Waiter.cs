@@ -14,6 +14,10 @@ public class Waiter : MonoBehaviour
 
     [SerializeField] private string currentTable;
 
+    private bool hasMeal;
+
+    private int mealIndex;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,12 +53,13 @@ public class Waiter : MonoBehaviour
                         $"Waiter is attending {customer.name} at {currentTable}");
                     customer.GetComponent<Customer>().MakeRequest();
                 }
-                else if (customer.GetComponent<Customer>().IsAttended)
+                else if (customer.GetComponent<Customer>().IsAttended && hasMeal)
                 {
                     // Serve customer
                     Debug.Log(
                         $"Waiter served {customer.name} at {currentTable}");
                     customer.GetComponent<Customer>().GetServed();
+                    RemoveFromInventory();
                 }
             }
         }
@@ -81,7 +86,15 @@ public class Waiter : MonoBehaviour
     public void AddToInventory(int i)
     {
         Debug.Log($"Added meal #{i} to inventory.");
-        inventorySlot.IsEmpty = false;
+        mealIndex = i;
+        hasMeal = true;
         inventorySlot.UpdateInventory(inventorySlot.MealImages[i]);
+    }
+
+    public void RemoveFromInventory()
+    {
+        Debug.Log("Removed meal from inventory.");
+        hasMeal = false;
+        inventorySlot.UpdateInventory(inventorySlot.MealImages[mealIndex]);
     }
 }

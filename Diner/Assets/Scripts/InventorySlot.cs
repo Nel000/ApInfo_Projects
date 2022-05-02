@@ -13,9 +13,25 @@ public class InventorySlot : MonoBehaviour
     [SerializeField] private Image slotImage;
     public Image SlotImage { get => slotImage; }
 
+    private void Start()
+    {
+        IsEmpty = true;
+    }
+
     public void UpdateInventory(Image mealImage)
     {
         Debug.Log("Updated inventory slot.");
-        slotImage = Instantiate(mealImage, gameObject.transform);
+
+        if (IsEmpty)
+        {
+            slotImage = Instantiate(mealImage, gameObject.transform);
+            IsEmpty = false;
+        }
+        else
+        {
+            // Should remove current image
+            slotImage = null;
+            IsEmpty = true;
+        }
     }
 }

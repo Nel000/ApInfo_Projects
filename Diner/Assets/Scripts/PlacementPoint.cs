@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlacementPoint : MonoBehaviour
 {
     [SerializeField] private Balcony balcony;
+    [SerializeField] private InventorySlot slot;
 
     public bool IsOccupied { get; set; }
 
@@ -13,7 +14,7 @@ public class PlacementPoint : MonoBehaviour
     private void OnMouseDown()
     {
         if (!FindObjectOfType<GameManager>().IsLocked && PlacedMeal != null
-            && balcony.IsOnBalcony)
+            && balcony.IsOnBalcony && slot.IsEmpty)
         {
             IsOccupied = false;
             Destroy(PlacedMeal);

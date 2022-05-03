@@ -117,7 +117,7 @@ public class Customer : MonoBehaviour
         else
             if (waitTime >= maxTime)
             {
-                gm.UpdateScore(defaultScore);
+                gm.UpdateScore(-defaultScore);
                 gm.WaitLine--;
                 Leave();
             }
@@ -183,7 +183,7 @@ public class Customer : MonoBehaviour
         {
             if (waitTime >= maxTime)
             {
-                gm.UpdateScore(defaultScore);
+                gm.UpdateScore(-defaultScore);
                 gm.WaitLine--;
                 Leave();
             }
@@ -216,16 +216,16 @@ public class Customer : MonoBehaviour
     public void GetServed()
     {
         Debug.Log(
-            $"{gm.Waiter.InventorySlot.SlotImage.name}, {meal.name + "(Clone)"}");
+            $"{gm.Waiter.InventorySlot.SlotImage.name}, {meal.name}");
         // If served meal equals requested meal
-        if (gm.Waiter.InventorySlot.SlotImage.name == meal.name + "(Clone)")
+        if (gm.Waiter.InventorySlot.SlotImage.name == meal.name)
         {
             StartCoroutine(Eat());
         }
         // Else, leave immediately
         else
         {
-            gm.UpdateScore(-20);
+            gm.UpdateScore(defaultScore * -2);
             GameObject.Find(table).GetComponent<Table>().IsEmpty = true;
             mealBalloon.SetActive(false);
             Invoke("Leave", 0.1f);
@@ -248,7 +248,7 @@ public class Customer : MonoBehaviour
 
     public void EvaluateMeal()
     {
-        gm.UpdateScore(5);
+        gm.UpdateScore(defaultScore);
         GameObject.Find(table).GetComponent<Table>().IsEmpty = true;
         mealBalloon.SetActive(false);
         Leave();
@@ -284,7 +284,7 @@ public class Customer : MonoBehaviour
             // Leave immediately
             GameObject.Find(table).GetComponent<Table>().IsEmpty = true;
             mealBalloon.SetActive(false);
-            gm.UpdateScore(defaultScore);
+            gm.UpdateScore(-defaultScore);
             Leave();
         }
     }

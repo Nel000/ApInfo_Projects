@@ -88,13 +88,13 @@ public class Waiter : MonoBehaviour
         Debug.Log($"Added meal #{i} to inventory.");
         mealIndex = i;
         hasMeal = true;
-        inventorySlot.UpdateInventory(inventorySlot.MealImages[i]);
+        inventorySlot.UpdateInventory(i);
     }
 
     public void RemoveFromInventory()
     {
         Debug.Log("Removed meal from inventory.");
         hasMeal = false;
-        inventorySlot.UpdateInventory(inventorySlot.MealImages[mealIndex]);
+        inventorySlot.UpdateInventory(mealIndex);
     }
 }

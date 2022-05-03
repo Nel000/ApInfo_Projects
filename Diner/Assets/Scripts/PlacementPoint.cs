@@ -13,12 +13,12 @@ public class PlacementPoint : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!FindObjectOfType<GameManager>().IsLocked && PlacedMeal != null
-            && balcony.IsOnBalcony && slot.IsEmpty)
+        if (PlacedMeal != null && balcony.IsOnBalcony && slot.IsEmpty)
         {
             IsOccupied = false;
             Destroy(PlacedMeal);
 
+            balcony.UpdateMenu(0);
             balcony.Waiter.AddToInventory(MealIndex);
         }
     }

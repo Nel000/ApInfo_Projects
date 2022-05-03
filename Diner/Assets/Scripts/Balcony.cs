@@ -56,10 +56,9 @@ public class Balcony : MonoBehaviour
                 waitPosition.transform.position));
         else
         {
-            if (!gm.IsLocked)
+            if (!gm.IsLocked && IsOnBalcony)
             {
-                gm.IsLocked = true;
-                menu.SetActive(true);
+                UpdateMenu(1);
             }
         }
     }
@@ -71,8 +70,7 @@ public class Balcony : MonoBehaviour
             Debug.Log("On balcony");
             IsOnBalcony = true;
 
-            menu.SetActive(true);
-            gm.IsLocked = true;
+            UpdateMenu(1);
         }
     }
 
@@ -81,6 +79,20 @@ public class Balcony : MonoBehaviour
         if(other.gameObject.tag == "Player")
         {
             IsOnBalcony = false;
+        }
+    }
+
+    public void UpdateMenu(int i)
+    {
+        if (i > 0)
+        {
+            menu.SetActive(true);
+            gm.IsLocked = true;
+        }
+        else
+        {
+            menu.SetActive(false);
+            gm.IsLocked = false;
         }
     }
 

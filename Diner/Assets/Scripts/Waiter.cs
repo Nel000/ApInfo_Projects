@@ -16,7 +16,7 @@ public class Waiter : MonoBehaviour
 
     private bool hasMeal;
 
-    private int mealIndex;
+    public int MealIndex { get; set; }
 
     // Start is called before the first frame update
     void Start()
@@ -86,7 +86,7 @@ public class Waiter : MonoBehaviour
     public void AddToInventory(int i)
     {
         Debug.Log($"Added meal #{i} to inventory.");
-        mealIndex = i;
+        MealIndex = i;
         hasMeal = true;
         inventorySlot.UpdateInventory(i);
     }
@@ -95,6 +95,6 @@ public class Waiter : MonoBehaviour
     {
         Debug.Log("Removed meal from inventory.");
         hasMeal = false;
-        inventorySlot.UpdateInventory(mealIndex);
+        inventorySlot.UpdateInventory(MealIndex);
     }
 }

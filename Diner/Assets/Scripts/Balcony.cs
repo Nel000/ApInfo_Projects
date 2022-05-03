@@ -25,7 +25,7 @@ public class Balcony : MonoBehaviour
     private Meal salad = new Meal(20, 20);
     private Meal spaghettiAndMeatballs = new Meal(50, 50);
 
-    public Meal[] meals = new Meal[5];
+    public Meal[] Meals { get; set; }
 
     [SerializeField] private Text[] time = new Text[5];
 
@@ -34,15 +34,17 @@ public class Balcony : MonoBehaviour
         gm = FindObjectOfType<GameManager>();
         Waiter = FindObjectOfType<Waiter>();
 
-        meals[0] = hamburger;
-        meals[1] = pasta;
-        meals[2] = pizza;
-        meals[3] = salad;
-        meals[4] = spaghettiAndMeatballs;
+        Meals = new Meal[5];
 
-        for (int i = 0; i < meals.Length; i++)
+        Meals[0] = hamburger;
+        Meals[1] = pasta;
+        Meals[2] = pizza;
+        Meals[3] = salad;
+        Meals[4] = spaghettiAndMeatballs;
+
+        for (int i = 0; i < Meals.Length; i++)
         {
-            time[i].text = ($"Time: {meals[i].PrepTme.ToString()}s");
+            time[i].text = ($"Time: {Meals[i].PrepTme.ToString()}s");
         }
     }
 
@@ -99,7 +101,7 @@ public class Balcony : MonoBehaviour
     public void SelectMeal(int index)
     {
         Debug.Log($"Preparing meal #{index + 1}.");
-        StartCoroutine(PrepareMeal(meals[index], index));
+        StartCoroutine(PrepareMeal(Meals[index], index));
     }
 
     private IEnumerator PrepareMeal(Meal mealToPrepare, int index)

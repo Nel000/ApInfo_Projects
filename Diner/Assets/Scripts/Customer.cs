@@ -215,8 +215,6 @@ public class Customer : MonoBehaviour
 
     public void GetServed()
     {
-        Debug.Log(
-            $"{gm.Waiter.InventorySlot.SlotImage.name}, {meal.name}");
         // If served meal equals requested meal
         if (gm.Waiter.InventorySlot.SlotImage.name == meal.name)
         {
@@ -248,7 +246,7 @@ public class Customer : MonoBehaviour
 
     public void EvaluateMeal()
     {
-        gm.UpdateScore(defaultScore);
+        gm.UpdateScore(gm.Balcony.Meals[gm.Waiter.MealIndex].Score * 2);
         GameObject.Find(table).GetComponent<Table>().IsEmpty = true;
         mealBalloon.SetActive(false);
         Leave();

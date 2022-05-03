@@ -10,9 +10,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private int maxTime = 500;
     [SerializeField] private int currentTime;
-
     [SerializeField] private int currentScore;
-    public int CurrentScore { get => currentScore; set => currentScore = value; }
 
     [SerializeField] private int availableSeats = 4;
     [SerializeField] private int totalCustomers = 0;
@@ -29,6 +27,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> Customers { get { return customers; } }
 
     [SerializeField] private Text timeValue;
+    [SerializeField] private Text scoreValue;
 
     private System.Random rand;
 
@@ -58,6 +57,7 @@ public class GameManager : MonoBehaviour
         Balcony = FindObjectOfType<Balcony>();
 
         currentTime = -1;
+        currentScore = 0;
         rand = new System.Random();
         waitLine = 0;
 
@@ -94,7 +94,14 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Time's up!");
             currentTime = maxTime;
+            scoreValue.text = (currentTime * Time.timeScale).ToString();
         }
+    }
+
+    public void UpdateScore(int value)
+    {
+        currentScore += value;
+        scoreValue.text = currentScore.ToString();
     }
 
     private IEnumerator CreateCustomer()

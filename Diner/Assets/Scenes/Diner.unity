@@ -377,8 +377,6 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 624698809}
-  - {fileID: 1010628631}
-  - {fileID: 792333686}
   - {fileID: 382200891}
   - {fileID: 1006526293}
   m_Father: {fileID: 0}
@@ -1118,7 +1116,7 @@ RectTransform:
   - {fileID: 582929307}
   - {fileID: 1006181269}
   m_Father: {fileID: 94277302}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2071,13 +2069,15 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1010628631}
+  - {fileID: 792333686}
   m_Father: {fileID: 94277302}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -10, y: -10}
   m_SizeDelta: {x: 250, y: 50}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &624698810
@@ -2202,6 +2202,7 @@ MonoBehaviour:
   - {fileID: 8692305478092388613, guid: e3d099280dd3bd244a790feeed79b7a0, type: 3}
   - {fileID: 8692305478092388613, guid: b6e89bb8440845044b711499ce43ef66, type: 3}
   - {fileID: 8692305478092388613, guid: 8ef29efb25b57594da08a0d617bcfcfd, type: 3}
+  slotImage: {fileID: 0}
 --- !u!1 &682428550
 GameObject:
   m_ObjectHideFlags: 0
@@ -2257,13 +2258,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 792333685}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 405663736}
-  m_Father: {fileID: 94277302}
-  m_RootOrder: 2
+  m_Father: {fileID: 624698809}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -2490,7 +2491,7 @@ RectTransform:
   m_Children:
   - {fileID: 1287769744}
   m_Father: {fileID: 94277302}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2560,13 +2561,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1010628630}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 68618497}
-  m_Father: {fileID: 94277302}
-  m_RootOrder: 1
+  m_Father: {fileID: 624698809}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -35821,12 +35822,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 467a93544ecf0474e84c4f5d0b83414f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Waiter: {fileID: 0}
+  Balcony: {fileID: 0}
   maxTime: 500
   currentTime: 0
+  currentScore: 0
   availableSeats: 4
   totalCustomers: 0
   customers: []
   timeValue: {fileID: 405663737}
+  scoreValue: {fileID: 68618498}
   waitLine: 0
   customer: {fileID: 6400955670052035665, guid: 61dc4e2f0946aa94d9c95d55a1c19e1c, type: 3}
   meals:

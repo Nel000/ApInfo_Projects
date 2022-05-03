@@ -117,7 +117,7 @@ public class Customer : MonoBehaviour
         else
             if (waitTime >= maxTime)
             {
-                gm.CurrentScore -= defaultScore;
+                gm.UpdateScore(defaultScore);
                 gm.WaitLine--;
                 Leave();
             }
@@ -183,7 +183,7 @@ public class Customer : MonoBehaviour
         {
             if (waitTime >= maxTime)
             {
-                gm.CurrentScore -= defaultScore;
+                gm.UpdateScore(defaultScore);
                 gm.WaitLine--;
                 Leave();
             }
@@ -225,7 +225,7 @@ public class Customer : MonoBehaviour
         // Else, leave immediately
         else
         {
-            gm.CurrentScore -= 20;
+            gm.UpdateScore(-20);
             GameObject.Find(table).GetComponent<Table>().IsEmpty = true;
             mealBalloon.SetActive(false);
             Invoke("Leave", 0.1f);
@@ -248,7 +248,7 @@ public class Customer : MonoBehaviour
 
     public void EvaluateMeal()
     {
-        gm.CurrentScore += 5;
+        gm.UpdateScore(5);
         GameObject.Find(table).GetComponent<Table>().IsEmpty = true;
         mealBalloon.SetActive(false);
         Leave();
@@ -284,7 +284,7 @@ public class Customer : MonoBehaviour
             // Leave immediately
             GameObject.Find(table).GetComponent<Table>().IsEmpty = true;
             mealBalloon.SetActive(false);
-            gm.CurrentScore -= defaultScore;
+            gm.UpdateScore(defaultScore);
             Leave();
         }
     }

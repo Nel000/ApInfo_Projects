@@ -14,7 +14,7 @@ public class Waiter : MonoBehaviour
 
     [SerializeField] private string currentTable;
 
-    private bool hasMeal;
+    [SerializeField] private bool hasMeal;
 
     public int MealIndex { get; set; }
 

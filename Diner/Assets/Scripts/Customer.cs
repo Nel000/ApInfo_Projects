@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Customer : MonoBehaviour
 {
@@ -46,6 +47,7 @@ public class Customer : MonoBehaviour
     [SerializeField] private int maxTime = 50; 
 
     [SerializeField] private GameObject meal;
+    [SerializeField] private GameObject mealImg;
 
     // Start is called before the first frame update
     void Start()
@@ -210,7 +212,7 @@ public class Customer : MonoBehaviour
         waitTime = 0;
 
         mealBalloon.SetActive(true);
-        Instantiate(meal, mealBalloon.transform);
+        mealImg = Instantiate(meal, mealBalloon.transform);
     }
 
     public void GetServed()
@@ -218,6 +220,7 @@ public class Customer : MonoBehaviour
         // If served meal equals requested meal
         if (gm.Waiter.InventorySlot.SlotImage.name == meal.name)
         {
+            Destroy(mealImg);
             StartCoroutine(Eat());
         }
         // Else, leave immediately

@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Customer : MonoBehaviour
 {
@@ -23,8 +21,6 @@ public class Customer : MonoBehaviour
     [SerializeField] private Vector2[] movePoints;
 
     [SerializeField] private int tableNum = 4;
-    private int targetNum;
-    private int targetDiff;
 
     [SerializeField] private string table;
     public string Table { get {return table; } }
@@ -33,9 +29,7 @@ public class Customer : MonoBehaviour
     [SerializeField] private bool goingToSeat;
     public bool GoingToSeat { get { return goingToSeat; } }
 
-    [SerializeField] private bool canMove;
     [SerializeField] private bool hasChecked;
-    [SerializeField] private bool isWaiting;
     [SerializeField] private bool isAttended;
     public bool IsAttended { get { return isAttended; } }
 
@@ -57,9 +51,6 @@ public class Customer : MonoBehaviour
         clearedToMove = true;
         goingToSeat = false;
         table = "";
-        targetNum = 0;
-        targetDiff = 0;
-        canMove = true;
 
         for (int i = 0; i < tableNum; i++)
         {
@@ -105,7 +96,6 @@ public class Customer : MonoBehaviour
         {
             table = other.name;
             goingToSeat = false;
-            isWaiting = true;
             StartCoroutine(Wait());
         }
     }
@@ -130,30 +120,6 @@ public class Customer : MonoBehaviour
     private IEnumerator CheckTables(int waitTime)
     {
         bool foundEmptyTable = false;
-
-        /*for (int i = 0; i < tableNum; i++)
-        {
-            if (tables[i].GetComponent<Table>().IsEmpty)
-                targetNum++;
-            else
-                targetDiff++;
-        }
-
-        targets = new Vector2[targetNum];
-
-        for (int j = 0; j < tableNum - targetDiff; j++)
-        {
-            targets[j] = seats[j + targetDiff].transform.position;
-        }
-        
-        if (targetNum > 0)
-            StartCoroutine(Move(targets[0]));
-        else
-        {
-            Debug.Log("Waiting...");
-            FindObjectOfType<GameManager>().WaitLine++;
-            //CheckTables();
-        }*/
 
         clearedToMove = true;
 

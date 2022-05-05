@@ -12,6 +12,11 @@ public class Waiter : MonoBehaviour
     public bool IsMoving { get { return isMoving; } }
 
     [SerializeField] private string currentTable;
+    public string CurrentTable 
+    { 
+        get => currentTable; 
+        set => currentTable = value;
+    }
 
     [SerializeField] private bool hasMeal;
 
@@ -32,9 +37,8 @@ public class Waiter : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.GetComponent<Table>())
+        if (other.GetComponent<Table>() && other.name == currentTable)
         {
-            currentTable = other.name;
             CheckCurrentTable();
         }
     }
@@ -68,7 +72,6 @@ public class Waiter : MonoBehaviour
     {
         Debug.Log("Waiter moving...");
 
-        currentTable = "";
         isMoving = true;
 
         do

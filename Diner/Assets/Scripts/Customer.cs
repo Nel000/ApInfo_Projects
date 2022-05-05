@@ -183,6 +183,8 @@ public class Customer : MonoBehaviour
 
     public void GetServed()
     {
+        isServed = true;
+
         // If served meal equals requested meal
         if (gm.Waiter.InventorySlot.SlotImage.name == meal.name)
         {
@@ -242,11 +244,7 @@ public class Customer : MonoBehaviour
         }
         while (waitTime < maxTime && !isServed);
 
-        if (isServed)
-        {
-            // Eat and leave after some time
-        }
-        else if (waitTime >= maxTime && !isServed)
+        if (waitTime >= maxTime && !isServed)
         {
             // Leave immediately
             GameObject.Find(table).GetComponent<Table>().IsEmpty = true;

@@ -38,5 +38,10 @@ public class WaitingSlot : MonoBehaviour
             yield return new WaitForSecondsRealtime(1.0f);
         }
         while (prepTime > 0);
+
+        if (prepTime <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }

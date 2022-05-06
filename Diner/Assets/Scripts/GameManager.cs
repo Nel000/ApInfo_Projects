@@ -76,8 +76,11 @@ public class GameManager : MonoBehaviour
         Debug.Log("Back to start");
 
         if (!Waiter.GetComponent<Waiter>().IsMoving && !IsLocked)
+        {
+            Waiter.CurrentTable = "";
             StartCoroutine(
                 Waiter.GetComponent<Waiter>().Move(transform.position));
+        }
     }
 
     private IEnumerator RaiseTime()

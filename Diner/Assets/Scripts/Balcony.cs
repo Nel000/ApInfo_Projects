@@ -54,8 +54,11 @@ public class Balcony : MonoBehaviour
         Debug.Log("Clicked balcony");
 
         if (!Waiter.GetComponent<Waiter>().IsMoving && !IsOnBalcony)
+        {
+            Waiter.CurrentTable = "";
             StartCoroutine(Waiter.GetComponent<Waiter>().Move(
-                waitPosition.transform.position));
+                 waitPosition.transform.position));
+        }
         else
         {
             if (!gm.IsLocked && IsOnBalcony)

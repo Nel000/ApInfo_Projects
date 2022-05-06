@@ -276,7 +276,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0
+  m_Text: '0
+
+'
 --- !u!222 &68618499
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -488,6 +490,7 @@ MonoBehaviour:
   inventorySlot: {fileID: 659965147}
   isMoving: 0
   currentTable: 
+  hasMeal: 0
 --- !u!61 &151490826
 BoxCollider2D:
   m_ObjectHideFlags: 0

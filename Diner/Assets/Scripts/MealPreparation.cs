@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +6,11 @@ public class MealPreparation : MonoBehaviour
 {
     [SerializeField] 
     private List<GameObject> waitSlots = new List<GameObject>();
+    public List<GameObject> WaitSlots 
+    { 
+        get => waitSlots; 
+        set => waitSlots = value; 
+    }
 
     [SerializeField] private Image[] mealImages;
 
@@ -21,11 +25,25 @@ public class MealPreparation : MonoBehaviour
                 slot.transform.position.z);
         }
 
-        // Add meal to list and instantiate waiting slot with properties
         GameObject slotObject = Instantiate(
             waitSlotPrefab, gameObject.transform);
         slotObject.GetComponent<WaitingSlot>().DefineMeal(
             mealImages[i], prepText);
         waitSlots.Add(slotObject);
+    }
+
+    public void RemoveMeal(GameObject currentMeal)
+    {
+        for (int i = 0; i < waitSlots.Count; i++)
+        {
+            if (waitSlots.IndexOf(waitSlots[i]) < waitSlots.IndexOf(currentMeal))
+            {
+                waitSlots[i].transform.position = new Vector3(
+                    waitSlots[i].transform.position.x, 
+                    waitSlots[i].transform.position.y - 70,
+                    waitSlots[i].transform.position.z);
+            }
+        }
+        waitSlots.Remove(currentMeal);
     }
 }

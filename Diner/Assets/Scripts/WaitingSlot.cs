@@ -1,10 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class WaitingSlot : MonoBehaviour
 {
+    private MealPreparation mealPrep;
+
     [SerializeField] private Image mealImage;
 
     [SerializeField] private Text prepText;
@@ -26,6 +27,8 @@ public class WaitingSlot : MonoBehaviour
 
     private void Start()
     {
+        mealPrep = FindObjectOfType<MealPreparation>();
+
         StartCoroutine(WaitTime());
     }
 
@@ -41,7 +44,8 @@ public class WaitingSlot : MonoBehaviour
 
         if (prepTime <= 0)
         {
-            Destroy(gameObject);
+            mealPrep.RemoveMeal(this.gameObject);
+            Destroy(this.gameObject);
         }
     }
 }

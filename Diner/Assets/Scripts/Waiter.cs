@@ -19,6 +19,7 @@ public class Waiter : MonoBehaviour
     }
 
     [SerializeField] private bool hasMeal;
+    public bool HasMeal { get => hasMeal; }
 
     public int MealIndex { get; set; }
 

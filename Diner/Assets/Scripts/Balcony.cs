@@ -57,7 +57,7 @@ public class Balcony : MonoBehaviour
         {
             Waiter.CurrentTable = "";
             StartCoroutine(Waiter.GetComponent<Waiter>().Move(
-                 waitPosition.transform.position));
+                waitPosition.transform.position));
         }
         else
         {

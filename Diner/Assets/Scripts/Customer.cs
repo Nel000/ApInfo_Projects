@@ -107,7 +107,7 @@ public class Customer : MonoBehaviour
         if (gm.WaitLine == 1)
             StartCoroutine(Move(movePoints[0]));
         else
-            if (waitTime >= maxTime)
+            if (waitTime >= maxTime / 2)
             {
                 gm.UpdateScore(-defaultScore);
                 gm.WaitLine--;
@@ -149,7 +149,7 @@ public class Customer : MonoBehaviour
 
         if (!foundEmptyTable)
         {
-            if (waitTime >= maxTime)
+            if (waitTime >= maxTime / 2)
             {
                 gm.UpdateScore(-defaultScore);
                 gm.WaitLine--;
@@ -166,8 +166,6 @@ public class Customer : MonoBehaviour
                 StartCoroutine(CheckTables(waitTime + 1));
             }
         }
-
-        //hasChecked = true;
     }
 
     public void MakeRequest()

@@ -105,8 +105,6 @@ public class Balcony : MonoBehaviour
     {
         Debug.Log($"Preparing meal #{index + 1}.");
         StartCoroutine(PrepareMeal(Meals[index], index));
-        FindObjectOfType<MealPreparation>().AddMeal(
-            index, Meals[index].PrepTme);
     }
 
     private IEnumerator PrepareMeal(Meal mealToPrepare, int index)
@@ -114,6 +112,8 @@ public class Balcony : MonoBehaviour
         if(mealsToPrepare.Count < positions.Length + 2)
         {
             mealsToPrepare.Add(mealToPrepare);
+            FindObjectOfType<MealPreparation>().AddMeal(
+                index, Meals[index].PrepTme);
             yield return new WaitForSeconds(mealToPrepare.PrepTme);
             StartCoroutine(PositionMeal(mealToPrepare, index, 0));
         }

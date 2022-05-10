@@ -182,6 +182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 681435c6b8369bb4dad92b89f45117b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultScore: 10
   mealBalloon: {fileID: 2384297071250549792}
   tables:
   - {fileID: 0}
@@ -202,14 +203,13 @@ MonoBehaviour:
   table: 
   clearedToMove: 0
   goingToSeat: 0
-  canMove: 0
   hasChecked: 0
-  isWaiting: 0
   isAttended: 0
   isServed: 0
   waitTime: 0
-  maxTime: 50
+  maxTime: 75
   meal: {fileID: 0}
+  mealImg: {fileID: 0}
 --- !u!61 &6400955670052035661
 BoxCollider2D:
   m_ObjectHideFlags: 0

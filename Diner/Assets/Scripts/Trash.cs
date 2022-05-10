@@ -17,7 +17,8 @@ public class Trash : MonoBehaviour
     {
         Debug.Log("Clicked trash");
 
-        if (!waiter.GetComponent<Waiter>().IsMoving)
+        if (!waiter.GetComponent<Waiter>().IsMoving
+            && !FindObjectOfType<GameManager>().IsLocked)
         {
             waiter.CurrentTable = "";
             StartCoroutine(waiter.GetComponent<Waiter>().Move(

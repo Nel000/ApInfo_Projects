@@ -90,6 +90,8 @@ public class Customer : MonoBehaviour
             table = other.name;
             goingToSeat = false;
             StartCoroutine(Wait());
+            if (gm.Waiter.CurrentTable == table)
+                MakeRequest();
         }
     }
     

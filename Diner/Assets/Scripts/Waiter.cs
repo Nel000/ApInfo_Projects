@@ -11,6 +11,9 @@ public class Waiter : MonoBehaviour
     [SerializeField] private bool isMoving;
     public bool IsMoving { get { return isMoving; } }
 
+    [SerializeField] private bool isOnTable;
+    public bool IsOnTable => isOnTable;
+
     [SerializeField] private string currentTable;
     public string CurrentTable 
     { 
@@ -34,10 +37,11 @@ public class Waiter : MonoBehaviour
         if (other.GetComponent<Table>() && other.name == currentTable)
         {
             CheckCurrentTable();
+            isOnTable = true;
         }
     }
 
-    private void CheckCurrentTable()
+    public void CheckCurrentTable()
     {
         foreach (GameObject customer in FindObjectOfType<GameManager>().Customers)
         {
@@ -67,6 +71,7 @@ public class Waiter : MonoBehaviour
         Debug.Log("Waiter moving...");
 
         isMoving = true;
+        isOnTable = false;
 
         do
         {

@@ -18,13 +18,20 @@ public class Table : MonoBehaviour
     {
         Debug.Log("Clicked table");
 
-        if (!waiter.GetComponent<Waiter>().IsMoving && !isEmpty 
+        if (!waiter.GetComponent<Waiter>().IsMoving 
+            && waiter.GetComponent<Waiter>().CurrentTable != gameObject.name
             && !FindObjectOfType<GameManager>().IsLocked)
         {
             waiter.GetComponent<Waiter>().CurrentTable = gameObject.name;
             StartCoroutine(waiter.GetComponent<Waiter>().Move(
                 servePos.transform.position));
-        }       
+        }
+
+        if (waiter.GetComponent<Waiter>().IsOnTable &&
+            waiter.GetComponent<Waiter>().CurrentTable == gameObject.name)
+        {
+            waiter.GetComponent<Waiter>().CheckCurrentTable();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)

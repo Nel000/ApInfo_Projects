@@ -42,8 +42,8 @@ public class Customer : MonoBehaviour
 
     [SerializeField] private GameObject meal;
     [SerializeField] private GameObject mealImg;
+    [SerializeField] private GameObject[] stateImg;
 
-    // Start is called before the first frame update
     void Start()
     {   
         gm = FindObjectOfType<GameManager>();
@@ -61,12 +61,6 @@ public class Customer : MonoBehaviour
         meal = gm.DefineMeal();
 
         StartCoroutine(Move(movePoints[1]));
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -89,7 +83,6 @@ public class Customer : MonoBehaviour
         {
             Debug.Log("WaitWall main");
 
-            //if(!hasChecked)
             StartCoroutine(CheckTables(0));
         }
         else if (other.GetComponent<Table>())
@@ -111,6 +104,8 @@ public class Customer : MonoBehaviour
             {
                 gm.UpdateScore(-defaultScore);
                 gm.WaitLine--;
+                mealBalloon.SetActive(true);
+                stateImg[0].SetActive(true);
                 Leave();
             }
             else
@@ -153,6 +148,8 @@ public class Customer : MonoBehaviour
             {
                 gm.UpdateScore(-defaultScore);
                 gm.WaitLine--;
+                mealBalloon.SetActive(true);
+                stateImg[0].SetActive(true);
                 Leave();
             }
             else
@@ -187,6 +184,7 @@ public class Customer : MonoBehaviour
         if (gm.Waiter.InventorySlot.SlotImage.name == meal.name)
         {
             Destroy(mealImg);
+            stateImg[2].SetActive(true);
             StartCoroutine(Eat());
         }
         // Else, leave immediately
@@ -194,7 +192,8 @@ public class Customer : MonoBehaviour
         {
             gm.UpdateScore(defaultScore * -2);
             GameObject.Find(table).GetComponent<Table>().IsEmpty = true;
-            mealBalloon.SetActive(false);
+            Destroy(mealImg);
+            stateImg[0].SetActive(true);
             Invoke("Leave", 0.1f);
         }
     }
@@ -217,7 +216,8 @@ public class Customer : MonoBehaviour
     {
         gm.UpdateScore(gm.Balcony.Meals[gm.Waiter.MealIndex].Score * 2);
         GameObject.Find(table).GetComponent<Table>().IsEmpty = true;
-        mealBalloon.SetActive(false);
+        stateImg[2].SetActive(false);
+        stateImg[1].SetActive(true);
         Leave();
     }
 
@@ -240,13 +240,27 @@ public class Customer : MonoBehaviour
             waitTime++;
             yield return new WaitForSeconds(1.0f);
         }
-        while (waitTime < maxTime && !isServed);
+        while (waitTime <= maxTime / 1.5 && !isAttended);
 
-        if (waitTime >= maxTime && !isServed)
+        if (isAttended)
+        {
+            do
+            {
+                waitTime++;
+                yield return new WaitForSeconds(1.0f);
+            }
+            while (waitTime < maxTime && !isServed);
+        }
+
+        if (waitTime >= maxTime / 1.5 && !isAttended
+            || waitTime >= maxTime && isAttended && !isServed)
         {
             // Leave immediately
             GameObject.Find(table).GetComponent<Table>().IsEmpty = true;
-            mealBalloon.SetActive(false);
+            if (mealImg != null)
+                mealImg.SetActive(false);
+            mealBalloon.SetActive(true);
+            stateImg[0].SetActive(true);
             gm.UpdateScore(-defaultScore);
             Leave();
         }

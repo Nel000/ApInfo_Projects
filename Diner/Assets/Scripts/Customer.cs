@@ -94,6 +94,7 @@ public class Customer : MonoBehaviour
         {
             Debug.Log("WaitWall main");
 
+            waitReset = false;
             StartCoroutine(StatUpdate(maxTime / 2));
             StartCoroutine(CheckTables(0));
         }
@@ -113,7 +114,11 @@ public class Customer : MonoBehaviour
         Debug.Log("Waiting in line");
         yield return new WaitForSeconds(1.0f);
         if (gm.WaitLine == 1)
+        {
+            ResetStat();
             StartCoroutine(Move(movePoints[0]));
+        }
+            
         else
             if (waitTime >= maxTime / 2)
             {
@@ -328,7 +333,6 @@ public class Customer : MonoBehaviour
 
     public IEnumerator Leave()
     {
-        // Leave immediately
         IsLeaving = true;
 
         Debug.Log($"{name} heads out");

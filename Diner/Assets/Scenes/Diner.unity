@@ -4170,7 +4170,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &672694773
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7287,7 +7287,7 @@ MonoBehaviour:
   Balcony: {fileID: 0}
   mainCanvas: {fileID: 94277298}
   endCanvas: {fileID: 1582647186}
-  maxTime: 50
+  maxTime: 500
   currentTime: 0
   currentScore: 0
   availableSeats: 4

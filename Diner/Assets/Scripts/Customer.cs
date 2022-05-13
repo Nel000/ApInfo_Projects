@@ -205,6 +205,7 @@ public class Customer : MonoBehaviour
         {
             Destroy(mealImg);
             stateImg[2].SetActive(true);
+            ResetStat();
             StartCoroutine(Eat());
         }
         // Else, leave immediately
@@ -214,6 +215,8 @@ public class Customer : MonoBehaviour
             GameObject.Find(table).GetComponent<Table>().IsEmpty = true;
             Destroy(mealImg);
             stateImg[0].SetActive(true);
+            ResetStat();
+            statMeter.color = Color.red;
             Invoke("Leave", 0.1f);
         }
     }

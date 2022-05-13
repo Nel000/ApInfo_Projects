@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
 
     public bool IsLocked { get; set; }
 
+    private bool inEndGame;
+
     public int AvailableSeats
     { 
         get { return availableSeats; }
@@ -103,7 +105,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("Time's up!");
             currentTime = maxTime;
             timeValue.text = (currentTime * Time.timeScale).ToString();
-
+            inEndGame = true;
             EndGame();
         }
     }
@@ -117,7 +119,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator CreateCustomer()
     {
         yield return new WaitForSeconds(rand.Next(5, 10));
-        if (WaitLine < 2)
+        if (WaitLine < 2 && !inEndGame)
         {
             totalCustomers++;
 
@@ -136,10 +138,15 @@ public class GameManager : MonoBehaviour
 
     private void EndGame()
     {
-        IsLocked = true;
-        mainCanvas.SetActive(false);
-        endCanvas.SetActive(true);
-        endScoreValue.text = $"Score: {currentScore}";
+        if (customers.Count <= 0)
+        {
+            IsLocked = true;
+            mainCanvas.SetActive(false);
+            endCanvas.SetActive(true);
+            endScoreValue.text = $"Score: {currentScore}";
+        }
+        else
+            Invoke("EndGame", 1.0f);
     }
 
     public void ButtonBehaviour()

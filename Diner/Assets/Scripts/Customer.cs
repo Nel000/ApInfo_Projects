@@ -121,7 +121,7 @@ public class Customer : MonoBehaviour
                 gm.WaitLine--;
                 mealBalloon.SetActive(true);
                 stateImg[0].SetActive(true);
-                Leave();
+                StartCoroutine(Leave());
             }
             else
                 StartCoroutine(LineWait(waitTime + 1));
@@ -166,7 +166,7 @@ public class Customer : MonoBehaviour
                 gm.WaitLine--;
                 mealBalloon.SetActive(true);
                 stateImg[0].SetActive(true);
-                Leave();
+                StartCoroutine(Leave());
             }
             else
             {
@@ -241,7 +241,7 @@ public class Customer : MonoBehaviour
         GameObject.Find(table).GetComponent<Table>().IsEmpty = true;
         stateImg[2].SetActive(false);
         stateImg[1].SetActive(true);
-        Leave();
+        StartCoroutine(Leave());
     }
 
     private IEnumerator StatUpdate(float totalTime)
@@ -322,18 +322,19 @@ public class Customer : MonoBehaviour
             mealBalloon.SetActive(true);
             stateImg[0].SetActive(true);
             gm.UpdateScore(-defaultScore);
-            Leave();
+            StartCoroutine(Leave());
         }
     }
 
-    private void Leave()
+    public IEnumerator Leave()
     {
         // Leave immediately
         IsLeaving = true;
 
         Debug.Log($"{name} heads out");
         StartCoroutine(Move(movePoints[2]));
+        yield return new WaitForSeconds(3.0f);
         gm.Customers.Remove(gameObject);
-        Destroy(gameObject, 3.0f);
+        Destroy(gameObject);
     }
 }

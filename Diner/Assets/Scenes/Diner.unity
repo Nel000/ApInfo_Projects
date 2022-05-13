@@ -7287,7 +7287,7 @@ MonoBehaviour:
   Balcony: {fileID: 0}
   mainCanvas: {fileID: 94277298}
   endCanvas: {fileID: 1582647186}
-  maxTime: 500
+  maxTime: 50
   currentTime: 0
   currentScore: 0
   availableSeats: 4

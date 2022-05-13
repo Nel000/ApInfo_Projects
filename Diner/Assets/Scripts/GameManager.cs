@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
     public Waiter Waiter;
     public Balcony Balcony;
 
+    [SerializeField] private GameObject mainCanvas;
+    [SerializeField] private GameObject endCanvas;
+
     [SerializeField] private int maxTime = 500;
     [SerializeField] private int currentTime;
     [SerializeField] private int currentScore;
@@ -28,6 +31,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private Text timeValue;
     [SerializeField] private Text scoreValue;
+    [SerializeField] private Text endScoreValue;
 
     private System.Random rand;
 
@@ -97,7 +101,9 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Time's up!");
             currentTime = maxTime;
-            scoreValue.text = (currentTime * Time.timeScale).ToString();
+            timeValue.text = (currentTime * Time.timeScale).ToString();
+
+            EndGame();
         }
     }
 
@@ -125,5 +131,18 @@ public class GameManager : MonoBehaviour
     public GameObject DefineMeal()
     {
         return meals[rand.Next(0, meals.Length)];
+    }
+
+    private void EndGame()
+    {
+        IsLocked = true;
+        mainCanvas.SetActive(false);
+        endCanvas.SetActive(true);
+        endScoreValue.text = $"Score: {currentScore}";
+    }
+
+    public void ButtonBehaviour()
+    {
+        
     }
 }

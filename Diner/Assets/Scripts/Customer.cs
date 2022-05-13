@@ -1,9 +1,13 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Customer : MonoBehaviour
 {
     private GameManager gm;
+
+    [SerializeField] private Canvas customerCanvas;
+    [SerializeField] private Image statMeter;
 
     private float speed = 5.0f;
 
@@ -36,6 +40,7 @@ public class Customer : MonoBehaviour
     public bool IsLeaving { get; private set; }
 
     [SerializeField] private bool isServed;
+    [SerializeField] private bool waitReset;
 
     [SerializeField] private int waitTime;
     [SerializeField] private int maxTime = 50; 
@@ -47,6 +52,11 @@ public class Customer : MonoBehaviour
     void Start()
     {   
         gm = FindObjectOfType<GameManager>();
+
+        customerCanvas.worldCamera = 
+            GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
+
+        statMeter.color = Color.green;
 
         clearedToMove = true;
         goingToSeat = false;
@@ -76,6 +86,7 @@ public class Customer : MonoBehaviour
                 Debug.Log("Waiting...");
 
                 gm.WaitLine++;
+                StartCoroutine(StatUpdate(maxTime / 2));
                 StartCoroutine(LineWait(0));
             }    
         }
@@ -83,15 +94,17 @@ public class Customer : MonoBehaviour
         {
             Debug.Log("WaitWall main");
 
+            StartCoroutine(StatUpdate(maxTime / 2));
             StartCoroutine(CheckTables(0));
         }
-        else if (other.GetComponent<Table>())
+        else if (other.GetComponent<Table>() && !IsLeaving)
         {
             table = other.name;
             goingToSeat = false;
             StartCoroutine(Wait());
+            StartCoroutine(StatUpdate(maxTime / 1.5f));
             if (gm.Waiter.CurrentTable == table)
-                MakeRequest();
+                StartCoroutine(MakeRequest());
         }
     }
     
@@ -134,6 +147,7 @@ public class Customer : MonoBehaviour
                 && clearedToMove)
             {
                 foundEmptyTable = true;
+                ResetStat();
 
                 if(gm.WaitLine > 0)
                     gm.WaitLine--;
@@ -167,12 +181,16 @@ public class Customer : MonoBehaviour
         }
     }
 
-    public void MakeRequest()
+    public IEnumerator MakeRequest()
     {
         Debug.Log("Customer is being attended.");
 
         isAttended = true;
         waitTime = 0;
+        ResetStat();
+        yield return new WaitForEndOfFrame();
+        waitReset = false;
+        StartCoroutine(StatUpdate(maxTime));
 
         mealBalloon.SetActive(true);
         mealImg = Instantiate(meal, mealBalloon.transform);
@@ -221,6 +239,43 @@ public class Customer : MonoBehaviour
         stateImg[2].SetActive(false);
         stateImg[1].SetActive(true);
         Leave();
+    }
+
+    private IEnumerator StatUpdate(float totalTime)
+    {
+        float time = 0;
+        
+        do
+        {
+            if (waitReset)
+                yield break;
+
+            if (statMeter.transform.localPosition.x >= 0.5
+                && statMeter.transform.localPosition.x < 0.8)
+                statMeter.color = Color.yellow;
+            
+            if (statMeter.transform.localPosition.x >= 0.8)
+                statMeter.color = Color.red;
+
+            statMeter.transform.localPosition = new Vector3(
+                Mathf.Lerp(0, 1, time / totalTime), 0, 0);
+            time += Time.deltaTime;
+            yield return null;
+        }
+        while (time < totalTime && !waitReset);
+
+        yield return new WaitForEndOfFrame();
+        Debug.Log("Reset stat update");
+
+        statMeter.transform.localPosition = new Vector3(0, 0, 0);
+        waitReset = false;
+    }
+
+    private void ResetStat()
+    {
+        statMeter.transform.localPosition = new Vector3(0, 0, 0);
+        statMeter.color = Color.green;
+        waitReset = true;
     }
 
     private IEnumerator Move(Vector2 target)
@@ -276,6 +331,6 @@ public class Customer : MonoBehaviour
         Debug.Log($"{name} heads out");
         StartCoroutine(Move(movePoints[2]));
         gm.Customers.Remove(gameObject);
-        Destroy(gameObject, 2.0f);
+        Destroy(gameObject, 3.0f);
     }
 }

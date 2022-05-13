@@ -573,6 +573,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventorySlot: {fileID: 659965147}
   isMoving: 0
+  isOnTable: 0
   currentTable: 
   hasMeal: 0
 --- !u!61 &151490826

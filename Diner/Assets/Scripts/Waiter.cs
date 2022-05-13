@@ -52,7 +52,7 @@ public class Waiter : MonoBehaviour
                     // Attend customer
                     Debug.Log(
                         $"Waiter is attending {customer.name} at {currentTable}");
-                    customer.GetComponent<Customer>().MakeRequest();
+                    StartCoroutine(customer.GetComponent<Customer>().MakeRequest());
                 }
                 else if (customer.GetComponent<Customer>().IsAttended && hasMeal)
                 {

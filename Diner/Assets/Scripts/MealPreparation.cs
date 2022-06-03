@@ -21,7 +21,7 @@ public class MealPreparation : MonoBehaviour
         foreach (GameObject slot in waitSlots)
         {
             slot.transform.position = new Vector3(
-                slot.transform.position.x, slot.transform.position.y + 70,
+                slot.transform.position.x, slot.transform.position.y + 40,
                 slot.transform.position.z);
         }
 
@@ -40,7 +40,7 @@ public class MealPreparation : MonoBehaviour
             {
                 waitSlots[i].transform.position = new Vector3(
                     waitSlots[i].transform.position.x, 
-                    waitSlots[i].transform.position.y - 70,
+                    waitSlots[i].transform.position.y - 40,
                     waitSlots[i].transform.position.z);
             }
         }

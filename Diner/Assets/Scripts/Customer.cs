@@ -222,7 +222,7 @@ public class Customer : MonoBehaviour
             stateImg[0].SetActive(true);
             ResetStat();
             statMeter.color = Color.red;
-            Invoke("Leave", 0.1f);
+            StartCoroutine(Leave());
         }
     }
 

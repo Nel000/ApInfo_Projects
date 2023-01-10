@@ -20,7 +20,7 @@ public class Trash : MonoBehaviour
         if (!waiter.GetComponent<Waiter>().IsMoving
             && !FindObjectOfType<GameManager>().IsLocked)
         {
-            waiter.CurrentTable = "";
+            waiter.UpdateTables(waiter.CurrentTable, "Trash");
             StartCoroutine(waiter.GetComponent<Waiter>().Move(
                 position.transform.position));
         }

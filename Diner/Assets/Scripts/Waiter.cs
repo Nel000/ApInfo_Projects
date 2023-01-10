@@ -11,8 +11,14 @@ public class Waiter : MonoBehaviour
     [SerializeField] private bool isMoving;
     public bool IsMoving { get { return isMoving; } }
 
+    [SerializeField] private bool isOnCenter;
+    public bool IsOnCenter => isOnCenter;
+
     [SerializeField] private bool isOnTable;
     public bool IsOnTable => isOnTable;
+
+    [SerializeField] private string previousTable;
+    public string PreviousTable => previousTable;
 
     [SerializeField] private string currentTable;
     public string CurrentTable 
@@ -28,7 +34,8 @@ public class Waiter : MonoBehaviour
 
     void Start()
     {
-        currentTable = "";
+        currentTable = "Center";
+        isOnCenter = true;
         isMoving = false;
     }
 
@@ -39,6 +46,14 @@ public class Waiter : MonoBehaviour
             CheckCurrentTable();
             isOnTable = true;
         }
+    }
+
+    public void Center() => isOnCenter = true;
+
+    public void UpdateTables(string previous, string current)
+    {
+        previousTable = previous;
+        currentTable = current;
     }
 
     public void CheckCurrentTable()
@@ -67,9 +82,12 @@ public class Waiter : MonoBehaviour
         }
     }
 
-    public IEnumerator Move(Vector2 target)
+    public IEnumerator Move(Vector2 target, 
+        bool moreTargets = false, Vector2? secTarg = null)
     {
         Debug.Log("Waiter moving...");
+
+        Vector2 newTarget;
 
         isMoving = true;
         isOnTable = false;
@@ -82,7 +100,16 @@ public class Waiter : MonoBehaviour
         }
         while (Vector2.Distance(transform.position, target) > 0.1f);
 
-        isMoving = false;
+        if (!moreTargets)
+            isMoving = false;
+        else
+        {
+            if (secTarg.HasValue)
+            {
+                newTarget = secTarg.Value;
+                StartCoroutine(Move(newTarget));
+            }
+        }
     }
 
     public void AddToInventory(int i)

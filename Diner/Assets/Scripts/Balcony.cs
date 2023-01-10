@@ -13,6 +13,7 @@ public class Balcony : MonoBehaviour
 
     [SerializeField] private PlacementPoint[] positions;
     [SerializeField] private Transform waitPosition;
+    [SerializeField] private Transform[] altPosititon;
 
     public bool IsOnBalcony { get; private set; }
 
@@ -56,9 +57,18 @@ public class Balcony : MonoBehaviour
         if (!Waiter.GetComponent<Waiter>().IsMoving && !IsOnBalcony
             && !gm.IsLocked)
         {
-            Waiter.CurrentTable = "";
-            StartCoroutine(Waiter.GetComponent<Waiter>().Move(
-                waitPosition.transform.position));
+            Waiter.UpdateTables(Waiter.CurrentTable, "Balcony");
+            if (Waiter.PreviousTable == "Table 1")
+                StartCoroutine(Waiter.GetComponent<Waiter>().Move(
+                    altPosititon[0].transform.position,
+                    true, waitPosition.transform.position));
+            else if (Waiter.PreviousTable == "Table 4")
+                StartCoroutine(Waiter.GetComponent<Waiter>().Move(
+                    altPosititon[1].transform.position,
+                    true, waitPosition.transform.position));
+            else
+                StartCoroutine(Waiter.GetComponent<Waiter>().Move(
+                    waitPosition.transform.position));
         }
         else
         {

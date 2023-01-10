@@ -2,35 +2,60 @@ using UnityEngine;
 
 public class Table : MonoBehaviour
 {
+    private Waiter waiterScr;
+
     [SerializeField] private bool isEmpty;
     public bool IsEmpty { get { return isEmpty; } set {isEmpty = value; } }
 
-    [SerializeField] private GameObject waiter;
-    [SerializeField] private GameObject servePos;
+    [SerializeField] private bool multiplePoints;
+
+    [SerializeField] private GameObject servePos, secPos;
 
     // Start is called before the first frame update
     void Start()
     {
         isEmpty = true;
+
+        waiterScr = FindObjectOfType<Waiter>();
     }
 
     private void OnMouseDown()
     {
         Debug.Log("Clicked table");
 
-        if (!waiter.GetComponent<Waiter>().IsMoving 
-            && waiter.GetComponent<Waiter>().CurrentTable != gameObject.name
+        if (!waiterScr.IsMoving 
+            && waiterScr.CurrentTable != gameObject.name
             && !FindObjectOfType<GameManager>().IsLocked)
         {
-            waiter.GetComponent<Waiter>().CurrentTable = gameObject.name;
-            StartCoroutine(waiter.GetComponent<Waiter>().Move(
-                servePos.transform.position));
+            waiterScr.UpdateTables(waiterScr.CurrentTable, gameObject.name);
+
+            if (!multiplePoints)
+                StartCoroutine(waiterScr.Move(servePos.transform.position));
+            else
+            {
+                if (waiterScr.PreviousTable == "Table 2"
+                    && waiterScr.CurrentTable == "Table 4"
+                    ||waiterScr.PreviousTable == "Table 4"
+                    && waiterScr.CurrentTable == "Table 2"
+                    || waiterScr.PreviousTable == "Center"
+                    && waiterScr.CurrentTable == "Table 4"
+                    || waiterScr.PreviousTable == "Balcony"
+                    && waiterScr.CurrentTable == "Table 1"
+                    || waiterScr.PreviousTable == "Balcony"
+                    && waiterScr.CurrentTable == "Table 4")
+                {
+                    StartCoroutine(waiterScr.Move(servePos.transform.position,
+                        true, secPos.transform.position));
+                }
+                else
+                    StartCoroutine(waiterScr.Move(secPos.transform.position));
+            }
         }
 
-        if (waiter.GetComponent<Waiter>().IsOnTable &&
-            waiter.GetComponent<Waiter>().CurrentTable == gameObject.name)
+        if (waiterScr.IsOnTable &&
+            waiterScr.CurrentTable == gameObject.name)
         {
-            waiter.GetComponent<Waiter>().CheckCurrentTable();
+            waiterScr.CheckCurrentTable();
         }
     }
 

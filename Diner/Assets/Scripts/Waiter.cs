@@ -54,7 +54,8 @@ public class Waiter : MonoBehaviour
                         $"Waiter is attending {customer.name} at {currentTable}");
                     StartCoroutine(customer.GetComponent<Customer>().MakeRequest());
                 }
-                else if (customer.GetComponent<Customer>().IsAttended && hasMeal)
+                else if (customer.GetComponent<Customer>().IsAttended && hasMeal
+                    && !customer.GetComponent<Customer>().IsLeaving)
                 {
                     // Serve customer
                     Debug.Log(

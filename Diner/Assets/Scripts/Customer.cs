@@ -190,6 +190,7 @@ public class Customer : MonoBehaviour
     {
         Debug.Log("Customer is being attended.");
 
+        yield return new WaitForEndOfFrame();
         isAttended = true;
         waitTime = 0;
         ResetStat();

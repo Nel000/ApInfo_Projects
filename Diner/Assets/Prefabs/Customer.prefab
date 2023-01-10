@@ -560,6 +560,7 @@ MonoBehaviour:
   hasChecked: 0
   isAttended: 0
   isServed: 0
+  waitReset: 0
   waitTime: 0
   maxTime: 75
   meal: {fileID: 0}

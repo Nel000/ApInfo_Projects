@@ -39,6 +39,9 @@ public class Customer : MonoBehaviour
 
     public bool IsLeaving { get; private set; }
 
+    [SerializeField] private bool isMoving;
+    public bool IsMoving => isMoving;
+
     [SerializeField] private bool isServed;
     [SerializeField] private bool waitReset;
 
@@ -85,6 +88,7 @@ public class Customer : MonoBehaviour
             {
                 Debug.Log("Waiting...");
 
+                isMoving = false;
                 gm.WaitLine++;
                 StartCoroutine(StatUpdate(maxTime / 2));
                 StartCoroutine(LineWait(0));
@@ -94,6 +98,7 @@ public class Customer : MonoBehaviour
         {
             Debug.Log("WaitWall main");
 
+            isMoving = false;
             waitReset = false;
             StartCoroutine(StatUpdate(maxTime / 2));
             StartCoroutine(CheckTables(0));
@@ -290,6 +295,7 @@ public class Customer : MonoBehaviour
     private IEnumerator Move(Vector2 target)
     {
         yield return new WaitForSeconds(0.2f);
+        isMoving = true;
         do
         {
             transform.position = Vector2.MoveTowards(
@@ -301,6 +307,8 @@ public class Customer : MonoBehaviour
     
     private IEnumerator Wait()
     {
+        isMoving = false;
+
         do
         {
             waitTime++;

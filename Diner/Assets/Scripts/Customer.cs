@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class Customer : MonoBehaviour
 {
     private GameManager gm;
+    private Range range;
 
     [SerializeField] private Canvas customerCanvas;
     [SerializeField] private Image statMeter;
@@ -21,6 +22,7 @@ public class Customer : MonoBehaviour
     [SerializeField] private GameObject[] seats;
 
     [SerializeField] private Vector2[] targets;
+    [SerializeField] private Vector2 obstacle;
 
     [SerializeField] private Vector2[] movePoints;
 
@@ -42,6 +44,8 @@ public class Customer : MonoBehaviour
     [SerializeField] private bool isMoving;
     public bool IsMoving => isMoving;
 
+    [SerializeField] private bool isInRange;
+
     [SerializeField] private bool isServed;
     [SerializeField] private bool waitReset;
 
@@ -52,9 +56,10 @@ public class Customer : MonoBehaviour
     [SerializeField] private GameObject mealImg;
     [SerializeField] private GameObject[] stateImg;
 
-    void Start()
+    private void Start()
     {   
         gm = FindObjectOfType<GameManager>();
+        range = GetComponentInChildren<Range>();
 
         customerCanvas.worldCamera = 
             GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
@@ -74,6 +79,16 @@ public class Customer : MonoBehaviour
         meal = gm.DefineMeal();
 
         StartCoroutine(Move(movePoints[1]));
+    }
+
+    private void Update()
+    {
+        if (isMoving)
+        {
+            isInRange = range.InRange;
+            obstacle = range.Obstacle;
+        }
+        else obstacle = Vector2.zero;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -294,12 +309,25 @@ public class Customer : MonoBehaviour
 
     private IEnumerator Move(Vector2 target)
     {
+        float value = 0;
+
         yield return new WaitForSeconds(0.2f);
         isMoving = true;
         do
         {
-            transform.position = Vector2.MoveTowards(
-                transform.position, target, speed * Time.deltaTime);
+            if (!isInRange)
+                transform.position = Vector2.MoveTowards(
+                    transform.position, target, speed * Time.deltaTime);
+            else
+            {
+                value += 0.01f * Time.deltaTime;
+                if (value > 1) value = 1;
+
+                transform.position = Vector2.MoveTowards(
+                    transform.position, new Vector2(
+                    target.x - obstacle.x * value, target.y - obstacle.y * value), 
+                    speed * Time.deltaTime);
+            }
             yield return null;
         }
         while (Vector2.Distance(transform.position, target) > 0.1f);

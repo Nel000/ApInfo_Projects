@@ -6,7 +6,11 @@ public class Waiter : MonoBehaviour
     [SerializeField] private InventorySlot inventorySlot;
     public InventorySlot InventorySlot { get => inventorySlot; }
 
+    private Range range;
+
     private float speed = 10.0f;
+
+    [SerializeField] private Vector2 obstacle;
 
     [SerializeField] private bool isMoving;
     public bool IsMoving { get { return isMoving; } }
@@ -30,13 +34,31 @@ public class Waiter : MonoBehaviour
     [SerializeField] private bool hasMeal;
     public bool HasMeal { get => hasMeal; }
 
+    [SerializeField] private bool isInRange;
+
     public int MealIndex { get; set; }
 
     void Start()
     {
+        range = GetComponentInChildren<Range>();
+
         currentTable = "Center";
         isOnCenter = true;
         isMoving = false;
+    }
+
+    private void Update()
+    {
+        if (isMoving)
+        {
+            isInRange = range.InRange;
+            obstacle = range.Obstacle;
+        }
+        else 
+        {
+            isInRange = false;
+            obstacle = Vector2.zero;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -89,13 +111,26 @@ public class Waiter : MonoBehaviour
 
         Vector2 newTarget;
 
+        float value = 0;
+
         isMoving = true;
         isOnTable = false;
 
         do
         {
-            transform.position = Vector2.MoveTowards(
-                transform.position, target, speed * Time.deltaTime);
+            if (!isInRange)
+                transform.position = Vector2.MoveTowards(
+                    transform.position, target, speed * Time.deltaTime);
+            else
+            {
+                value += 0.01f * Time.deltaTime;
+                if (value > 1) value = 1;
+
+                transform.position = Vector2.MoveTowards(
+                    transform.position, new Vector2(
+                    target.x - (obstacle.x * value), target.y - (obstacle.y * value)), 
+                    speed * Time.deltaTime);
+            }
             yield return null;
         }
         while (Vector2.Distance(transform.position, target) > 0.1f);

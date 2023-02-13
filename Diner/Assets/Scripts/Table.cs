@@ -9,19 +9,28 @@ public class Table : MonoBehaviour
 
     [SerializeField] private bool multiplePoints;
 
+    public bool Clicked;
+
     [SerializeField] private GameObject servePos, secPos;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         isEmpty = true;
 
         waiterScr = FindObjectOfType<Waiter>();
     }
 
+    private void Update()
+    {
+        if (Clicked) OnMouseDown();
+    }
+
     private void OnMouseDown()
     {
         Debug.Log("Clicked table");
+
+        Clicked = false;
 
         if (!waiterScr.IsMoving 
             && waiterScr.CurrentTable != gameObject.name

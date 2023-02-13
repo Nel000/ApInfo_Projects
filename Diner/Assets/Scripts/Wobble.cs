@@ -15,7 +15,7 @@ public class Wobble : MonoBehaviour
         if (isWaiter)
             waiter = GetComponent<Waiter>();
         else
-            customer = GetComponent<Customer>();
+            customer = GetComponentInParent<Customer>();
     }
 
     // Update is called once per frame

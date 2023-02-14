@@ -23,10 +23,10 @@ public class Table : MonoBehaviour
 
     private void Update()
     {
-        if (Clicked) OnMouseDown();
+        if (Clicked) ClickTable();
     }
 
-    private void OnMouseDown()
+    private void ClickTable()
     {
         Debug.Log("Clicked table");
 

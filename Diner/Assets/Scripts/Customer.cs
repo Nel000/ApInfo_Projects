@@ -10,8 +10,6 @@ public class Customer : MonoBehaviour
     [SerializeField] private Canvas customerCanvas;
     [SerializeField] private Image statMeter;
 
-    private float speed = 5.0f;
-
     [SerializeField] private int defaultScore = 10;
 
     private Vector2 target;
@@ -314,8 +312,6 @@ public class Customer : MonoBehaviour
 
     private IEnumerator Move(Vector2 target)
     {
-        float value = 0;
-
         yield return new WaitForSeconds(0.2f);
         isMoving = true;
         do

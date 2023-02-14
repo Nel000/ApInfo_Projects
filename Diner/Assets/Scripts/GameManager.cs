@@ -12,8 +12,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject mainCanvas;
     [SerializeField] private GameObject endCanvas;
 
-    [SerializeField] private GameObject secPos;
-
     [SerializeField] private int maxTime = 500;
     [SerializeField] private int currentTime;
     [SerializeField] private int currentScore;
@@ -78,18 +76,13 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Back to start");
 
-        if (!Waiter.GetComponent<Waiter>().IsMoving && !IsLocked)
+        if (!Waiter.GetComponent<Waiter>().IsMoving && !IsLocked
+            && Waiter.CurrentTable != "Center")
         {
             Waiter.UpdateTables(Waiter.CurrentTable, "Center");
             Waiter.Center();
 
-            if (Waiter.PreviousTable == "Table 4")
-                StartCoroutine(
-                    Waiter.GetComponent<Waiter>().Move(
-                        secPos.transform.position, true, transform.position));
-            else
-                StartCoroutine(
-                    Waiter.GetComponent<Waiter>().Move(transform.position));
+            StartCoroutine(Waiter.GetComponent<Waiter>().Move(transform.position));
         }
     }
 

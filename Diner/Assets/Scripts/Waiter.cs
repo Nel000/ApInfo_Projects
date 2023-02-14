@@ -7,8 +7,6 @@ public class Waiter : MonoBehaviour
     [SerializeField] private InventorySlot inventorySlot;
     public InventorySlot InventorySlot { get => inventorySlot; }
 
-    private float speed = 10.0f;
-
     [SerializeField] private Vector2 obstacle;
 
     [SerializeField] private bool isMoving;
@@ -66,8 +64,14 @@ public class Waiter : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.GetComponent<Table>() && other.name == currentTable)
+        string tableName = other.name;
+
+        Debug.Log(tableName);
+
+        if (tableName == currentTable)
         {
+            Debug.Log("On a table");
+
             CheckCurrentTable();
             isOnTable = true;
         }
@@ -113,8 +117,6 @@ public class Waiter : MonoBehaviour
         Debug.Log("Waiter moving...");
 
         Vector2 newTarget;
-
-        float value = 0;
 
         isMoving = true;
         isOnTable = false;

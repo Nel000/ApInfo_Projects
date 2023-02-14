@@ -12,12 +12,6 @@ public class TableClick : MonoBehaviour
         table = GetComponentInParent<Table>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnMouseDown()
     {
         table.Clicked = true;

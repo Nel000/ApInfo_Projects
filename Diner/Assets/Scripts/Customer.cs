@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 
 public class Customer : MonoBehaviour
 {
@@ -56,8 +57,14 @@ public class Customer : MonoBehaviour
     [SerializeField] private GameObject mealImg;
     [SerializeField] private GameObject[] stateImg;
 
+    private NavMeshAgent agent;
+
     private void Start()
     {   
+        agent = GetComponent<NavMeshAgent>();
+		agent.updateRotation = false;
+		agent.updateUpAxis = false;
+
         gm = FindObjectOfType<GameManager>();
         range = GetComponentInChildren<Range>();
 
@@ -118,7 +125,7 @@ public class Customer : MonoBehaviour
             StartCoroutine(StatUpdate(maxTime / 2));
             StartCoroutine(CheckTables(0));
         }
-        else if (other.GetComponent<Table>() && !IsLeaving)
+        else if (other.GetComponent<Table>() && !IsLeaving && goingToSeat)
         {
             table = other.name;
             goingToSeat = false;
@@ -315,7 +322,7 @@ public class Customer : MonoBehaviour
         isMoving = true;
         do
         {
-            if (!isInRange)
+            /*if (!isInRange)
                 transform.position = Vector2.MoveTowards(
                     transform.position, target, speed * Time.deltaTime);
             else
@@ -327,7 +334,8 @@ public class Customer : MonoBehaviour
                     transform.position, new Vector2(
                     target.x - obstacle.x * value, target.y - obstacle.y * value), 
                     speed * Time.deltaTime);
-            }
+            }*/
+            agent.SetDestination(target);
             yield return null;
         }
         while (Vector2.Distance(transform.position, target) > 0.1f);

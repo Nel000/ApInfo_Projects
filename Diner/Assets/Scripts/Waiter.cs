@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Waiter : MonoBehaviour
 {
@@ -38,8 +39,14 @@ public class Waiter : MonoBehaviour
 
     public int MealIndex { get; set; }
 
+    private NavMeshAgent agent;
+
     void Start()
     {
+        agent = GetComponent<NavMeshAgent>();
+		agent.updateRotation = false;
+		agent.updateUpAxis = false;
+
         range = GetComponentInChildren<Range>();
 
         currentTable = "Center";
@@ -118,7 +125,7 @@ public class Waiter : MonoBehaviour
 
         do
         {
-            if (!isInRange)
+            /*if (!isInRange)
                 transform.position = Vector2.MoveTowards(
                     transform.position, target, speed * Time.deltaTime);
             else
@@ -130,7 +137,8 @@ public class Waiter : MonoBehaviour
                     transform.position, new Vector2(
                     target.x - (obstacle.x * value), target.y - (obstacle.y * value)), 
                     speed * Time.deltaTime);
-            }
+            }*/
+            agent.SetDestination(target);
             yield return null;
         }
         while (Vector2.Distance(transform.position, target) > 0.1f);

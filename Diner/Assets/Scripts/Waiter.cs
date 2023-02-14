@@ -7,8 +7,6 @@ public class Waiter : MonoBehaviour
     [SerializeField] private InventorySlot inventorySlot;
     public InventorySlot InventorySlot { get => inventorySlot; }
 
-    private Range range;
-
     private float speed = 10.0f;
 
     [SerializeField] private Vector2 obstacle;
@@ -47,8 +45,6 @@ public class Waiter : MonoBehaviour
 		agent.updateRotation = false;
 		agent.updateUpAxis = false;
 
-        range = GetComponentInChildren<Range>();
-
         currentTable = "Center";
         isOnCenter = true;
         isMoving = false;
@@ -56,7 +52,7 @@ public class Waiter : MonoBehaviour
 
     private void Update()
     {
-        if (isMoving)
+        /*if (isMoving)
         {
             isInRange = range.InRange;
             obstacle = range.Obstacle;
@@ -65,7 +61,7 @@ public class Waiter : MonoBehaviour
         {
             isInRange = false;
             obstacle = Vector2.zero;
-        }
+        }*/
     }
 
     private void OnTriggerEnter2D(Collider2D other)

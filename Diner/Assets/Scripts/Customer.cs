@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class Customer : MonoBehaviour
 {
     private GameManager gm;
-    private Range range;
 
     [SerializeField] private Canvas customerCanvas;
     [SerializeField] private Image statMeter;
@@ -66,7 +65,6 @@ public class Customer : MonoBehaviour
 		agent.updateUpAxis = false;
 
         gm = FindObjectOfType<GameManager>();
-        range = GetComponentInChildren<Range>();
 
         customerCanvas.worldCamera = 
             GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
@@ -90,12 +88,12 @@ public class Customer : MonoBehaviour
 
     private void Update()
     {
-        if (isMoving)
+        /*if (isMoving)
         {
             isInRange = range.InRange;
             obstacle = range.Obstacle;
         }
-        else obstacle = Vector2.zero;
+        else obstacle = Vector2.zero;*/
     }
 
     private void OnTriggerEnter2D(Collider2D other)

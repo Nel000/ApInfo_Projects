@@ -38,7 +38,9 @@ public class Table : MonoBehaviour
         {
             waiterScr.UpdateTables(waiterScr.CurrentTable, gameObject.name);
 
-            if (!multiplePoints)
+            StartCoroutine(waiterScr.Move(servePos.transform.position));
+
+            /*if (!multiplePoints)
                 StartCoroutine(waiterScr.Move(servePos.transform.position));
             else
             {
@@ -58,7 +60,7 @@ public class Table : MonoBehaviour
                 }
                 else
                     StartCoroutine(waiterScr.Move(secPos.transform.position));
-            }
+            }*/
         }
 
         if (waiterScr.IsOnTable &&

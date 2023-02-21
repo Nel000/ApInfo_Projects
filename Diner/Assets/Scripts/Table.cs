@@ -7,11 +7,9 @@ public class Table : MonoBehaviour
     [SerializeField] private bool isEmpty;
     public bool IsEmpty { get { return isEmpty; } set {isEmpty = value; } }
 
-    [SerializeField] private bool multiplePoints;
-
     public bool Clicked;
 
-    [SerializeField] private GameObject servePos, secPos;
+    [SerializeField] private GameObject servePos;
 
     // Start is called before the first frame update
     private void Start()

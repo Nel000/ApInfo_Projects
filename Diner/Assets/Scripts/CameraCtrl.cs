@@ -80,4 +80,12 @@ public class CameraCtrl : MonoBehaviour
 
         return new Vector3(newX, newY, targetPosition.z);
     }
+
+    public void UpdateSpace()
+    {
+        spaceMinX = space.transform.position.x - space.bounds.size.x / 2;
+        spaceMaxX = space.transform.position.x + space.bounds.size.x / 2;
+        spaceMinY = space.transform.position.y - space.bounds.size.y / 2;
+        spaceMaxY = space.transform.position.y + space.bounds.size.y / 2;
+    }
 }

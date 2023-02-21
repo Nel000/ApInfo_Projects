@@ -1,30 +1,55 @@
-using System.Collections;
 using UnityEngine;
 
 public class CameraCtrl : MonoBehaviour
 {
+    private const float sizeIncrease = 1.8f, sizeIncrement = 0.5f;
+
     [SerializeField] private Camera cam;
-    [SerializeField] private CameraLimits camLimits;
 
     [SerializeField] private Transform target;
 
     [SerializeField] private Vector3 offset;
     [SerializeField] private Vector2 speed = Vector2.one;
-    [SerializeField] private Rect cameraLimits;
 
-    private void Start()
+    [SerializeField] private SpriteRenderer space;
+
+    [SerializeField] private bool increasingSize;
+
+    [SerializeField] private float startSize, camSize, increaseCounter;
+
+    private float spaceMinX, spaceMaxX, spaceMinY, spaceMaxY;
+
+    private void Awake()
     {
         cam = gameObject.GetComponent<Camera>();
 
-        cameraLimits = camLimits.CamLimits;
+        startSize = cam.orthographicSize;
+        camSize = startSize;
 
-        //target = GameObject.FindWithTag("Player").GetComponent<Transform>();
+        spaceMinX = space.transform.position.x - space.bounds.size.x / 2;
+        spaceMaxX = space.transform.position.x + space.bounds.size.x / 2;
+        spaceMinY = space.transform.position.y - space.bounds.size.y / 2;
+        spaceMaxY = space.transform.position.y + space.bounds.size.y / 2;
     }
 
     private void Update()
     {
         if (target != null)
         {
+            if (increasingSize)
+            {
+                increaseCounter += sizeIncrement * Time.deltaTime;
+                camSize = startSize + increaseCounter;
+                cam.orthographicSize = camSize;
+
+                if (increaseCounter >= sizeIncrease)
+                {
+                    increasingSize = false;
+                    increaseCounter = 0;
+                    startSize = cam.orthographicSize;
+                }
+            }
+            
             Vector3 newPos;
             
             newPos.x = target.position.x + offset.x;
@@ -36,35 +61,23 @@ public class CameraCtrl : MonoBehaviour
             newPos.x = transform.position.x + delta.x * Time.deltaTime / speed.x;
             newPos.y = transform.position.y + delta.y * Time.deltaTime / speed.y;
 
-            if (newPos.x > cameraLimits.xMax) newPos.x = cameraLimits.xMax;
-            else if (newPos.x < cameraLimits.xMin) newPos.x = cameraLimits.xMin;
-
-            if (newPos.y > cameraLimits.yMax) newPos.y = cameraLimits.yMax;
-            else if (newPos.y < cameraLimits.yMin) newPos.y = cameraLimits.yMin;
-
-            transform.position = newPos;
+            cam.transform.position = ClampCamera(newPos);
         }
     }
 
-    /*private void OnDrawGizmos()
+    private Vector3 ClampCamera(Vector3 targetPosition)
     {
-        Camera camera = GetComponent<Camera>();
-        float height = camera.orthographicSize;
-        float width = height * camera.aspect;
+        float camHeight = cam.orthographicSize;
+        float camWidth = cam.orthographicSize * cam.aspect;
 
-        Vector3 p1 = new Vector3(
-            cameraLimits.xMin - width, cameraLimits.yMin - height, 0);
-        Vector3 p2 = new Vector3(
-            cameraLimits.xMax + width, cameraLimits.yMin - height, 0);
-        Vector3 p3 = new Vector3(
-            cameraLimits.xMax + width, cameraLimits.yMax + height, 0);
-        Vector3 p4 = new Vector3(
-            cameraLimits.xMin - width, cameraLimits.yMax + height, 0);
+        float minX = spaceMinX + camWidth;
+        float maxX = spaceMaxX - camWidth;
+        float minY = spaceMinY + camHeight;
+        float maxY = spaceMaxY - camHeight;
 
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(p1, p2);
-        Gizmos.DrawLine(p2, p3);
-        Gizmos.DrawLine(p3, p4);
-        Gizmos.DrawLine(p4, p1);
-    }*/
+        float newX = Mathf.Clamp(targetPosition.x, minX, maxX);
+        float newY = Mathf.Clamp(targetPosition.y, minY, maxY);
+
+        return new Vector3(newX, newY, targetPosition.z);
+    }
 }

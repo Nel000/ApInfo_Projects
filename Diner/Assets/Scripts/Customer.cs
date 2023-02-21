@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AI;
@@ -161,6 +162,8 @@ public class Customer : MonoBehaviour
 
         clearedToMove = true;
 
+        List<GameObject> clearTables = new List<GameObject>();
+
         foreach(GameObject oC in gm.Customers)
         {
             if (oC.GetComponent<Customer>().GoingToSeat)
@@ -172,18 +175,29 @@ public class Customer : MonoBehaviour
         foreach (GameObject table in tables)
         {
             if (table.GetComponent<Table>().IsEmpty && !foundEmptyTable
-                && clearedToMove)
-            {
-                foundEmptyTable = true;
-                ResetStat();
+                && clearedToMove) clearTables.Add(table);
+        }
 
-                if(gm.WaitLine > 0)
-                    gm.WaitLine--;
+        if (clearTables.Count > 0)
+        {
+            GameObject table;
 
-                goingToSeat = true;
-                StartCoroutine(Move(
-                    GameObject.Find($"Seat {table.name}").transform.position));
-            }
+            if (clearTables.Count > 1)
+                table = DefineTable(clearTables);
+            else
+                table = clearTables[0];
+
+            foundEmptyTable = true;
+             
+            ResetStat();
+
+            if(gm.WaitLine > 0)
+                gm.WaitLine--;
+
+            goingToSeat = true;
+
+            StartCoroutine(Move(
+                GameObject.Find($"Seat {table.name}").transform.position));
         }
 
         if (!foundEmptyTable)
@@ -207,6 +221,15 @@ public class Customer : MonoBehaviour
                 StartCoroutine(CheckTables(waitTime + 1));
             }
         }
+    }
+
+    private GameObject DefineTable(List<GameObject> tables)
+    {
+        System.Random rand = new System.Random();
+
+        GameObject selectedTable = tables[rand.Next(0, tables.Count)];
+
+        return selectedTable;
     }
 
     public IEnumerator MakeRequest()

@@ -1,17 +1,25 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectBuilder : MonoBehaviour
 {
+    private GameManager gm;
+
     [SerializeField] private SpriteRenderer[] parts;
+
+    [SerializeField] private bool isBuilt, isTable;
 
     private void Awake()
     {
-        StartCoroutine(Build());
+        gm = null;
+        
+        if (isTable)
+            gm = FindObjectOfType<GameManager>();
     }
 
-    public IEnumerator Build()
+    public void StartBuild() => StartCoroutine(Build(gm));
+
+    public IEnumerator Build(GameManager gm = null)
     {
         int i = 0;
 
@@ -24,6 +32,9 @@ public class ObjectBuilder : MonoBehaviour
             i++;
 
             yield return new WaitForSeconds(0.2f);
+
+            if (isTable)
+                gm.OfficialTable();
         }
     }
 }

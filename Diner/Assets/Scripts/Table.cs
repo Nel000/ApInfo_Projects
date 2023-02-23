@@ -11,7 +11,6 @@ public class Table : MonoBehaviour
 
     [SerializeField] private GameObject servePos;
 
-    // Start is called before the first frame update
     private void Start()
     {
         isEmpty = true;
@@ -22,6 +21,11 @@ public class Table : MonoBehaviour
     private void Update()
     {
         if (Clicked) ClickTable();
+    }
+
+    public void BuildNavMesh()
+    {
+
     }
 
     private void ClickTable()

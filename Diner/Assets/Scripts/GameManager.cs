@@ -6,8 +6,12 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    private const int diffIncreaseTime = 30;
+
     public Waiter Waiter;
     public Balcony Balcony;
+
+    [SerializeField] private CameraCtrl camCtrl;
 
     [SerializeField] private GameObject mainCanvas;
     [SerializeField] private GameObject endCanvas;
@@ -62,6 +66,7 @@ public class GameManager : MonoBehaviour
     {
         Waiter = FindObjectOfType<Waiter>();
         Balcony = FindObjectOfType<Balcony>();
+        camCtrl = FindObjectOfType<CameraCtrl>();
 
         currentTime = -1;
         currentScore = 0;
@@ -88,9 +93,19 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator RaiseTime()
     {
+        int updateTime = 0;
+
         do
         {
+            if (updateTime >= diffIncreaseTime)
+            {
+                BuildTable(2);
+                StartCoroutine(camCtrl.IncreaseSize());
+                updateTime = 0;
+            }
+
             currentTime++;
+            updateTime++;
             timeValue.text = (currentTime * Time.timeScale).ToString();
             yield return new WaitForSecondsRealtime(1.0f);
         }
@@ -104,6 +119,24 @@ public class GameManager : MonoBehaviour
             inEndGame = true;
             EndGame();
         }
+    }
+
+    private void BuildTable(int num)
+    {
+        GameObject table;
+
+        for (int i = 0; i < num; i++)
+        {
+            table = GameObject.Find($"Table {availableSeats + 1}");
+            table.GetComponent<ObjectBuilder>().StartBuild();
+            availableSeats++;
+        }
+    }
+
+    public void OfficialTable()
+    {
+        foreach(GameObject customer in customers)
+            customer.GetComponent<Customer>().UpdateTables();
     }
 
     public void UpdateScore(int value)

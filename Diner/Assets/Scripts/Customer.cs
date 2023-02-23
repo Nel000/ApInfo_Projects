@@ -74,11 +74,7 @@ public class Customer : MonoBehaviour
         goingToSeat = false;
         table = "";
 
-        for (int i = 0; i < tableNum; i++)
-        {
-            tables[i] = GameObject.Find($"Table {i + 1}");
-            seats[i] = GameObject.Find($"Seat {i + 1}");
-        }
+        UpdateTables();
 
         meal = gm.DefineMeal();
 
@@ -93,6 +89,20 @@ public class Customer : MonoBehaviour
             obstacle = range.Obstacle;
         }
         else obstacle = Vector2.zero;*/
+    }
+
+    public void UpdateTables()
+    {
+        tableNum = gm.AvailableSeats;
+
+        tables = new GameObject[tableNum];
+        seats = new GameObject[tables.Length];
+
+        for (int i = 0; i < tableNum; i++)
+        {
+            tables[i] = GameObject.Find($"Table {i + 1}");
+            seats[i] = GameObject.Find($"Seat {i + 1}");
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)

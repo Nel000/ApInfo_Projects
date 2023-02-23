@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class CameraCtrl : MonoBehaviour
@@ -36,7 +37,7 @@ public class CameraCtrl : MonoBehaviour
     {
         if (target != null)
         {
-            if (increasingSize)
+            /*if (increasingSize)
             {
                 increaseCounter += sizeIncrement * Time.deltaTime;
                 camSize = startSize + increaseCounter;
@@ -48,7 +49,7 @@ public class CameraCtrl : MonoBehaviour
                     increaseCounter = 0;
                     startSize = cam.orthographicSize;
                 }
-            }
+            }*/
             
             Vector3 newPos;
             
@@ -63,6 +64,21 @@ public class CameraCtrl : MonoBehaviour
 
             cam.transform.position = ClampCamera(newPos);
         }
+    }
+
+    public IEnumerator IncreaseSize()
+    {
+        while(increaseCounter < sizeIncrease)
+        {
+            increaseCounter += sizeIncrement * Time.deltaTime;
+            camSize = startSize + increaseCounter;
+            cam.orthographicSize = camSize;
+            yield return null;
+        }
+    
+        increasingSize = false;
+        increaseCounter = 0;
+        startSize = cam.orthographicSize;
     }
 
     private Vector3 ClampCamera(Vector3 targetPosition)

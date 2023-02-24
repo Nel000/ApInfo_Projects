@@ -81,16 +81,6 @@ public class Customer : MonoBehaviour
         StartCoroutine(Move(movePoints[1]));
     }
 
-    private void Update()
-    {
-        /*if (isMoving)
-        {
-            isInRange = range.InRange;
-            obstacle = range.Obstacle;
-        }
-        else obstacle = Vector2.zero;*/
-    }
-
     public void UpdateTables()
     {
         tableNum = gm.AvailableSeats;
@@ -134,12 +124,15 @@ public class Customer : MonoBehaviour
         }
         else if (other.GetComponent<Table>() && !IsLeaving && goingToSeat)
         {
-            table = other.name;
-            goingToSeat = false;
-            StartCoroutine(Wait());
-            StartCoroutine(StatUpdate(maxTime / 1.5f));
-            if (gm.Waiter.CurrentTable == table)
-                StartCoroutine(MakeRequest());
+            if (other.name == table)
+            {
+                //table = other.name;
+                goingToSeat = false;
+                StartCoroutine(Wait());
+                StartCoroutine(StatUpdate(maxTime / 1.5f));
+                if (gm.Waiter.CurrentTable == table)
+                    StartCoroutine(MakeRequest());
+            }
         }
     }
     
@@ -174,6 +167,8 @@ public class Customer : MonoBehaviour
 
         List<GameObject> clearTables = new List<GameObject>();
 
+        Debug.Log($"{gameObject.name} Checking tables...");
+
         foreach(GameObject oC in gm.Customers)
         {
             if (oC.GetComponent<Customer>().GoingToSeat)
@@ -184,18 +179,27 @@ public class Customer : MonoBehaviour
 
         foreach (GameObject table in tables)
         {
-            if (table.GetComponent<Table>().IsEmpty && !foundEmptyTable
-                && clearedToMove) clearTables.Add(table);
+            if (table.GetComponent<Table>().enabled == true)
+            {
+                if (table.GetComponent<Table>().IsEmpty && !foundEmptyTable
+                && clearedToMove)
+                {
+                    Debug.Log($"{gameObject.name} add {table.name}");
+                    clearTables.Add(table);
+                }
+            }
         }
 
         if (clearTables.Count > 0)
         {
-            GameObject table;
+            GameObject tableObj;
+
+            Debug.Log($"{gameObject.name} found table...");
 
             if (clearTables.Count > 1)
-                table = DefineTable(clearTables);
+                tableObj = DefineTable(clearTables);
             else
-                table = clearTables[0];
+                tableObj = clearTables[0];
 
             foundEmptyTable = true;
              
@@ -206,8 +210,10 @@ public class Customer : MonoBehaviour
 
             goingToSeat = true;
 
+            table = tableObj.name;
+
             StartCoroutine(Move(
-                GameObject.Find($"Seat {table.name}").transform.position));
+                GameObject.Find($"Seat {table}").transform.position));
         }
 
         if (!foundEmptyTable)

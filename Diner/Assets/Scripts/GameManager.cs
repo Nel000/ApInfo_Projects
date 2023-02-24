@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using NavMeshPlus.Components;
 
 public class GameManager : MonoBehaviour
 {
-    private const int diffIncreaseTime = 30;
+    private const int diffIncreaseTime = 35;
+
+    private const float tablePosX = -6.5f, tablePosY = -3.2f;
 
     public Waiter Waiter;
     public Balcony Balcony;
@@ -46,7 +49,7 @@ public class GameManager : MonoBehaviour
     public int WaitLine 
     { 
         get 
-        { 
+        {
             return waitLine; 
         } 
         set
@@ -57,12 +60,14 @@ public class GameManager : MonoBehaviour
     }
 
     [SerializeField] private GameObject customer;
+    [SerializeField] private GameObject tablePrefab;
 
     [SerializeField] private GameObject[] meals;
     public GameObject[] Meals { get { return meals; } }
 
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private NavMeshSurface surface, surfaceAlt;
+
+    private void Start()
     {
         Waiter = FindObjectOfType<Waiter>();
         Balcony = FindObjectOfType<Balcony>();
@@ -125,12 +130,38 @@ public class GameManager : MonoBehaviour
     {
         GameObject table;
 
+        int previousPosition;
+
+        Vector2 tablePosition;
+        GameObject previousTable;
+
         for (int i = 0; i < num; i++)
         {
-            table = GameObject.Find($"Table {availableSeats + 1}");
+            if (availableSeats % 2 != 0)
+                previousPosition = availableSeats - 1;
+            else
+                previousPosition = availableSeats - 1;
+
+            previousTable = GameObject.Find($"Table {previousPosition}");
+            
+            tablePosition = new Vector2(
+                previousTable.transform.position.x + tablePosX,
+                previousTable.transform.position.y + tablePosY);
+
+            table = Instantiate(
+                tablePrefab, tablePosition, Quaternion.identity);
+
+            table.name = $"Table {availableSeats + 1}";
+            GameObject.Find("Seat Table X").name = $"Seat Table {availableSeats + 1}";
+            GameObject.Find("Table X").name = $"Table {availableSeats + 1}";
+
             table.GetComponent<ObjectBuilder>().StartBuild();
+
             availableSeats++;
         }
+
+        surface.UpdateNavMesh(surface.navMeshData);
+        surfaceAlt.UpdateNavMesh(surfaceAlt.navMeshData);
     }
 
     public void OfficialTable()

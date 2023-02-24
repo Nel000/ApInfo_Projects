@@ -4,6 +4,7 @@ using UnityEngine;
 public class ObjectBuilder : MonoBehaviour
 {
     private GameManager gm;
+    private Table table;
 
     [SerializeField] private SpriteRenderer[] parts;
 
@@ -12,9 +13,13 @@ public class ObjectBuilder : MonoBehaviour
     private void Awake()
     {
         gm = null;
+        table = null;
         
         if (isTable)
+        {
             gm = FindObjectOfType<GameManager>();
+            table = GetComponent<Table>();
+        }
     }
 
     public void StartBuild() => StartCoroutine(Build(gm));
@@ -32,9 +37,12 @@ public class ObjectBuilder : MonoBehaviour
             i++;
 
             yield return new WaitForSeconds(0.2f);
+        }
 
-            if (isTable)
-                gm.OfficialTable();
+        if (isTable)
+        {
+            table.enabled = true;
+            gm.OfficialTable();
         }
     }
 }

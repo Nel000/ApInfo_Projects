@@ -516,7 +516,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9189787638018495440}
   m_Layer: 0
-  m_Name: Seat Table 1
+  m_Name: Seat Table X
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1103,7 +1103,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9189787638739942640}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45157ff0bdc213f4b8f1690d5ffa7aa0, type: 3}
   m_Name: 
@@ -1137,6 +1137,8 @@ MonoBehaviour:
   - {fileID: 9189787637946420859}
   - {fileID: 9189787636809864527}
   - {fileID: 9189787638739942647}
+  isBuilt: 0
+  isTable: 1
 --- !u!114 &9189787638739942635
 MonoBehaviour:
   m_ObjectHideFlags: 0

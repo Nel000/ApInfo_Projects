@@ -14,8 +14,6 @@ public class CameraCtrl : MonoBehaviour
 
     [SerializeField] private SpriteRenderer space;
 
-    [SerializeField] private bool increasingSize;
-
     [SerializeField] private float startSize, camSize, increaseCounter;
 
     private float spaceMinX, spaceMaxX, spaceMinY, spaceMaxY;
@@ -75,8 +73,7 @@ public class CameraCtrl : MonoBehaviour
             cam.orthographicSize = camSize;
             yield return null;
         }
-    
-        increasingSize = false;
+
         increaseCounter = 0;
         startSize = cam.orthographicSize;
     }

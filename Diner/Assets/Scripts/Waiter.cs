@@ -48,20 +48,6 @@ public class Waiter : MonoBehaviour
         isMoving = false;
     }
 
-    private void Update()
-    {
-        /*if (isMoving)
-        {
-            isInRange = range.InRange;
-            obstacle = range.Obstacle;
-        }
-        else 
-        {
-            isInRange = false;
-            obstacle = Vector2.zero;
-        }*/
-    }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         string tableName = other.name;

@@ -23,11 +23,6 @@ public class Table : MonoBehaviour
         if (Clicked) ClickTable();
     }
 
-    public void BuildNavMesh()
-    {
-
-    }
-
     private void ClickTable()
     {
         Debug.Log("Clicked table");

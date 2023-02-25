@@ -9,8 +9,7 @@ public class Wobble : MonoBehaviour
 
     [SerializeField] private bool isWaiter;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         if (isWaiter)
             waiter = GetComponent<Waiter>();
@@ -18,8 +17,7 @@ public class Wobble : MonoBehaviour
             customer = GetComponentInParent<Customer>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (isWaiter && waiter.IsMoving
             || !isWaiter && customer.IsMoving)

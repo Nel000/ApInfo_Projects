@@ -36,28 +36,6 @@ public class Table : MonoBehaviour
             waiterScr.UpdateTables(waiterScr.CurrentTable, gameObject.name);
 
             StartCoroutine(waiterScr.Move(servePos.transform.position));
-
-            /*if (!multiplePoints)
-                StartCoroutine(waiterScr.Move(servePos.transform.position));
-            else
-            {
-                if (waiterScr.PreviousTable == "Table 2"
-                    && waiterScr.CurrentTable == "Table 4"
-                    ||waiterScr.PreviousTable == "Table 4"
-                    && waiterScr.CurrentTable == "Table 2"
-                    || waiterScr.PreviousTable == "Center"
-                    && waiterScr.CurrentTable == "Table 4"
-                    || waiterScr.PreviousTable == "Balcony"
-                    && waiterScr.CurrentTable == "Table 1"
-                    || waiterScr.PreviousTable == "Balcony"
-                    && waiterScr.CurrentTable == "Table 4")
-                {
-                    StartCoroutine(waiterScr.Move(servePos.transform.position,
-                        true, secPos.transform.position));
-                }
-                else
-                    StartCoroutine(waiterScr.Move(secPos.transform.position));
-            }*/
         }
 
         if (waiterScr.IsOnTable &&

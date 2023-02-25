@@ -35,20 +35,6 @@ public class CameraCtrl : MonoBehaviour
     {
         if (target != null)
         {
-            /*if (increasingSize)
-            {
-                increaseCounter += sizeIncrement * Time.deltaTime;
-                camSize = startSize + increaseCounter;
-                cam.orthographicSize = camSize;
-
-                if (increaseCounter >= sizeIncrease)
-                {
-                    increasingSize = false;
-                    increaseCounter = 0;
-                    startSize = cam.orthographicSize;
-                }
-            }*/
-            
             Vector3 newPos;
             
             newPos.x = target.position.x + offset.x;

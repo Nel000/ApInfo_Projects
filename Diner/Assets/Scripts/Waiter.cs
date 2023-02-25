@@ -37,7 +37,7 @@ public class Waiter : MonoBehaviour
 
     private NavMeshAgent agent;
 
-    void Start()
+    private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
 		agent.updateRotation = false;
@@ -109,19 +109,6 @@ public class Waiter : MonoBehaviour
 
         do
         {
-            /*if (!isInRange)
-                transform.position = Vector2.MoveTowards(
-                    transform.position, target, speed * Time.deltaTime);
-            else
-            {
-                value += 0.01f * Time.deltaTime;
-                if (value > 1) value = 1;
-
-                transform.position = Vector2.MoveTowards(
-                    transform.position, new Vector2(
-                    target.x - (obstacle.x * value), target.y - (obstacle.y * value)), 
-                    speed * Time.deltaTime);
-            }*/
             agent.SetDestination(target);
             yield return null;
         }

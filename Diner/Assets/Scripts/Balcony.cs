@@ -58,15 +58,6 @@ public class Balcony : MonoBehaviour
             && !gm.IsLocked)
         {
             Waiter.UpdateTables(Waiter.CurrentTable, "Balcony");
-            /*if (Waiter.PreviousTable == "Table 1")
-                StartCoroutine(Waiter.GetComponent<Waiter>().Move(
-                    altPosititon[0].transform.position,
-                    true, waitPosition.transform.position));
-            else if (Waiter.PreviousTable == "Table 4")
-                StartCoroutine(Waiter.GetComponent<Waiter>().Move(
-                    altPosititon[1].transform.position,
-                    true, waitPosition.transform.position));
-            else*/
                 StartCoroutine(Waiter.GetComponent<Waiter>().Move(
                     waitPosition.transform.position));
         }

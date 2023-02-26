@@ -18,10 +18,7 @@ public class Customer : MonoBehaviour
     [SerializeField] private GameObject mealBalloon;
 
     [SerializeField] private GameObject[] tables;
-    [SerializeField] private GameObject[] seats;
-
-    [SerializeField] private Vector2[] targets;
-    [SerializeField] private Vector2 obstacle;
+    [SerializeField] private List<Table> tableList;
 
     [SerializeField] private Vector2[] movePoints;
 
@@ -34,7 +31,6 @@ public class Customer : MonoBehaviour
     [SerializeField] private bool goingToSeat;
     public bool GoingToSeat { get { return goingToSeat; } }
 
-    [SerializeField] private bool hasChecked;
     [SerializeField] private bool isAttended;
     public bool IsAttended { get { return isAttended; } }
 
@@ -42,8 +38,6 @@ public class Customer : MonoBehaviour
 
     [SerializeField] private bool isMoving;
     public bool IsMoving => isMoving;
-
-    [SerializeField] private bool isInRange;
 
     [SerializeField] private bool isServed;
     [SerializeField] private bool waitReset;
@@ -57,7 +51,7 @@ public class Customer : MonoBehaviour
 
     private NavMeshAgent agent;
 
-    private void Start()
+    private void Awake()
     {   
         agent = GetComponent<NavMeshAgent>();
 		agent.updateRotation = false;
@@ -86,12 +80,12 @@ public class Customer : MonoBehaviour
         tableNum = gm.AvailableSeats;
 
         tables = new GameObject[tableNum];
-        seats = new GameObject[tables.Length];
+        tableList = new List<Table>();
 
         for (int i = 0; i < tableNum; i++)
         {
             tables[i] = GameObject.Find($"Table {i + 1}");
-            seats[i] = GameObject.Find($"Seat {i + 1}");
+            tableList.Add(tables[i].GetComponent<Table>());
         }
     }
 
@@ -120,13 +114,12 @@ public class Customer : MonoBehaviour
             isMoving = false;
             waitReset = false;
             StartCoroutine(StatUpdate(maxTime / 2));
-            StartCoroutine(CheckTables(0));
+           CheckTables(0);
         }
         else if (other.GetComponent<Table>() && !IsLeaving && goingToSeat)
         {
             if (other.name == table)
             {
-                //table = other.name;
                 goingToSeat = false;
                 StartCoroutine(Wait());
                 StartCoroutine(StatUpdate(maxTime / 1.5f));
@@ -159,13 +152,13 @@ public class Customer : MonoBehaviour
                 StartCoroutine(LineWait(waitTime + 1));
     }
 
-    private IEnumerator CheckTables(int waitTime)
+    private void CheckTables(int waitTime)
     {
         bool foundEmptyTable = false;
 
         clearedToMove = true;
 
-        List<GameObject> clearTables = new List<GameObject>();
+        List<Table> clearTables = new List<Table>();
 
         Debug.Log($"{gameObject.name} Checking tables...");
 
@@ -177,11 +170,11 @@ public class Customer : MonoBehaviour
             }
         }
 
-        foreach (GameObject table in tables)
+        foreach (Table table in tableList)
         {
-            if (table.GetComponent<Table>().enabled == true)
+            if (table.enabled == true)
             {
-                if (table.GetComponent<Table>().IsEmpty && !foundEmptyTable
+                if (table.IsEmpty && !foundEmptyTable
                 && clearedToMove)
                 {
                     Debug.Log($"{gameObject.name} add {table.name}");
@@ -192,7 +185,7 @@ public class Customer : MonoBehaviour
 
         if (clearTables.Count > 0)
         {
-            GameObject tableObj;
+            Table tableObj;
 
             Debug.Log($"{gameObject.name} found table...");
 
@@ -233,17 +226,22 @@ public class Customer : MonoBehaviour
                 if (gm.WaitLine < 1)
                     gm.WaitLine++;
 
-                yield return new WaitForSeconds(1.0f);
-                StartCoroutine(CheckTables(waitTime + 1));
+                StartCoroutine(RecheckTables(waitTime));
             }
         }
     }
 
-    private GameObject DefineTable(List<GameObject> tables)
+    private IEnumerator RecheckTables(int waitTimeLocal)
+    {
+        yield return new WaitForSeconds(1.0f);
+        CheckTables(waitTimeLocal + 1);
+    }
+
+    private Table DefineTable(List<Table> tables)
     {
         System.Random rand = new System.Random();
 
-        GameObject selectedTable = tables[rand.Next(0, tables.Count)];
+        Table selectedTable = tables[rand.Next(0, tables.Count)];
 
         return selectedTable;
     }

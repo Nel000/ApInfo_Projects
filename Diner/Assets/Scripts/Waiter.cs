@@ -50,7 +50,12 @@ public class Waiter : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        string tableName = other.name;
+        string tableName;
+
+        if (other.name == "Counter")
+            tableName = other.name;
+        else
+            tableName = other.transform.parent.name;
 
         Debug.Log(tableName);
 

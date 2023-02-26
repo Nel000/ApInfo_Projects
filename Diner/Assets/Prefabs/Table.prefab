@@ -374,7 +374,7 @@ GameObject:
   - component: {fileID: 9189787637848165205}
   - component: {fileID: 9189787637848165204}
   m_Layer: 3
-  m_Name: Table X
+  m_Name: Table Range X
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

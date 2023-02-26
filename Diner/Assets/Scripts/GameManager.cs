@@ -152,8 +152,10 @@ public class GameManager : MonoBehaviour
                 tablePrefab, tablePosition, Quaternion.identity);
 
             table.name = $"Table {availableSeats + 1}";
-            GameObject.Find("Seat Table X").name = $"Seat Table {availableSeats + 1}";
-            GameObject.Find("Table X").name = $"Table {availableSeats + 1}";
+            GameObject.Find("Seat Table X").name = 
+                $"Seat Table {availableSeats + 1}";
+            GameObject.Find("Table Range X").name =
+                $"Table Range {availableSeats + 1}";
 
             table.GetComponent<ObjectBuilder>().StartBuild();
 

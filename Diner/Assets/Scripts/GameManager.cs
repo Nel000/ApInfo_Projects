@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public Waiter Waiter;
     public Balcony Balcony;
 
+    [SerializeField] private BuildManager bm;
     [SerializeField] private CameraCtrl camCtrl;
 
     [SerializeField] private GameObject mainCanvas;
@@ -71,6 +72,7 @@ public class GameManager : MonoBehaviour
     {
         Waiter = FindObjectOfType<Waiter>();
         Balcony = FindObjectOfType<Balcony>();
+        bm = GetComponent<BuildManager>();
         camCtrl = FindObjectOfType<CameraCtrl>();
 
         currentTime = -1;
@@ -105,6 +107,7 @@ public class GameManager : MonoBehaviour
             if (updateTime >= diffIncreaseTime)
             {
                 BuildTable(2);
+                bm.ExpandFloor();
                 StartCoroutine(camCtrl.IncreaseSize());
                 updateTime = 0;
             }

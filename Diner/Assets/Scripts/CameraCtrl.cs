@@ -5,6 +5,8 @@ public class CameraCtrl : MonoBehaviour
 {
     private const float sizeIncrease = 1.8f, sizeIncrement = 0.5f;
 
+    [SerializeField] private CameraSpace camSpace;
+
     [SerializeField] private Camera cam;
 
     [SerializeField] private Transform target;
@@ -21,6 +23,7 @@ public class CameraCtrl : MonoBehaviour
     private void Awake()
     {
         cam = gameObject.GetComponent<Camera>();
+        camSpace = FindObjectOfType<CameraSpace>();
 
         startSize = cam.orthographicSize;
         camSize = startSize;
@@ -52,6 +55,8 @@ public class CameraCtrl : MonoBehaviour
 
     public IEnumerator IncreaseSize()
     {
+        UpdateSpace();
+
         while(increaseCounter < sizeIncrease)
         {
             increaseCounter += sizeIncrement * Time.deltaTime;
@@ -82,6 +87,8 @@ public class CameraCtrl : MonoBehaviour
 
     public void UpdateSpace()
     {
+        camSpace.ExpandSpace();
+
         spaceMinX = space.transform.position.x - space.bounds.size.x / 2;
         spaceMaxX = space.transform.position.x + space.bounds.size.x / 2;
         spaceMinY = space.transform.position.y - space.bounds.size.y / 2;

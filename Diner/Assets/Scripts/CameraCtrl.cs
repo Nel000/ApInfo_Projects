@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class CameraCtrl : MonoBehaviour
 {
-    private const float sizeIncrease = 1.8f, sizeIncrement = 0.5f;
+    // Default: 1.8, 0.5
+    private const float sizeIncrease = 2.1f, sizeIncrement = 0.5f;
 
     [SerializeField] private CameraSpace camSpace;
 

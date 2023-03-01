@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class CameraSpace : MonoBehaviour
 {
-    private const float areaIncrease = 160;
+    // Default: 160
+    private const float areaIncrease = 194;
 
     [SerializeField] private float scaleUpdateX, scaleUpdateY;
     [SerializeField] private float widthDiff, heightDiff;

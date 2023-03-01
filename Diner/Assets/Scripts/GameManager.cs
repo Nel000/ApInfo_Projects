@@ -7,7 +7,7 @@ using NavMeshPlus.Components;
 
 public class GameManager : MonoBehaviour
 {
-    private const int diffIncreaseTime = 10;
+    private const int diffIncreaseTime = 60;
 
     private const float tablePosX = -6.5f, tablePosY = -3.2f;
 

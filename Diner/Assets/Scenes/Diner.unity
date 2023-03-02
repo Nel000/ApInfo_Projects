@@ -1445,7 +1445,7 @@ GameObject:
   - component: {fileID: 272046030}
   - component: {fileID: 272046031}
   m_Layer: 3
-  m_Name: Point #2
+  m_Name: Placement Point 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11118,7 +11118,7 @@ GameObject:
   - component: {fileID: 1225455352}
   - component: {fileID: 1225455353}
   m_Layer: 3
-  m_Name: Point #1
+  m_Name: Placement Point 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12298,7 +12298,7 @@ GameObject:
   - component: {fileID: 1558386955}
   - component: {fileID: 1558386956}
   m_Layer: 3
-  m_Name: Point #3
+  m_Name: Placement Point 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12710,17 +12710,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a65eae43000513f4883f410ece3e33d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  balcony: {fileID: 1919238277}
   grid: {fileID: 1014334546}
   counter:
   - {fileID: 1929200858}
   - {fileID: 1696316787}
   - {fileID: 824691204}
+  - {fileID: 1919238274}
   floorPrefab: {fileID: 4689335163379220938, guid: b10797985b4476f4a9dc7338a4c7a493, type: 3}
   counterPrefab:
   - {fileID: 429975099553548492, guid: a649e15f08b86064f91601b6b9cbbc34, type: 3}
   - {fileID: 9050207659834526908, guid: 76641c0332bf42c4abed44ef856140cf, type: 3}
   - {fileID: 8992913886080905049, guid: 7005f115c60a47c47ab4abae249c8129, type: 3}
-  placePointPrefab: {fileID: 0}
+  placePointPrefab: {fileID: 6557736715565750962, guid: d462fbc0b36de304595a17d7416e17f3, type: 3}
   counterPartName:
   - Top
   - Middle
@@ -12728,7 +12730,7 @@ MonoBehaviour:
   counterPartCounter: 3
   existingFloorParts: 2
   existingCounterParts: 1
-  existingPlacePoints: 0
+  existingPlacePoints: 3
 --- !u!1 &1625805249
 GameObject:
   m_ObjectHideFlags: 0
@@ -29755,13 +29757,10 @@ MonoBehaviour:
   - {fileID: 377376622}
   - {fileID: 582929308}
   positions:
-  - {fileID: 1558386955}
-  - {fileID: 272046030}
   - {fileID: 1225455352}
+  - {fileID: 272046030}
+  - {fileID: 1558386955}
   waitPosition: {fileID: 497843945}
-  altPosititon:
-  - {fileID: 0}
-  - {fileID: 0}
   time:
   - {fileID: 204067544}
   - {fileID: 526212507}

@@ -2,8 +2,12 @@ using UnityEngine;
 
 public class BuildManager : MonoBehaviour
 {
+    [SerializeField] private Balcony balcony;
+
     private const float floorPosX = -5.5f, floorPosY = -2.75f;
     private const float counterPosX = 0.49f, counterPosY = 0.245f;
+    private const float placePointPosX = 0.6f, placePointPosY = 0.3f;
+    private const int placePointIncrease = 3;
 
     [SerializeField] private GameObject grid;
     [SerializeField] private GameObject[] counter;
@@ -85,5 +89,36 @@ public class BuildManager : MonoBehaviour
         }
 
          existingCounterParts++;
+
+         AddPlacementPoints(placePointIncrease);
+        balcony.IncreasePositions(placePointIncrease);
+    }
+
+    private void AddPlacementPoints(int amount)
+    {
+        int previousPointPos;
+
+        GameObject placePoint;
+        GameObject previousPlacePoint;
+
+        Vector2 placePointPos;
+
+        previousPointPos = existingPlacePoints;
+
+        previousPlacePoint = 
+            GameObject.Find($"Placement Point {previousPointPos}");
+
+        placePointPos = new Vector2(
+            previousPlacePoint.transform.position.x - placePointPosX * 2,
+            previousPlacePoint.transform.position.y - placePointPosY * 2);
+
+        placePoint = Instantiate(placePointPrefab, placePointPos, 
+            Quaternion.Euler(0, 0, 90), counter[3].transform);
+
+        placePoint.name = $"Placement Point {existingPlacePoints + 1}";
+
+        existingPlacePoints++;
+
+        if (amount > 1) AddPlacementPoints(amount - 1);
     }
 }

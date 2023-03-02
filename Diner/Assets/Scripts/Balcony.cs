@@ -13,7 +13,8 @@ public class Balcony : MonoBehaviour
 
     [SerializeField] private PlacementPoint[] positions;
     [SerializeField] private Transform waitPosition;
-    [SerializeField] private Transform[] altPosititon;
+
+    private int placePointAmount = 3;
 
     public bool IsOnBalcony { get; private set; }
 
@@ -47,6 +48,8 @@ public class Balcony : MonoBehaviour
         {
             time[i].text = ($"Time: {Meals[i].PrepTme.ToString()}s");
         }
+
+        placePointAmount = positions.Length;
     }
 
     private void OnMouseDown()
@@ -87,6 +90,19 @@ public class Balcony : MonoBehaviour
         {
             IsOnBalcony = false;
         }
+    }
+
+    public void IncreasePositions(int amount)
+    {
+        positions = new PlacementPoint[placePointAmount + amount];
+
+        for (int i = 0; i < positions.Length; i++)
+        {
+            positions[i] = GameObject.Find($"Placement Point {i + 1}").
+                GetComponent<PlacementPoint>();
+        }
+
+        placePointAmount += amount;
     }
 
     public void UpdateMenu(int i)

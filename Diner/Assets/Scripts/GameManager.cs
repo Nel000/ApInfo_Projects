@@ -7,7 +7,7 @@ using NavMeshPlus.Components;
 
 public class GameManager : MonoBehaviour
 {
-    private const int diffIncreaseTime = 60;
+    private const int diffIncreaseTime = 10;
 
     private const float tablePosX = -6.5f, tablePosY = -3.2f;
 
@@ -108,6 +108,7 @@ public class GameManager : MonoBehaviour
             {
                 BuildTable(2);
                 bm.ExpandFloor();
+                bm.ExpandCounter();
                 StartCoroutine(camCtrl.IncreaseSize());
                 updateTime = 0;
             }

@@ -11,6 +11,12 @@ public class PlacementPoint : MonoBehaviour
 
     public int MealIndex { get; set; }
 
+    private void Start()
+    {
+        balcony = FindObjectOfType<Balcony>();
+        slot = FindObjectOfType<InventorySlot>();
+    }
+
     private void OnMouseDown()
     {
         if (PlacedMeal != null && balcony.IsOnBalcony && slot.IsEmpty)

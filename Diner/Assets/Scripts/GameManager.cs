@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -26,6 +27,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private int availableSeats = 4;
     [SerializeField] private int totalCustomers = 0;
+    [SerializeField] private int totalLineSpots = 1;
 
     public bool IsLocked { get; set; }
 
@@ -39,6 +41,11 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private List<GameObject> customers = new List<GameObject>();
     public List<GameObject> Customers { get { return customers; } }
+
+    [SerializeField] private IEnumerable<LineSpot> lineSpots = 
+        new List<LineSpot>();
+    public IEnumerable<LineSpot> LineSpots => lineSpots;
+    private IList<LineSpot> lineSpotList;
 
     [SerializeField] private Text timeValue;
     [SerializeField] private Text scoreValue;
@@ -62,6 +69,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject customer;
     [SerializeField] private GameObject tablePrefab;
+    [SerializeField] private GameObject lineSpotPrefab;
 
     [SerializeField] private GameObject[] meals;
     public GameObject[] Meals { get { return meals; } }
@@ -79,6 +87,9 @@ public class GameManager : MonoBehaviour
         currentScore = 0;
         rand = new System.Random();
         waitLine = 0;
+
+        lineSpots.ToList().Add(
+            GameObject.Find("Line Spot 1").GetComponent<LineSpot>());
 
         StartCoroutine(RaiseTime());
         StartCoroutine(CreateCustomer());

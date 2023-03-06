@@ -12498,6 +12498,78 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 30}
+--- !u!1 &1576241943
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1576241946}
+  - component: {fileID: 1576241945}
+  - component: {fileID: 1576241944}
+  m_Layer: 0
+  m_Name: WaitWallSec (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1576241944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576241943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94d39b260bd5d6844989634e854a93d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  location: {x: 0, y: 0}
+  position: 0
+--- !u!61 &1576241945
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576241943}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.1, y: 0.5}
+  m_EdgeRadius: 0
+--- !u!4 &1576241946
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576241943}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.5, y: -4.15, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1582647186
 GameObject:
   m_ObjectHideFlags: 0
@@ -12643,6 +12715,7 @@ MonoBehaviour:
   currentScore: 0
   availableSeats: 4
   totalCustomers: 0
+  totalLineSpots: 1
   customers: []
   timeValue: {fileID: 405663737}
   scoreValue: {fileID: 68618498}
@@ -12650,6 +12723,7 @@ MonoBehaviour:
   waitLine: 0
   customer: {fileID: 6400955670052035665, guid: 61dc4e2f0946aa94d9c95d55a1c19e1c, type: 3}
   tablePrefab: {fileID: 9189787638739942640, guid: 4603b56657c69f148827620127c4e005, type: 3}
+  lineSpotPrefab: {fileID: 0}
   meals:
   - {fileID: 6135344033742018621, guid: 7c8dfd1e28241364f93e85a9170d77a4, type: 3}
   - {fileID: 8514384937187297882, guid: e599ccad1e3477b48847948cdebb3955, type: 3}
@@ -30062,8 +30136,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1980079298}
   - component: {fileID: 1980079297}
+  - component: {fileID: 1980079299}
   m_Layer: 0
-  m_Name: WaitWallSec
+  m_Name: Line Spot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30093,7 +30168,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3, y: 0.1}
+  m_Size: {x: 0.5, y: 0.1}
   m_EdgeRadius: 0
 --- !u!4 &1980079298
 Transform:
@@ -30109,6 +30184,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 30}
+--- !u!114 &1980079299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1980079296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94d39b260bd5d6844989634e854a93d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  location: {x: 0, y: 0}
+  position: 0
 --- !u!1001 &1989736859
 PrefabInstance:
   m_ObjectHideFlags: 0

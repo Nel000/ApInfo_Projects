@@ -91,9 +91,14 @@ public class Customer : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.name == "WaitWallSec")
+        if (other.GetComponent<LineSpot>())
         {
             Debug.Log("WaitWall sec");
+            
+            // Get component in collider
+            // Get position
+            // Find next obj in gm list
+            // Get and move to transform
 
             if (gm.WaitLine == 0)
                 StartCoroutine(Move(movePoints[0]));

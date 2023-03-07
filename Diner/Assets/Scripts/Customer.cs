@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AI;
@@ -20,7 +21,10 @@ public class Customer : MonoBehaviour
     [SerializeField] private GameObject[] tables;
     [SerializeField] private List<Table> tableList;
 
+    [SerializeField] private GameObject linePos;
+
     [SerializeField] private Vector2[] movePoints;
+    [SerializeField] private Vector2 nextLinePos;
 
     [SerializeField] private int tableNum = 4;
 
@@ -72,7 +76,20 @@ public class Customer : MonoBehaviour
 
         meal = gm.DefineMeal();
 
-        StartCoroutine(Move(movePoints[1]));
+        GetInLine();
+    }
+
+    private void GetInLine()
+    {
+        int lineLength = gm.TotalLineSpots;
+
+        linePos = 
+            gm.LineSpotList.ElementAt(lineLength - 1).gameObject;
+
+        nextLinePos = new Vector2(
+            linePos.transform.position.x, linePos.transform.position.y);
+
+        StartCoroutine(Move(nextLinePos));
     }
 
     public void UpdateTables()
@@ -94,14 +111,20 @@ public class Customer : MonoBehaviour
         if (other.GetComponent<LineSpot>())
         {
             Debug.Log("WaitWall sec");
-            
-            // Get component in collider
-            // Get position
-            // Find next obj in gm list
-            // Get and move to transform
 
-            if (gm.WaitLine == 0)
-                StartCoroutine(Move(movePoints[0]));
+            LineSpot currentSpot = other.GetComponent<LineSpot>();
+
+            linePos = gm.LineSpotList.ElementAt
+                (currentSpot.Position - 1).gameObject;
+            
+            nextLinePos = new Vector2(
+                linePos.transform.position.x, linePos.transform.position.y);
+
+            if (gm.WaitLine < gm.TotalLineSpots)
+            {
+                if (gm.WaitLine == 0) StartCoroutine(Move(movePoints[0]));
+                else StartCoroutine(Move(nextLinePos));
+            } 
             else
             {
                 Debug.Log("Waiting...");
@@ -119,7 +142,7 @@ public class Customer : MonoBehaviour
             isMoving = false;
             waitReset = false;
             StartCoroutine(StatUpdate(maxTime / 2));
-           CheckTables(0);
+            CheckTables(0);
         }
         else if (other.GetComponent<Table>() && !IsLeaving && goingToSeat)
         {
@@ -228,7 +251,7 @@ public class Customer : MonoBehaviour
             {
                 Debug.Log("Waiting...");
 
-                if (gm.WaitLine < 1)
+                if (gm.WaitLine < gm.TotalLineSpots)
                     gm.WaitLine++;
 
                 StartCoroutine(RecheckTables(waitTime));

@@ -21,8 +21,8 @@ public class LineSpot : MonoBehaviour
 
     public void DefinePosition()
     {
-        position = gm.LineSpots.Count() + 1;
+        position = gm.LineSpotList.Count() + 1;
 
-        name += $" {position}";
+        name = $"Line Spot {position}";
     } 
 }

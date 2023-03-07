@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     private const int diffIncreaseTime = 25;
 
     private const float tablePosX = -6.5f, tablePosY = -3.2f;
+    private const float lineSpotPosX = 1.8f, lineSpotPosY = 1.35f;
 
     public Waiter Waiter;
     public Balcony Balcony;
@@ -26,18 +27,18 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int currentScore;
 
     [SerializeField] private int availableSeats = 4;
-    [SerializeField] private int totalCustomers = 0;
-    [SerializeField] private int totalLineSpots = 1;
-
-    public bool IsLocked { get; set; }
-
-    private bool inEndGame;
-
     public int AvailableSeats
     { 
         get { return availableSeats; }
         set { availableSeats = value; }
     }
+    [SerializeField] private int totalCustomers = 0;
+    [SerializeField] private int totalLineSpots = 1;
+    public int TotalLineSpots => totalLineSpots;
+
+    public bool IsLocked { get; set; }
+
+    private bool inEndGame;
 
     [SerializeField] private List<GameObject> customers = new List<GameObject>();
     public List<GameObject> Customers { get { return customers; } }
@@ -45,7 +46,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private IEnumerable<LineSpot> lineSpots = 
         new List<LineSpot>();
     public IEnumerable<LineSpot> LineSpots => lineSpots;
-    private IList<LineSpot> lineSpotList;
+    private List<LineSpot> lineSpotList = new List<LineSpot>();
+    public List<LineSpot> LineSpotList => lineSpotList;
 
     [SerializeField] private Text timeValue;
     [SerializeField] private Text scoreValue;
@@ -91,6 +93,12 @@ public class GameManager : MonoBehaviour
         lineSpots.ToList().Add(
             GameObject.Find("Line Spot 1").GetComponent<LineSpot>());
 
+        lineSpotList.Add(
+            GameObject.Find("Line Spot 1").GetComponent<LineSpot>());
+
+        Debug.Log(lineSpots.Count());
+        Debug.Log(lineSpotList.Count());
+
         StartCoroutine(RaiseTime());
         StartCoroutine(CreateCustomer());
     }
@@ -117,6 +125,7 @@ public class GameManager : MonoBehaviour
         {
             if (updateTime >= diffIncreaseTime)
             {
+                ExpandLine();
                 BuildTable(2);
                 bm.ExpandFloor();
                 bm.ExpandCounter();
@@ -139,6 +148,31 @@ public class GameManager : MonoBehaviour
             inEndGame = true;
             EndGame();
         }
+    }
+
+    private void ExpandLine()
+    {
+        GameObject lineSpot;
+
+        int previousPosition;
+
+        Vector2 spotPosition;
+        GameObject previousSpot;
+
+        previousPosition = totalLineSpots;
+
+        previousSpot = GameObject.Find($"Line Spot {previousPosition}");
+
+        spotPosition = new Vector2(
+            previousSpot.transform.position.x - lineSpotPosX,
+            previousSpot.transform.position.y - lineSpotPosY);
+        
+        lineSpot = Instantiate(
+            lineSpotPrefab, spotPosition, Quaternion.identity);
+
+        lineSpots.ToList().Add(lineSpot.GetComponent<LineSpot>());
+        lineSpotList.Add(lineSpot.GetComponent<LineSpot>());
+        totalLineSpots++;
     }
 
     private void BuildTable(int num)
@@ -196,7 +230,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator CreateCustomer()
     {
         yield return new WaitForSeconds(rand.Next(5, 10));
-        if (WaitLine < 2 && !inEndGame)
+        if (WaitLine < totalLineSpots + 1 && !inEndGame)
         {
             totalCustomers++;
 

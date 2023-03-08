@@ -8,7 +8,7 @@ using NavMeshPlus.Components;
 
 public class GameManager : MonoBehaviour
 {
-    private const int diffIncreaseTime = 45;
+    private const int diffIncreaseTime = 10;
 
     private const float tablePosX = -6.5f, tablePosY = -3.2f;
     private const float lineSpotPosX = 1.8f, lineSpotPosY = 1.35f;
@@ -33,12 +33,14 @@ public class GameManager : MonoBehaviour
         set { availableSeats = value; }
     }
     [SerializeField] private int totalCustomers = 0;
+    public int TotalCustomers => totalCustomers;
     [SerializeField] private int totalLineSpots = 1;
     public int TotalLineSpots => totalLineSpots;
 
     public bool IsLocked { get; set; }
 
     private bool inEndGame;
+    public bool InEndGame => inEndGame;
 
     [SerializeField] private List<GameObject> customers = new List<GameObject>();
     public List<GameObject> Customers { get { return customers; } }
@@ -66,7 +68,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    [SerializeField] private GameObject customer;
     [SerializeField] private GameObject tablePrefab;
     [SerializeField] private GameObject lineSpotPrefab;
 
@@ -96,7 +97,6 @@ public class GameManager : MonoBehaviour
         Debug.Log(lineSpotList.Count());
 
         StartCoroutine(RaiseTime());
-        StartCoroutine(CreateCustomer());
     }
 
     private void OnMouseDown()
@@ -222,19 +222,10 @@ public class GameManager : MonoBehaviour
         scoreValue.text = currentScore.ToString();
     }
 
-    private IEnumerator CreateCustomer()
+    public void AddCustomer(GameObject customer)
     {
-        yield return new WaitForSeconds(rand.Next(5, 10));
-        if (WaitLine < totalLineSpots && !inEndGame)
-        {
-            totalCustomers++;
-
-            GameObject currentCustomer = Instantiate(customer);
-            currentCustomer.name = $"Customer {totalCustomers}";
-            customers.Add(currentCustomer);
-        }
-
-        StartCoroutine(CreateCustomer());
+        totalCustomers++;
+        customers.Add(customer);
     }
 
     public GameObject DefineMeal()
@@ -255,7 +246,7 @@ public class GameManager : MonoBehaviour
             Invoke("EndGame", 1.0f);
     }
 
-    public void ButtonBehaviour()
+    public void ButtonBehavior()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }

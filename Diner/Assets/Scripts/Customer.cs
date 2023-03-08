@@ -8,6 +8,7 @@ using UnityEngine.AI;
 public class Customer : MonoBehaviour
 {
     private GameManager gm;
+    private ExitPoint exit;
 
     [SerializeField] private Canvas customerCanvas;
     [SerializeField] private Image statMeter;
@@ -63,6 +64,7 @@ public class Customer : MonoBehaviour
 		agent.updateUpAxis = false;
 
         gm = FindObjectOfType<GameManager>();
+        exit = FindObjectOfType<ExitPoint>();
 
         customerCanvas.worldCamera = 
             GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
@@ -197,7 +199,7 @@ public class Customer : MonoBehaviour
                 mealBalloon.SetActive(true);
                 stateImg[0].SetActive(true);
                 current.IsOccupied = false;
-                StartCoroutine(Leave());
+                Leave();
             }
             else
             {
@@ -276,7 +278,7 @@ public class Customer : MonoBehaviour
                 mealBalloon.SetActive(true);
                 stateImg[0].SetActive(true);
                 spot.IsOccupied = false;
-                StartCoroutine(Leave());
+                Leave();
             }
             else
             {
@@ -341,7 +343,7 @@ public class Customer : MonoBehaviour
             stateImg[0].SetActive(true);
             ResetStat();
             statMeter.color = Color.red;
-            StartCoroutine(Leave());
+            Leave();
         }
     }
 
@@ -365,7 +367,7 @@ public class Customer : MonoBehaviour
         GameObject.Find(table).GetComponent<Table>().IsEmpty = true;
         stateImg[2].SetActive(false);
         stateImg[1].SetActive(true);
-        StartCoroutine(Leave());
+        Leave();
     }
 
     private IEnumerator StatUpdate(float totalTime)
@@ -448,18 +450,18 @@ public class Customer : MonoBehaviour
             mealBalloon.SetActive(true);
             stateImg[0].SetActive(true);
             gm.UpdateScore(-defaultScore);
-            StartCoroutine(Leave());
+            Leave();
         }
     }
 
-    public IEnumerator Leave()
+    private void Leave()
     {
         IsLeaving = true;
 
         Debug.Log($"{name} heads out");
-        StartCoroutine(Move(movePoints[2]));
-        yield return new WaitForSeconds(3.0f);
+        StartCoroutine(Move(exit.transform.position));
+        /*yield return new WaitForSeconds(3.0f);
         gm.Customers.Remove(gameObject);
-        Destroy(gameObject);
+        Destroy(gameObject);*/
     }
 }

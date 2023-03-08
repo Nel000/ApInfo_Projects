@@ -43,6 +43,7 @@ public class Customer : MonoBehaviour
     [SerializeField] private bool isMoving;
     public bool IsMoving => isMoving;
 
+    [SerializeField] private bool enteredLine;
     [SerializeField] private bool isServed;
     [SerializeField] private bool waitReset;
 
@@ -110,39 +111,56 @@ public class Customer : MonoBehaviour
     {
         if (other.GetComponent<LineSpot>())
         {
-            Debug.Log("WaitWall sec");
-
             LineSpot currentSpot = other.GetComponent<LineSpot>();
 
-            linePos = gm.LineSpotList.ElementAt
-                (currentSpot.Position - 1).gameObject;
-            
-            nextLinePos = new Vector2(
-                linePos.transform.position.x, linePos.transform.position.y);
+            currentSpot.IsOccupied = true;
 
-            if (gm.WaitLine < gm.TotalLineSpots)
+            if (other.name == "Line Spot 1")
             {
-                if (gm.WaitLine == 0) StartCoroutine(Move(movePoints[0]));
-                else StartCoroutine(Move(nextLinePos));
-            } 
-            else
-            {
-                Debug.Log("Waiting...");
+                Debug.Log("WaitWall main");
 
                 isMoving = false;
-                gm.WaitLine++;
+                waitReset = false;
                 StartCoroutine(StatUpdate(maxTime / 2));
-                StartCoroutine(LineWait(0));
-            }    
-        }
-        else if (other.name == "WaitWall")
-        {
-            Debug.Log("WaitWall main");
+                CheckTables(currentSpot, 0);
+            }
+            else
+            {
+                Debug.Log("WaitWall sec");
 
-            isMoving = false;
-            waitReset = false;
-            StartCoroutine(StatUpdate(maxTime / 2));
-            CheckTables(0);
+                if (!enteredLine)
+                {
+                    gm.WaitLine++;
+                    enteredLine = true;
+                }
+
+                LineSpot nextSpot = gm.LineSpotList.ElementAt(
+                    currentSpot.Position - 2);
+
+                linePos = nextSpot.gameObject;
+                
+                nextLinePos = new Vector2(
+                    linePos.transform.position.x, linePos.transform.position.y);
+
+                if (gm.WaitLine < gm.TotalLineSpots
+                    && nextSpot.Position >= gm.WaitLine)
+                {
+                    /*if (gm.WaitLine == 0) StartCoroutine(Move(movePoints[0]));
+                    else StartCoroutine(Move(nextLinePos));*/
+
+                    currentSpot.IsOccupied = false;
+                    StartCoroutine(Move(nextLinePos));
+                } 
+                else
+                {
+                    Debug.Log("Waiting...");
+
+                    isMoving = false;
+                    //gm.WaitLine++;
+                    StartCoroutine(StatUpdate(maxTime / 2));
+                    StartCoroutine(LineWait(0, currentSpot, nextSpot));
+                }
+            }
         }
         else if (other.GetComponent<Table>() && !IsLeaving && goingToSeat)
         {
@@ -157,30 +175,40 @@ public class Customer : MonoBehaviour
         }
     }
     
-    private IEnumerator LineWait(int waitTime)
+    private IEnumerator LineWait(int waitTime, LineSpot current, LineSpot next)
     {
-        Debug.Log("Waiting in line");
+        Debug.Log($"{name} waiting in line");
+
         yield return new WaitForSeconds(1.0f);
-        if (gm.WaitLine == 1)
+        if (!next.IsOccupied)
         {
+            Debug.Log($"{name} waiting can move");
             ResetStat();
-            StartCoroutine(Move(movePoints[0]));
+            current.IsOccupied = false;
+            StartCoroutine(Move(nextLinePos));
         }
             
         else
+        {
             if (waitTime >= maxTime / 2)
             {
                 gm.UpdateScore(-defaultScore);
                 gm.WaitLine--;
                 mealBalloon.SetActive(true);
                 stateImg[0].SetActive(true);
+                current.IsOccupied = false;
                 StartCoroutine(Leave());
             }
             else
-                StartCoroutine(LineWait(waitTime + 1));
+            {
+                Debug.Log($"{name} waiting cannot move");
+                StartCoroutine(LineWait(waitTime + 1, current, next));
+            }
+        }
     }
 
-    private void CheckTables(int waitTime)
+    private void CheckTables(
+        LineSpot spot, int waitTime, bool addedToLine = false)
     {
         bool foundEmptyTable = false;
 
@@ -233,6 +261,8 @@ public class Customer : MonoBehaviour
 
             table = tableObj.name;
 
+            spot.IsOccupied = false;
+
             StartCoroutine(Move(
                 GameObject.Find($"Seat {table}").transform.position));
         }
@@ -245,24 +275,24 @@ public class Customer : MonoBehaviour
                 gm.WaitLine--;
                 mealBalloon.SetActive(true);
                 stateImg[0].SetActive(true);
+                spot.IsOccupied = false;
                 StartCoroutine(Leave());
             }
             else
             {
                 Debug.Log("Waiting...");
 
-                if (gm.WaitLine < gm.TotalLineSpots)
-                    gm.WaitLine++;
+                //if (!addedToLine) gm.WaitLine++;
 
-                StartCoroutine(RecheckTables(waitTime));
+                StartCoroutine(RecheckTables(waitTime, spot));
             }
         }
     }
 
-    private IEnumerator RecheckTables(int waitTimeLocal)
+    private IEnumerator RecheckTables(int waitTimeLocal, LineSpot spot)
     {
         yield return new WaitForSeconds(1.0f);
-        CheckTables(waitTimeLocal + 1);
+        CheckTables(spot, waitTimeLocal + 1, true);
     }
 
     private Table DefineTable(List<Table> tables)

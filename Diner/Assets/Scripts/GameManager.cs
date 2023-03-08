@@ -8,7 +8,7 @@ using NavMeshPlus.Components;
 
 public class GameManager : MonoBehaviour
 {
-    private const int diffIncreaseTime = 25;
+    private const int diffIncreaseTime = 45;
 
     private const float tablePosX = -6.5f, tablePosY = -3.2f;
     private const float lineSpotPosX = 1.8f, lineSpotPosY = 1.35f;
@@ -43,9 +43,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<GameObject> customers = new List<GameObject>();
     public List<GameObject> Customers { get { return customers; } }
 
-    [SerializeField] private IEnumerable<LineSpot> lineSpots = 
-        new List<LineSpot>();
-    public IEnumerable<LineSpot> LineSpots => lineSpots;
     private List<LineSpot> lineSpotList = new List<LineSpot>();
     public List<LineSpot> LineSpotList => lineSpotList;
 
@@ -64,7 +61,7 @@ public class GameManager : MonoBehaviour
         } 
         set
         {
-            if (waitLine <= 2)
+            if (waitLine <= totalLineSpots)
                 waitLine = value;
         }
     }
@@ -90,13 +87,12 @@ public class GameManager : MonoBehaviour
         rand = new System.Random();
         waitLine = 0;
 
-        lineSpots.ToList().Add(
-            GameObject.Find("Line Spot 1").GetComponent<LineSpot>());
-
         lineSpotList.Add(
             GameObject.Find("Line Spot 1").GetComponent<LineSpot>());
 
-        Debug.Log(lineSpots.Count());
+        lineSpotList.Add(
+            GameObject.Find("Line Spot 2").GetComponent<LineSpot>());
+
         Debug.Log(lineSpotList.Count());
 
         StartCoroutine(RaiseTime());
@@ -170,7 +166,6 @@ public class GameManager : MonoBehaviour
         lineSpot = Instantiate(
             lineSpotPrefab, spotPosition, Quaternion.identity);
 
-        lineSpots.ToList().Add(lineSpot.GetComponent<LineSpot>());
         lineSpotList.Add(lineSpot.GetComponent<LineSpot>());
         totalLineSpots++;
     }
@@ -230,7 +225,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator CreateCustomer()
     {
         yield return new WaitForSeconds(rand.Next(5, 10));
-        if (WaitLine < totalLineSpots + 1 && !inEndGame)
+        if (WaitLine < totalLineSpots && !inEndGame)
         {
             totalCustomers++;
 

@@ -11,12 +11,17 @@ public class LineSpot : MonoBehaviour
     [SerializeField] private int position;
     public int Position { get => position; set => position = value; }
 
+    [SerializeField] private bool topOfLine;
+
+    [SerializeField] private bool isOccupied;
+    public bool IsOccupied { get => isOccupied; set => isOccupied = value; }
+
     private void Awake()
     {
         gm = FindObjectOfType<GameManager>();
         location = new Vector2(transform.position.x, transform.position.y);
 
-        DefinePosition();
+        if (!topOfLine) DefinePosition();
     }
 
     public void DefinePosition()

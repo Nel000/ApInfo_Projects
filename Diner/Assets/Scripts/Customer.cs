@@ -147,9 +147,6 @@ public class Customer : MonoBehaviour
                 if (gm.WaitLine < gm.TotalLineSpots
                     && nextSpot.Position >= gm.WaitLine)
                 {
-                    /*if (gm.WaitLine == 0) StartCoroutine(Move(movePoints[0]));
-                    else StartCoroutine(Move(nextLinePos));*/
-
                     currentSpot.IsOccupied = false;
                     StartCoroutine(Move(nextLinePos));
                 } 
@@ -158,7 +155,6 @@ public class Customer : MonoBehaviour
                     Debug.Log("Waiting...");
 
                     isMoving = false;
-                    //gm.WaitLine++;
                     StartCoroutine(StatUpdate(maxTime / 2));
                     StartCoroutine(LineWait(0, currentSpot, nextSpot));
                 }
@@ -283,8 +279,6 @@ public class Customer : MonoBehaviour
             else
             {
                 Debug.Log("Waiting...");
-
-                //if (!addedToLine) gm.WaitLine++;
 
                 StartCoroutine(RecheckTables(waitTime, spot));
             }
@@ -411,12 +405,14 @@ public class Customer : MonoBehaviour
     {
         yield return new WaitForSeconds(0.2f);
         isMoving = true;
-        do
+        /*do
         {
             agent.SetDestination(target);
             yield return null;
         }
-        while (Vector2.Distance(transform.position, target) > 0.1f);
+        while (Vector2.Distance(transform.position, target) > 0.1f);*/
+
+        agent.SetDestination(target);
     }
     
     private IEnumerator Wait()
@@ -460,8 +456,5 @@ public class Customer : MonoBehaviour
 
         Debug.Log($"{name} heads out");
         StartCoroutine(Move(exit.transform.position));
-        /*yield return new WaitForSeconds(3.0f);
-        gm.Customers.Remove(gameObject);
-        Destroy(gameObject);*/
     }
 }

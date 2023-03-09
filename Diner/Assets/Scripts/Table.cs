@@ -48,7 +48,8 @@ public class Table : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.GetComponent<Customer>() 
-            && !other.GetComponent<Customer>().IsLeaving)
+            && !other.GetComponent<Customer>().IsLeaving
+            && other.GetComponent<Customer>().Table == name)
         {
             Debug.Log($"Customer is on {name}");
             isEmpty = false;

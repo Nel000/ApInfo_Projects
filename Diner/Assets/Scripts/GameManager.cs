@@ -125,7 +125,8 @@ public class GameManager : MonoBehaviour
                 BuildTable(2);
                 bm.ExpandFloor();
                 bm.ExpandCounter();
-                StartCoroutine(camCtrl.IncreaseSize());
+                //StartCoroutine(camCtrl.IncreaseSize());
+                camCtrl.UpdateSpace();
                 updateTime = 0;
             }
 

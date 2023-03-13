@@ -3161,6 +3161,8 @@ MonoBehaviour:
   startSize: 0
   camSize: 0
   increaseCounter: 0
+  minCamSize: 1
+  maxCamSize: 1000
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -12780,7 +12782,6 @@ MonoBehaviour:
   scoreValue: {fileID: 68618498}
   endScoreValue: {fileID: 25456643}
   waitLine: 0
-  customer: {fileID: 6400955670052035665, guid: 61dc4e2f0946aa94d9c95d55a1c19e1c, type: 3}
   tablePrefab: {fileID: 9189787638739942640, guid: 4603b56657c69f148827620127c4e005, type: 3}
   lineSpotPrefab: {fileID: 2562938978031186263, guid: 9c4112cf61114b1469952e041705f7be, type: 3}
   meals:

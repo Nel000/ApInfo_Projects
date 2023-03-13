@@ -5,6 +5,7 @@ public class CameraCtrl : MonoBehaviour
 {
     // Default: 1.8, 0.5
     private const float sizeIncrease = 2.1f, sizeIncrement = 0.5f;
+    private const float zoomStep = 1f;
 
     [SerializeField] private CameraSpace camSpace;
 
@@ -18,6 +19,9 @@ public class CameraCtrl : MonoBehaviour
     [SerializeField] private SpriteRenderer space;
 
     [SerializeField] private float startSize, camSize, increaseCounter;
+    [SerializeField] private float minCamSize, maxCamSize;
+
+    private Vector3 dragOrigin;
 
     private float spaceMinX, spaceMaxX, spaceMinY, spaceMaxY;
 
@@ -37,7 +41,7 @@ public class CameraCtrl : MonoBehaviour
 
     private void Update()
     {
-        if (target != null)
+        /*if (target != null)
         {
             Vector3 newPos;
             
@@ -51,7 +55,48 @@ public class CameraCtrl : MonoBehaviour
             newPos.y = transform.position.y + delta.y * Time.deltaTime / speed.y;
 
             cam.transform.position = ClampCamera(newPos);
+        }*/
+
+        PanCamera();
+
+        if (Input.GetAxis("Mouse ScrollWheel") > 0) ZoomIn();
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0) ZoomOut();
+    }
+
+    private void PanCamera()
+    {
+        if (Input.GetMouseButtonDown(0)) 
+            dragOrigin = cam.ScreenToWorldPoint(Input.mousePosition);
+
+        if (Input.GetMouseButton(0))
+        {
+            Vector3 difference = 
+                dragOrigin - cam.ScreenToWorldPoint(Input.mousePosition);
+
+            cam.transform.position = 
+                ClampCamera(cam.transform.position + difference);
         }
+    }
+
+    private void ZoomIn()
+    {
+        float newSize = cam.orthographicSize - zoomStep;
+
+        cam.orthographicSize = 
+            Mathf.Clamp(newSize, minCamSize, 
+            Mathf.Min(maxCamSize, (space.bounds.size.x / 2f) / cam.aspect));
+        
+        cam.transform.position = ClampCamera(cam.transform.position);
+    }
+
+    private void ZoomOut()
+    {
+        float newSize = cam.orthographicSize + zoomStep;
+        cam.orthographicSize = 
+            Mathf.Clamp(newSize, minCamSize, 
+            Mathf.Min(maxCamSize, (space.bounds.size.x / 2f) / cam.aspect));
+        
+        cam.transform.position = ClampCamera(cam.transform.position);
     }
 
     public IEnumerator IncreaseSize()
@@ -63,6 +108,7 @@ public class CameraCtrl : MonoBehaviour
             increaseCounter += sizeIncrement * Time.deltaTime;
             camSize = startSize + increaseCounter;
             cam.orthographicSize = camSize;
+            cam.transform.position = ClampCamera(cam.transform.position);
             yield return null;
         }
 

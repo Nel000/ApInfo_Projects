@@ -44,6 +44,9 @@ public class Customer : MonoBehaviour
     [SerializeField] private bool isMoving;
     public bool IsMoving => isMoving;
 
+    [SerializeField] private bool decided;
+    public bool Decided => decided;
+
     [SerializeField] private bool enteredLine;
     [SerializeField] private bool isServed;
     [SerializeField] private bool waitReset;
@@ -167,7 +170,8 @@ public class Customer : MonoBehaviour
                 goingToSeat = false;
                 StartCoroutine(Wait());
                 StartCoroutine(StatUpdate(maxTime / 1.5f));
-                if (gm.Waiter.CurrentTable == table)
+                if (gm.Waiter.CurrentTable == table 
+                    && !gm.Waiter.IsMoving && decided)
                     StartCoroutine(MakeRequest());
             }
         }
@@ -405,12 +409,6 @@ public class Customer : MonoBehaviour
     {
         yield return new WaitForSeconds(0.2f);
         isMoving = true;
-        /*do
-        {
-            agent.SetDestination(target);
-            yield return null;
-        }
-        while (Vector2.Distance(transform.position, target) > 0.1f);*/
 
         agent.SetDestination(target);
     }
@@ -418,6 +416,8 @@ public class Customer : MonoBehaviour
     private IEnumerator Wait()
     {
         isMoving = false;
+
+        decided = true; // Change later to own method
 
         do
         {

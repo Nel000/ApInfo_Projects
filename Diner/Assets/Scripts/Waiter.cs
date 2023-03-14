@@ -4,6 +4,8 @@ using UnityEngine.AI;
 
 public class Waiter : MonoBehaviour
 {
+    private GameManager gm;
+
     [SerializeField] private InventorySlot inventorySlot;
     public InventorySlot InventorySlot { get => inventorySlot; }
 
@@ -39,6 +41,8 @@ public class Waiter : MonoBehaviour
 
     private void Start()
     {
+        gm = FindObjectOfType<GameManager>();
+
         agent = GetComponent<NavMeshAgent>();
 		agent.updateRotation = false;
 		agent.updateUpAxis = false;
@@ -78,24 +82,25 @@ public class Waiter : MonoBehaviour
 
     public void CheckCurrentTable()
     {
-        foreach (GameObject customer in FindObjectOfType<GameManager>().Customers)
+        foreach (GameObject customer in gm.Customers)
         {
-            if (currentTable == customer.GetComponent<Customer>().Table)
+            Customer cust = customer.GetComponent<Customer>();
+
+            if (currentTable == cust.Table)
             {
-                if (!customer.GetComponent<Customer>().IsAttended)
+                if (!cust.IsAttended && cust.Decided)
                 {
                     // Attend customer
                     Debug.Log(
                         $"Waiter is attending {customer.name} at {currentTable}");
-                    StartCoroutine(customer.GetComponent<Customer>().MakeRequest());
+                    StartCoroutine(cust.MakeRequest());
                 }
-                else if (customer.GetComponent<Customer>().IsAttended && hasMeal
-                    && !customer.GetComponent<Customer>().IsLeaving)
+                else if (cust.IsAttended && hasMeal && !cust.IsLeaving)
                 {
                     // Serve customer
                     Debug.Log(
                         $"Waiter served {customer.name} at {currentTable}");
-                    customer.GetComponent<Customer>().GetServed();
+                    cust.GetServed();
                     RemoveFromInventory();
                 }
             }

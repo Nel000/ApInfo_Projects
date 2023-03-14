@@ -223,7 +223,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 11
   m_TargetDisplay: 0
 --- !u!114 &8582356349252483475
 MonoBehaviour:
@@ -339,7 +339,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 11
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -506,7 +506,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
   m_Color: {r: 0, g: 0.23791265, b: 1, a: 1}
   m_FlipX: 0
@@ -593,25 +593,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  seats:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  targets: []
-  obstacle: {x: 0, y: 0}
+  tableList: []
+  linePos: {fileID: 0}
   movePoints:
   - {x: 6, y: -3.15}
   - {x: 7, y: -4.15}
   - {x: -4.5, y: -10}
+  nextLinePos: {x: 0, y: 0}
   tableNum: 4
   table: 
   clearedToMove: 0
   goingToSeat: 0
-  hasChecked: 0
   isAttended: 0
   isMoving: 0
-  isInRange: 0
+  enteredLine: 0
   isServed: 0
   waitReset: 0
   waitTime: 0

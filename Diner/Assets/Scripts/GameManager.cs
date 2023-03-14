@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject mainCanvas;
     [SerializeField] private GameObject endCanvas;
 
-    [SerializeField] private int maxTime = 500;
+    [SerializeField] private int maxTime = 30;
     [SerializeField] private int currentTime;
     [SerializeField] private int currentScore;
 
@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
     {
         int updateTime = 0;
 
-        do
+        while (currentTime < maxTime)
         {
             if (updateTime >= diffIncreaseTime)
             {
@@ -135,7 +135,6 @@ public class GameManager : MonoBehaviour
             timeValue.text = (currentTime * Time.timeScale).ToString();
             yield return new WaitForSecondsRealtime(1.0f);
         }
-        while (currentTime < maxTime);
 
         if (currentTime >= maxTime)
         {

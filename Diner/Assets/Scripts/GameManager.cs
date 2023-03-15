@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(RaiseTime());
     }
 
-    private void OnMouseDown()
+    private void OnMouseUpAsButton()
     {
         Debug.Log("Back to start");
 

@@ -422,7 +422,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 12
   m_Sprite: {fileID: 21300000, guid: 6731d9f22bdd2f146a8b7e79db3bbd37, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -606,11 +606,12 @@ MonoBehaviour:
   goingToSeat: 0
   isAttended: 0
   isMoving: 0
+  decided: 0
   enteredLine: 0
   isServed: 0
   waitReset: 0
   waitTime: 0
-  maxTime: 75
+  maxTime: 90
   meal: {fileID: 0}
   mealImg: {fileID: 0}
   stateImg:
@@ -757,7 +758,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 12
   m_Sprite: {fileID: 21300000, guid: 838dbb1ec832bc44d96c584105999e74, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -840,7 +841,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 12
   m_Sprite: {fileID: 21300000, guid: de31832694df584428e4be2c870e2b21, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

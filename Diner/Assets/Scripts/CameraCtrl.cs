@@ -65,7 +65,7 @@ public class CameraCtrl : MonoBehaviour
 
     private void PanCamera()
     {
-        if (Input.GetMouseButtonDown(0)) 
+        if (Input.GetMouseButtonDown(0))
             dragOrigin = cam.ScreenToWorldPoint(Input.mousePosition);
 
         if (Input.GetMouseButton(0))

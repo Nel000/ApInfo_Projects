@@ -17,7 +17,7 @@ public class PlacementPoint : MonoBehaviour
         slot = FindObjectOfType<InventorySlot>();
     }
 
-    private void OnMouseDown()
+    private void OnMouseUpAsButton()
     {
         if (PlacedMeal != null && balcony.IsOnBalcony && slot.IsEmpty)
         {

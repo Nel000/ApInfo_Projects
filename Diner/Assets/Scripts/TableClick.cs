@@ -9,7 +9,7 @@ public class TableClick : MonoBehaviour
         table = GetComponentInParent<Table>();
     }
 
-    private void OnMouseDown()
+    private void OnMouseUpAsButton()
     {
         table.Clicked = true;
     }

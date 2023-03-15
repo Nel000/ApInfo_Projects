@@ -52,7 +52,7 @@ public class Balcony : MonoBehaviour
         placePointAmount = positions.Length;
     }
 
-    private void OnMouseDown()
+    private void OnMouseUpAsButton()
     {
         // Move to balcony
         Debug.Log("Clicked balcony");
@@ -168,6 +168,9 @@ public class Balcony : MonoBehaviour
             positions[balconyIndex].MealIndex = mealIndex;
             positions[balconyIndex].PlacedMeal = Instantiate(
                 gm.Meals[mealIndex], positions[balconyIndex].transform);
+
+            positions[balconyIndex].PlacedMeal.
+                GetComponent<SpriteRenderer>().sortingOrder = 0;
         }
     }
 }

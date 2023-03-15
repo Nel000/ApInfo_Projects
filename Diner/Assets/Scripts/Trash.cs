@@ -11,7 +11,7 @@ public class Trash : MonoBehaviour
         waiter = FindObjectOfType<Waiter>();
     }
 
-    private void OnMouseDown()
+    private void OnMouseUpAsButton()
     {
         Debug.Log("Clicked trash");
 

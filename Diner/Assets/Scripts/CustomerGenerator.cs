@@ -9,6 +9,7 @@ public class CustomerGenerator : MonoBehaviour
     private GameManager gm;
 
     [SerializeField] private GameObject customerPrefab;
+    [SerializeField] private GameObject criticPrefab;
 
     private int lineSpots;
 
@@ -22,10 +23,10 @@ public class CustomerGenerator : MonoBehaviour
 
         lineSpots = gm.TotalLineSpots;
 
-        StartCoroutine(CreateCustomer());
+        StartCoroutine(CreateCustomer(customerPrefab));
     }
 
-    private IEnumerator CreateCustomer()
+    private IEnumerator CreateCustomer(GameObject customer)
     {
         yield return new WaitForSeconds(rand.Next(5, 10));
 
@@ -33,13 +34,20 @@ public class CustomerGenerator : MonoBehaviour
 
         if (gm.WaitLine < gm.TotalLineSpots && !gm.InEndGame)
         {
-            GameObject currentCustomer = Instantiate(customerPrefab,
+            GameObject currentCustomer = Instantiate(customer,
                 transform.position, Quaternion.identity);
             currentCustomer.name = $"Customer {gm.TotalCustomers}";
             gm.AddCustomer(currentCustomer);
         }
 
-        StartCoroutine(CreateCustomer());
+        int prob = rand.Next(0, 100);
+
+        if (prob <= gm.CriticProbability)
+        {
+            StartCoroutine(CreateCustomer(criticPrefab));
+            gm.ResetCriticProbability();
+        }
+        else StartCoroutine(CreateCustomer(customerPrefab));
     }
 
     private void UpdatePosition()

@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject endCanvas;
 
     [SerializeField] private int maxTime = 30;
+    [SerializeField] private int criticProbability;
+    public int CriticProbability => criticProbability;
     [SerializeField] private int currentTime;
     [SerializeField] private int currentScore;
 
@@ -218,9 +220,12 @@ public class GameManager : MonoBehaviour
 
     public void UpdateScore(int value)
     {
+        criticProbability += 5;
         currentScore += value;
         scoreValue.text = currentScore.ToString();
     }
+
+    public void ResetCriticProbability() => criticProbability = 1;
 
     public void AddCustomer(GameObject customer)
     {

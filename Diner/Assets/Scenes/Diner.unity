@@ -4785,6 +4785,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customerPrefab: {fileID: 6400955670052035665, guid: 61dc4e2f0946aa94d9c95d55a1c19e1c, type: 3}
+  criticPrefab: {fileID: 6400955670052035665, guid: fa9fd48bc9e2bae449ad17a1ff1be528, type: 3}
 --- !u!4 &845152440
 Transform:
   m_ObjectHideFlags: 0
@@ -12605,6 +12606,7 @@ MonoBehaviour:
   mainCanvas: {fileID: 94277298}
   endCanvas: {fileID: 1582647186}
   maxTime: 500
+  criticProbability: 1
   currentTime: 0
   currentScore: 0
   availableSeats: 4

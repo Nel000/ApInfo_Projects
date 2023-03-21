@@ -42,7 +42,7 @@ public class CustomerGenerator : MonoBehaviour
 
         int prob = rand.Next(0, 100);
 
-        if (prob <= gm.CriticProbability)
+        if (prob <= gm.CriticProbability && !gm.HasCritic)
         {
             StartCoroutine(CreateCustomer(criticPrefab));
             gm.ResetCriticProbability();

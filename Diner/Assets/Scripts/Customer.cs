@@ -51,6 +51,8 @@ public class Customer : MonoBehaviour
     [SerializeField] private bool isServed;
     [SerializeField] private bool waitReset;
 
+    [SerializeField] private bool isCritic;
+
     [SerializeField] private int waitTime;
     [SerializeField] private int maxTime = 50; 
 
@@ -361,7 +363,13 @@ public class Customer : MonoBehaviour
 
     public void EvaluateMeal()
     {
-        gm.UpdateScore(gm.Balcony.Meals[gm.Waiter.MealIndex].Score * 2);
+        if (isCritic)
+        {
+            gm.UpdateScore(gm.Balcony.Meals[gm.Waiter.MealIndex].Score * 5);
+            gm.RemoveCritic();
+        }
+        else
+            gm.UpdateScore(gm.Balcony.Meals[gm.Waiter.MealIndex].Score * 2);
         GameObject.Find(table).GetComponent<Table>().IsEmpty = true;
         stateImg[2].SetActive(false);
         stateImg[1].SetActive(true);

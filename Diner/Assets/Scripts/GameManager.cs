@@ -44,6 +44,9 @@ public class GameManager : MonoBehaviour
     private bool inEndGame;
     public bool InEndGame => inEndGame;
 
+    [SerializeField] private bool hasCritic;
+    public bool HasCritic => hasCritic;
+
     [SerializeField] private List<GameObject> customers = new List<GameObject>();
     public List<GameObject> Customers { get { return customers; } }
 
@@ -220,12 +223,18 @@ public class GameManager : MonoBehaviour
 
     public void UpdateScore(int value)
     {
-        criticProbability += 5;
+        if (!hasCritic) criticProbability += 5;
         currentScore += value;
         scoreValue.text = currentScore.ToString();
     }
 
-    public void ResetCriticProbability() => criticProbability = 1;
+    public void RemoveCritic() => hasCritic = false;
+
+    public void ResetCriticProbability()
+    {
+        hasCritic = true;
+        criticProbability = 1;
+    }
 
     public void AddCustomer(GameObject customer)
     {
@@ -233,10 +242,7 @@ public class GameManager : MonoBehaviour
         customers.Add(customer);
     }
 
-    public GameObject DefineMeal()
-    {
-        return meals[rand.Next(0, meals.Length)];
-    }
+    public GameObject DefineMeal() => meals[rand.Next(0, meals.Length)];
 
     private void EndGame()
     {

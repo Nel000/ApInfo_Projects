@@ -4653,6 +4653,7 @@ GameObject:
   m_Component:
   - component: {fileID: 792333686}
   - component: {fileID: 792333688}
+  - component: {fileID: 792333689}
   - component: {fileID: 792333687}
   m_Layer: 5
   m_Name: Time
@@ -4723,6 +4724,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 792333685}
   m_CullTransparentMesh: 1
+--- !u!114 &792333689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 792333685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49363bcb9c4f4b74db2d6849b9583f62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeValue: {fileID: 405663737}
+  currentTime: 0
+  maxTime: 500
 --- !u!1 &824691204
 GameObject:
   m_ObjectHideFlags: 0
@@ -5197,6 +5213,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1010628631}
   - component: {fileID: 1010628633}
+  - component: {fileID: 1010628634}
   - component: {fileID: 1010628632}
   m_Layer: 5
   m_Name: Score
@@ -5267,6 +5284,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1010628630}
   m_CullTransparentMesh: 1
+--- !u!114 &1010628634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010628630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aa074beac842f547aba41fabc6a2bbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreValue: {fileID: 68618498}
+  endScoreValue: {fileID: 25456643}
+  mainCanvas: {fileID: 94277298}
+  endCanvas: {fileID: 1582647186}
 --- !u!1 &1014334546
 GameObject:
   m_ObjectHideFlags: 0
@@ -12601,32 +12634,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Waiter: {fileID: 0}
   Balcony: {fileID: 0}
+  scoreMng: {fileID: 0}
   bm: {fileID: 0}
   camCtrl: {fileID: 0}
-  mainCanvas: {fileID: 94277298}
-  endCanvas: {fileID: 1582647186}
-  maxTime: 500
+  lineSpotPrefab: {fileID: 2562938978031186263, guid: 9c4112cf61114b1469952e041705f7be, type: 3}
   criticProbability: 1
-  currentTime: 0
-  currentScore: 0
   availableSeats: 4
   totalCustomers: 0
   totalLineSpots: 2
+  hasCritic: 0
   customers: []
-  timeValue: {fileID: 405663737}
-  scoreValue: {fileID: 68618498}
-  endScoreValue: {fileID: 25456643}
   waitLine: 0
-  tablePrefab: {fileID: 9189787638739942640, guid: 4603b56657c69f148827620127c4e005, type: 3}
-  lineSpotPrefab: {fileID: 2562938978031186263, guid: 9c4112cf61114b1469952e041705f7be, type: 3}
   meals:
   - {fileID: 6135344033742018621, guid: 7c8dfd1e28241364f93e85a9170d77a4, type: 3}
   - {fileID: 8514384937187297882, guid: e599ccad1e3477b48847948cdebb3955, type: 3}
   - {fileID: 8422250118680083431, guid: 0370c2f6769128941a41c0381745b6b4, type: 3}
   - {fileID: 5782229194995942520, guid: 4d2d07d3652edba499b3a8f053f51700, type: 3}
   - {fileID: 6854445815800112803, guid: 9c8aec5e3bb831245b4ed25d42fa15a0, type: 3}
-  surface: {fileID: 1227206646}
-  surfaceAlt: {fileID: 1703930149}
 --- !u!4 &1582718744
 Transform:
   m_ObjectHideFlags: 0
@@ -12686,12 +12710,14 @@ MonoBehaviour:
   - {fileID: 1696316787}
   - {fileID: 824691204}
   - {fileID: 1919238274}
+  tablePrefab: {fileID: 9189787638739942640, guid: 4603b56657c69f148827620127c4e005, type: 3}
   floorPrefab: {fileID: 4689335163379220938, guid: b10797985b4476f4a9dc7338a4c7a493, type: 3}
   counterPrefab:
   - {fileID: 429975099553548492, guid: a649e15f08b86064f91601b6b9cbbc34, type: 3}
   - {fileID: 9050207659834526908, guid: 76641c0332bf42c4abed44ef856140cf, type: 3}
   - {fileID: 8992913886080905049, guid: 7005f115c60a47c47ab4abae249c8129, type: 3}
   placePointPrefab: {fileID: 6557736715565750962, guid: d462fbc0b36de304595a17d7416e17f3, type: 3}
+  availableSeats: 4
   counterPartName:
   - Top
   - Middle
@@ -12700,6 +12726,8 @@ MonoBehaviour:
   existingFloorParts: 2
   existingCounterParts: 1
   existingPlacePoints: 3
+  surface: {fileID: 1227206646}
+  surfaceAlt: {fileID: 1703930149}
 --- !u!1 &1625805249
 GameObject:
   m_ObjectHideFlags: 0

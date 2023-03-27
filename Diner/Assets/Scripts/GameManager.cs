@@ -1,32 +1,22 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using NavMeshPlus.Components;
 
 public class GameManager : MonoBehaviour
 {
-    private const int diffIncreaseTime = 60;
-
-    private const float tablePosX = -6.5f, tablePosY = -3.2f;
     private const float lineSpotPosX = 1.8f, lineSpotPosY = 1.35f;
 
     public Waiter Waiter;
     public Balcony Balcony;
 
+    [SerializeField] private Score scoreMng;
     [SerializeField] private BuildManager bm;
     [SerializeField] private CameraCtrl camCtrl;
 
-    [SerializeField] private GameObject mainCanvas;
-    [SerializeField] private GameObject endCanvas;
+    [SerializeField] private GameObject lineSpotPrefab;
 
-    [SerializeField] private int maxTime = 30;
     [SerializeField] private int criticProbability;
     public int CriticProbability => criticProbability;
-    [SerializeField] private int currentTime;
-    [SerializeField] private int currentScore;
 
     [SerializeField] private int availableSeats = 4;
     public int AvailableSeats
@@ -53,10 +43,6 @@ public class GameManager : MonoBehaviour
     private List<LineSpot> lineSpotList = new List<LineSpot>();
     public List<LineSpot> LineSpotList => lineSpotList;
 
-    [SerializeField] private Text timeValue;
-    [SerializeField] private Text scoreValue;
-    [SerializeField] private Text endScoreValue;
-
     private System.Random rand;
 
     [SerializeField] private int waitLine;
@@ -73,23 +59,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    [SerializeField] private GameObject tablePrefab;
-    [SerializeField] private GameObject lineSpotPrefab;
-
     [SerializeField] private GameObject[] meals;
     public GameObject[] Meals { get { return meals; } }
 
-    [SerializeField] private NavMeshSurface surface, surfaceAlt;
-
     private void Start()
     {
+        scoreMng = FindObjectOfType<Score>();
         Waiter = FindObjectOfType<Waiter>();
         Balcony = FindObjectOfType<Balcony>();
         bm = GetComponent<BuildManager>();
         camCtrl = FindObjectOfType<CameraCtrl>();
 
-        currentTime = -1;
-        currentScore = 0;
         rand = new System.Random();
         waitLine = 0;
 
@@ -98,10 +78,6 @@ public class GameManager : MonoBehaviour
 
         lineSpotList.Add(
             GameObject.Find("Line Spot 2").GetComponent<LineSpot>());
-
-        Debug.Log(lineSpotList.Count());
-
-        StartCoroutine(RaiseTime());
     }
 
     private void OnMouseUpAsButton()
@@ -118,37 +94,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private IEnumerator RaiseTime()
+    public void ExpandSpace()
     {
-        int updateTime = 0;
+        ExpandLine();
 
-        while (currentTime < maxTime)
-        {
-            if (updateTime >= diffIncreaseTime)
-            {
-                ExpandLine();
-                BuildTable(2);
-                bm.ExpandFloor();
-                bm.ExpandCounter();
-                //StartCoroutine(camCtrl.IncreaseSize());
-                camCtrl.UpdateSpace();
-                updateTime = 0;
-            }
+        bm.BuildTable(2);
+        availableSeats = bm.AvailableSeats;
+        bm.ExpandFloor();
+        bm.ExpandCounter();
 
-            currentTime++;
-            updateTime++;
-            timeValue.text = (currentTime * Time.timeScale).ToString();
-            yield return new WaitForSecondsRealtime(1.0f);
-        }
-
-        if (currentTime >= maxTime)
-        {
-            Debug.Log("Time's up!");
-            currentTime = maxTime;
-            timeValue.text = (currentTime * Time.timeScale).ToString();
-            inEndGame = true;
-            EndGame();
-        }
+        //StartCoroutine(camCtrl.IncreaseSize());
+        camCtrl.UpdateSpace();
     }
 
     private void ExpandLine()
@@ -175,46 +131,6 @@ public class GameManager : MonoBehaviour
         totalLineSpots++;
     }
 
-    private void BuildTable(int num)
-    {
-        GameObject table;
-
-        int previousPosition;
-
-        Vector2 tablePosition;
-        GameObject previousTable;
-
-        for (int i = 0; i < num; i++)
-        {
-            if (availableSeats % 2 != 0)
-                previousPosition = availableSeats - 1;
-            else
-                previousPosition = availableSeats - 1;
-
-            previousTable = GameObject.Find($"Table {previousPosition}");
-            
-            tablePosition = new Vector2(
-                previousTable.transform.position.x + tablePosX,
-                previousTable.transform.position.y + tablePosY);
-
-            table = Instantiate(
-                tablePrefab, tablePosition, Quaternion.identity);
-
-            table.name = $"Table {availableSeats + 1}";
-            GameObject.Find("Seat Table X").name = 
-                $"Seat Table {availableSeats + 1}";
-            GameObject.Find("Table Range X").name =
-                $"Table Range {availableSeats + 1}";
-
-            table.GetComponent<ObjectBuilder>().StartBuild();
-
-            availableSeats++;
-        }
-
-        surface.UpdateNavMesh(surface.navMeshData);
-        surfaceAlt.UpdateNavMesh(surfaceAlt.navMeshData);
-    }
-
     public void OfficialTable()
     {
         foreach(GameObject customer in customers)
@@ -224,8 +140,7 @@ public class GameManager : MonoBehaviour
     public void UpdateScore(int value)
     {
         if (!hasCritic) criticProbability += 5;
-        currentScore += value;
-        scoreValue.text = currentScore.ToString();
+        scoreMng.ProcessScore(value);
     }
 
     public void RemoveCritic() => hasCritic = false;
@@ -244,14 +159,14 @@ public class GameManager : MonoBehaviour
 
     public GameObject DefineMeal() => meals[rand.Next(0, meals.Length)];
 
-    private void EndGame()
+    public void EndGame()
     {
+        inEndGame = true;
+
         if (customers.Count <= 0)
         {
             IsLocked = true;
-            mainCanvas.SetActive(false);
-            endCanvas.SetActive(true);
-            endScoreValue.text = $"Score: {currentScore}";
+            scoreMng.EndScore();
         }
         else
             Invoke("EndGame", 1.0f);

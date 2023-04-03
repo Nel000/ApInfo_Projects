@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 public class Score : MonoBehaviour
 {
+    [SerializeField] private Rating rating;
+
     [SerializeField] private Text scoreValue, endScoreValue;
 
     [SerializeField] private GameObject mainCanvas, endCanvas;
@@ -18,6 +20,7 @@ public class Score : MonoBehaviour
     {
         currentScore += value;
         scoreValue.text = currentScore.ToString();
+        rating.UpdateRating(value);
     }
 
     public void EndScore()

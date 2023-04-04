@@ -25,7 +25,7 @@ public class Star : MonoBehaviour, IUIElement
 
     public IEnumerator Fill(int value)
     {
-        float startValue = currentValue;
+        float startValue = Mathf.Round(currentValue);
         float valueModifier = 0;
 
         float changePerSecond = totalWeight / (updateTime * 10);
@@ -45,10 +45,13 @@ public class Star : MonoBehaviour, IUIElement
 
             if (value < 0)
                 currentValue = Mathf.Clamp(
-                    currentValue - changePerSecond * Time.deltaTime, 0, totalWeight);
+                    currentValue - changePerSecond * Time.deltaTime, 
+                    0, totalWeight);
             else
                 currentValue = Mathf.Clamp(
-                    currentValue + changePerSecond * Time.deltaTime, 0, totalWeight);
+                    currentValue + changePerSecond * Time.deltaTime, 
+                    0, totalWeight);
+
             valueModifier = currentValue / totalWeight;
             fillImg.fillAmount = valueModifier;
 
@@ -60,8 +63,7 @@ public class Star : MonoBehaviour, IUIElement
             currentValue = totalWeight;
             filled = true;
         }
-
-        if (currentValue < totalWeight && filled)
+        else if (currentValue < totalWeight && filled)
         {
             filled = false;
         }

@@ -9,6 +9,8 @@ public interface IUIElement
 
     float TotalWeight { get; }
 
+    int Index { get; }
+
     bool Filled { get; }
 
     IEnumerator Fill(int value);

@@ -20,6 +20,21 @@ public class Rating : MonoBehaviour
 
     public void UpdateRating(int value)
     {
-        StartCoroutine(stars[0].Fill(value));
+        currentStar = DetermineStar();
+
+        StartCoroutine(stars[currentStar - 1].Fill(value));
+    }
+
+    private int DetermineStar()
+    {
+        for (int i = 0; i < starAmount; i++)
+        {
+            if (!stars[i].Filled)
+            {
+                return stars[i].Index;
+            }
+        }
+
+        return 0;
     }
 }

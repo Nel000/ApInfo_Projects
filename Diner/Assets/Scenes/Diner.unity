@@ -2459,7 +2459,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: add17843806d6b9429c64f3dec1c552d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fillImg: {fileID: 0}
+  fillImg: {fileID: 1839326002}
   currentValue: 0
   totalWeight: 500
   index: 3
@@ -30420,7 +30420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: add17843806d6b9429c64f3dec1c552d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fillImg: {fileID: 0}
+  fillImg: {fileID: 1279732705}
   currentValue: 0
   totalWeight: 300
   index: 2

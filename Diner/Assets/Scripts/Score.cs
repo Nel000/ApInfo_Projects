@@ -16,11 +16,11 @@ public class Score : MonoBehaviour
         currentScore = 0;
     }
 
-    public void ProcessScore(int value)
+    public void ProcessScore(int value, bool critic)
     {
         currentScore += value;
         scoreValue.text = currentScore.ToString();
-        rating.UpdateRating(value);
+        rating.UpdateRating(value, critic);
     }
 
     public void EndScore()

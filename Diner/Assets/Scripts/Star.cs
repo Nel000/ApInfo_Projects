@@ -21,14 +21,26 @@ public class Star : MonoBehaviour, IUIElement
     [SerializeField] private bool filled;
     public bool Filled => filled;
 
+    [SerializeField] private bool completed;
+    public bool Completed => completed;
+
+    [SerializeField] private bool depleted;
+    public bool Depleted => depleted;
+
     [SerializeField] private bool working;
 
-    public IEnumerator Fill(int value)
+    public IEnumerator Fill(int value, bool complete = false)
     {
         float startValue = Mathf.Round(currentValue);
         float valueModifier = 0;
 
         float changePerSecond = totalWeight / (updateTime * 10);
+
+        if (value > 0 && startValue + value > totalWeight)
+            value = (int)totalWeight - (int)startValue;
+        
+        if (value < 0 && startValue + value < 0)
+            value = (int)startValue * -1;
 
         if (working)
         {
@@ -38,46 +50,44 @@ public class Star : MonoBehaviour, IUIElement
 
         working = true;
         
-        while (value > 0 && currentValue < startValue + value
-            || value < 0 && currentValue > startValue + value)
+        if (!complete)
         {
-            Debug.Log(fillImg.fillAmount);
+            while (value > 0 && currentValue < startValue + value
+            || value < 0 && currentValue > startValue + value)
+            {
+                Debug.Log(fillImg.fillAmount);
 
-            if (value < 0)
-                currentValue = Mathf.Clamp(
-                    currentValue - changePerSecond * Time.deltaTime, 
-                    0, totalWeight);
-            else
-                currentValue = Mathf.Clamp(
-                    currentValue + changePerSecond * Time.deltaTime, 
-                    0, totalWeight);
+                if (value < 0)
+                    currentValue = Mathf.Clamp(
+                        currentValue - changePerSecond * Time.deltaTime, 
+                        0, totalWeight);
+                else
+                    currentValue = Mathf.Clamp(
+                        currentValue + changePerSecond * Time.deltaTime, 
+                        0, totalWeight);
 
-            valueModifier = currentValue / totalWeight;
-            fillImg.fillAmount = valueModifier;
+                valueModifier = currentValue / totalWeight;
+                fillImg.fillAmount = valueModifier;
 
-            yield return null;
+                yield return null;
+            }
         }
-
+        
         if (currentValue >= totalWeight)
         {
             currentValue = totalWeight;
             filled = true;
+            if (complete) completed = true;
         }
         else if (currentValue < totalWeight && filled)
         {
             filled = false;
+            if (completed) completed = false;
         }
 
-        if (currentValue < 0)
+        if (currentValue <= 0)
         {
-            if (index == 1)
-            {
-
-            }
-            else
-            {
-
-            }
+            depleted = true;
         }
 
         working = false;

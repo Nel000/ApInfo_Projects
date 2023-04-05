@@ -13,5 +13,9 @@ public interface IUIElement
 
     bool Filled { get; }
 
-    IEnumerator Fill(int value);
+    bool Completed { get; }
+    
+    bool Depleted { get; }
+
+    IEnumerator Fill(int value, bool complete = false);
 }

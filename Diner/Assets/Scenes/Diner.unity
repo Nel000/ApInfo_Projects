@@ -533,6 +533,8 @@ MonoBehaviour:
   totalWeight: 200
   index: 1
   filled: 0
+  completed: 0
+  depleted: 0
   working: 0
 --- !u!1 &76649378
 GameObject:
@@ -2464,6 +2466,8 @@ MonoBehaviour:
   totalWeight: 500
   index: 3
   filled: 0
+  completed: 0
+  depleted: 0
   working: 0
 --- !u!1001 &377376620
 PrefabInstance:
@@ -2756,7 +2760,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ea0c01ac6b71e04ea9105821fa2cb15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentStar: 0
+  currentStar: 1
+  previousStar: 1
+  emergencyMode: 0
 --- !u!1 &402812553
 GameObject:
   m_ObjectHideFlags: 0
@@ -30425,6 +30431,8 @@ MonoBehaviour:
   totalWeight: 300
   index: 2
   filled: 0
+  completed: 0
+  depleted: 0
   working: 0
 --- !u!1 &1942824699
 GameObject:

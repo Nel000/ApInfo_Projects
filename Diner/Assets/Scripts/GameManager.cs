@@ -137,10 +137,10 @@ public class GameManager : MonoBehaviour
             customer.GetComponent<Customer>().UpdateTables();
     }
 
-    public void UpdateScore(int value)
+    public void UpdateScore(int value, bool critic = false)
     {
         if (!hasCritic) criticProbability += 5;
-        scoreMng.ProcessScore(value);
+        scoreMng.ProcessScore(value, critic);
     }
 
     public void RemoveCritic() => hasCritic = false;

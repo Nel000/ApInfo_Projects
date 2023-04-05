@@ -52,6 +52,7 @@ public class Customer : MonoBehaviour
     [SerializeField] private bool waitReset;
 
     [SerializeField] private bool isCritic;
+    public bool IsCritic => isCritic;
 
     [SerializeField] private int waitTime;
     [SerializeField] private int maxTime = 50; 
@@ -196,6 +197,7 @@ public class Customer : MonoBehaviour
         {
             if (waitTime >= maxTime / 2)
             {
+                if (isCritic) gm.UpdateScore(-defaultScore * 5, true);
                 gm.UpdateScore(-defaultScore);
                 gm.WaitLine--;
                 mealBalloon.SetActive(true);
@@ -275,7 +277,8 @@ public class Customer : MonoBehaviour
         {
             if (waitTime >= maxTime / 2)
             {
-                gm.UpdateScore(-defaultScore);
+                if (isCritic) gm.UpdateScore(-defaultScore * 5, true);
+                else gm.UpdateScore(-defaultScore);
                 gm.WaitLine--;
                 mealBalloon.SetActive(true);
                 stateImg[0].SetActive(true);
@@ -337,7 +340,8 @@ public class Customer : MonoBehaviour
         // Else, leave immediately
         else
         {
-            gm.UpdateScore(defaultScore * -2);
+            if (isCritic) gm.UpdateScore(defaultScore * -5, true);
+            else gm.UpdateScore(defaultScore * -2);
             GameObject.Find(table).GetComponent<Table>().IsEmpty = true;
             Destroy(mealImg);
             stateImg[0].SetActive(true);
@@ -365,7 +369,7 @@ public class Customer : MonoBehaviour
     {
         if (isCritic)
         {
-            gm.UpdateScore(gm.Balcony.Meals[gm.Waiter.MealIndex].Score * 5);
+            gm.UpdateScore(gm.Balcony.Meals[gm.Waiter.MealIndex].Score * 5, true);
             gm.RemoveCritic();
         }
         else
@@ -453,7 +457,8 @@ public class Customer : MonoBehaviour
                 mealImg.SetActive(false);
             mealBalloon.SetActive(true);
             stateImg[0].SetActive(true);
-            gm.UpdateScore(-defaultScore);
+            if (isCritic) gm.UpdateScore(-defaultScore * 5, true);
+            else gm.UpdateScore(-defaultScore);
             Leave();
         }
     }

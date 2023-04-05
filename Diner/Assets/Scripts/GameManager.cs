@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
 
     public bool IsLocked { get; set; }
 
-    private bool inEndGame;
+    [SerializeField] private bool inEndGame;
     public bool InEndGame => inEndGame;
 
     [SerializeField] private bool hasCritic;
@@ -145,9 +145,9 @@ public class GameManager : MonoBehaviour
 
     public void RemoveCritic() => hasCritic = false;
 
-    public void ResetCriticProbability()
+    public void ResetCriticProbability(bool critic = true)
     {
-        hasCritic = true;
+        if (critic) hasCritic = true;
         criticProbability = 1;
     }
 

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class Score : MonoBehaviour
 {
-    [SerializeField] private Rating rating;
+    private Rating rating;
 
     [SerializeField] private Text scoreValue, endScoreValue;
 
@@ -13,6 +13,8 @@ public class Score : MonoBehaviour
 
     private void Start()
     {
+        rating = FindObjectOfType<Rating>();
+
         currentScore = 0;
     }
 

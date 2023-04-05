@@ -7,6 +7,7 @@ public class Clock : MonoBehaviour
     private const int diffIncreaseTime = 60;
 
     private GameManager gm;
+    private Rating rating;
 
     [SerializeField] private Text timeValue;
 
@@ -16,6 +17,7 @@ public class Clock : MonoBehaviour
     private void Start()
     {
         gm = FindObjectOfType<GameManager>();
+        rating = FindObjectOfType<Rating>();
 
         currentTime = -1;
 
@@ -28,15 +30,19 @@ public class Clock : MonoBehaviour
 
         while (currentTime < maxTime)
         {
-            if (updateTime >= diffIncreaseTime)
+            if (!rating.InEmergency)
             {
-                gm.ExpandSpace();
-                updateTime = 0;
-            }
+                if (updateTime >= diffIncreaseTime)
+                {
+                    gm.ExpandSpace();
+                    updateTime = 0;
+                }
 
-            currentTime++;
-            updateTime++;
-            timeValue.text = (currentTime * Time.timeScale).ToString();
+                currentTime++;
+                updateTime++;
+                timeValue.text = (currentTime * Time.timeScale).ToString();
+            }
+            
             yield return new WaitForSecondsRealtime(1.0f);
         }
 

@@ -1,19 +1,23 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Rating : MonoBehaviour
 {
+    private EmergencyMode emergency;
+
     private const int starAmount = 3;
+
+    [SerializeField] private bool inEmergency;
+    public bool InEmergency => inEmergency;
 
     private IUIElement[] stars = new IUIElement[starAmount];
     
     [SerializeField] private int currentStar = 1, previousStar = 1;
 
-    [SerializeField] private bool emergencyMode;
-
     private void Start()
     {
+        emergency = FindObjectOfType<EmergencyMode>();
+
         for (int i = 0; i < starAmount; i++)
         {
             stars[i] = GameObject.Find($"Star {i + 1}").GetComponent<Star>();
@@ -51,9 +55,12 @@ public class Rating : MonoBehaviour
             return 0;
         }
 
+        if (emergency.Active) emergency.Progress(value);
+        StartCoroutine(CheckEmergencyState());
+
         for (int i = 0; i < starAmount; i++)
         {
-            if (!stars[i].Completed)
+            if (!stars[i].Completed && !emergency.Active)
             {
                 if (value > 0)
                 {
@@ -62,12 +69,14 @@ public class Rating : MonoBehaviour
                 }
                 else
                 {
-                    if (stars[i].Depleted)
+                    if (stars[i].Depleted || stars[i].CurrentValue <= 0)
                     {
+                        Debug.Log("Star depleted");
                         if (stars[i].Index == 1)
                         {
-                            emergencyMode = true;
-                        }
+                            inEmergency = true;
+                            emergency.ActivateEmergency();
+                        } 
                         else return stars[i - 1].Index;
                     }
                     else
@@ -84,7 +93,12 @@ public class Rating : MonoBehaviour
                 }
             }
         }
-
         return 0;
+    }
+
+    private IEnumerator CheckEmergencyState()
+    {
+        yield return new WaitForEndOfFrame();
+        if (!emergency.Active && inEmergency) inEmergency = false;
     }
 }

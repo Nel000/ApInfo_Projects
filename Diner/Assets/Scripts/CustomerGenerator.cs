@@ -7,6 +7,7 @@ public class CustomerGenerator : MonoBehaviour
     private const float updatePosX = 5.7f, updatePosY = 4.275f;
 
     private GameManager gm;
+    private EmergencyMode emergency;
 
     [SerializeField] private GameObject customerPrefab;
     [SerializeField] private GameObject criticPrefab;
@@ -18,6 +19,7 @@ public class CustomerGenerator : MonoBehaviour
     private void Start()
     {
         gm = FindObjectOfType<GameManager>();
+        emergency = FindObjectOfType<EmergencyMode>();
 
         rand = new System.Random();
 
@@ -32,20 +34,24 @@ public class CustomerGenerator : MonoBehaviour
 
         if (lineSpots < gm.TotalLineSpots) UpdatePosition();
 
-        if (gm.WaitLine < gm.TotalLineSpots && !gm.InEndGame)
+        if (!emergency.Active && !gm.InEndGame)
         {
-            GameObject currentCustomer = Instantiate(customer,
-                transform.position, Quaternion.identity);
-            currentCustomer.name = $"Customer {gm.TotalCustomers}";
-            gm.AddCustomer(currentCustomer);
-        }
+            if (gm.WaitLine < gm.TotalLineSpots)
+            {
+                GameObject currentCustomer = Instantiate(customer,
+                    transform.position, Quaternion.identity);
+                currentCustomer.name = $"Customer {gm.TotalCustomers}";
+                gm.AddCustomer(currentCustomer);
+            }
 
-        int prob = rand.Next(0, 100);
+            int prob = rand.Next(0, 100);
 
-        if (prob <= gm.CriticProbability && !gm.HasCritic)
-        {
-            StartCoroutine(CreateCustomer(criticPrefab));
-            gm.ResetCriticProbability();
+            if (prob <= gm.CriticProbability && !gm.HasCritic)
+            {
+                StartCoroutine(CreateCustomer(criticPrefab));
+                gm.ResetCriticProbability();
+            }
+            else StartCoroutine(CreateCustomer(customerPrefab));
         }
         else StartCoroutine(CreateCustomer(customerPrefab));
     }

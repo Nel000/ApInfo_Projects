@@ -64,6 +64,7 @@ public class Rating : MonoBehaviour
             {
                 if (value > 0)
                 {
+                    // Fix bug related to critic
                     if (stars[i].Filled && critic || !stars[i].Filled && !critic)
                         return stars[i].Index;
                 }

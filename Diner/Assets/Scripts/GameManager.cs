@@ -163,6 +163,16 @@ public class GameManager : MonoBehaviour
     {
         inEndGame = true;
 
+        foreach (GameObject customerObj in customers)
+        {
+            Customer customer = customerObj.GetComponent<Customer>();
+
+            if (!customer.IsLeaving)
+            {
+                customer.Leave(true);
+            }
+        }
+
         if (customers.Count <= 0)
         {
             IsLocked = true;

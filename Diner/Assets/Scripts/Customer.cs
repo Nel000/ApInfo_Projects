@@ -39,7 +39,8 @@ public class Customer : MonoBehaviour
     [SerializeField] private bool isAttended;
     public bool IsAttended { get { return isAttended; } }
 
-    public bool IsLeaving { get; private set; }
+    [SerializeField] private bool isLeaving;
+    public bool IsLeaving => isLeaving;
 
     [SerializeField] private bool isMoving;
     public bool IsMoving => isMoving;
@@ -166,7 +167,7 @@ public class Customer : MonoBehaviour
                 }
             }
         }
-        else if (other.GetComponent<Table>() && !IsLeaving && goingToSeat)
+        else if (other.GetComponent<Table>() && !isLeaving && goingToSeat)
         {
             if (other.name == table)
             {
@@ -245,7 +246,7 @@ public class Customer : MonoBehaviour
             }
         }
 
-        if (clearTables.Count > 0)
+        if (clearTables.Count > 0 && !isLeaving)
         {
             Table tableObj;
 
@@ -275,7 +276,7 @@ public class Customer : MonoBehaviour
 
         if (!foundEmptyTable)
         {
-            if (waitTime >= maxTime / 2)
+            if (waitTime >= maxTime / 2 || isLeaving)
             {
                 if (isCritic) gm.UpdateScore(-defaultScore * 5, true);
                 else gm.UpdateScore(-defaultScore);
@@ -342,6 +343,7 @@ public class Customer : MonoBehaviour
         {
             if (isCritic) gm.UpdateScore(defaultScore * -5, true);
             else gm.UpdateScore(defaultScore * -2);
+
             GameObject.Find(table).GetComponent<Table>().IsEmpty = true;
             Destroy(mealImg);
             stateImg[0].SetActive(true);
@@ -463,9 +465,19 @@ public class Customer : MonoBehaviour
         }
     }
 
-    private void Leave()
+    public void Leave(bool endGame = false)
     {
-        IsLeaving = true;
+        isLeaving = true;
+
+        if (endGame)
+        {
+            if (mealImg != null)
+                mealImg.SetActive(false);
+            mealBalloon.SetActive(true);
+            stateImg[0].SetActive(true);
+            ResetStat();
+            statMeter.color = Color.red;
+        }
 
         Debug.Log($"{name} heads out");
         StartCoroutine(Move(exit.transform.position));

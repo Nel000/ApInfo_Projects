@@ -62,10 +62,14 @@ public class Star : MonoBehaviour, IUIElement
                         currentValue - changePerSecond * Time.deltaTime, 
                         0, totalWeight);
                 else
+                {
+                    if (depleted) depleted = false;
+
                     currentValue = Mathf.Clamp(
                         currentValue + changePerSecond * Time.deltaTime, 
                         0, totalWeight);
-
+                }
+                    
                 valueModifier = currentValue / totalWeight;
                 fillImg.fillAmount = valueModifier;
 

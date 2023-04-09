@@ -4,7 +4,8 @@ using UnityEngine.UI;
 
 public class Clock : MonoBehaviour, IUIElement
 {
-    private const int diffIncreaseTime = 10, updateValue = 1;
+    private const int diffIncreaseTime = 60, updateValue = 1;
+    private const float clockSizeMultiplier = 1.25f;
 
     private GameManager gm;
     private Rating rating;
@@ -16,6 +17,8 @@ public class Clock : MonoBehaviour, IUIElement
 
     [SerializeField] private float currentValue;
     public float CurrentValue => currentValue;
+
+    [SerializeField] private float nextValue;
 
     public float TotalWeight { get; }
 
@@ -51,9 +54,9 @@ public class Clock : MonoBehaviour, IUIElement
             {
                 currentValue = Mathf.Clamp(
                     currentValue + updateValue * Time.deltaTime, 
-                    0, diffIncreaseTime);
+                    0, value);
 
-                valueModifier = currentValue / diffIncreaseTime;
+                valueModifier = currentValue / value;
                 fillImg.fillAmount = valueModifier;
 
                 yield return null;
@@ -63,7 +66,7 @@ public class Clock : MonoBehaviour, IUIElement
         currentValue = 0;
 
         yield return new WaitForEndOfFrame();
-        StartCoroutine(Fill(diffIncreaseTime));
+        StartCoroutine(Fill((int)nextValue));
     }
 
     private IEnumerator RaiseTime(int value)
@@ -89,15 +92,8 @@ public class Clock : MonoBehaviour, IUIElement
         }
 
         currentTime = -1;
+        nextValue = value * clockSizeMultiplier;
 
-        /*if (currentTime >= maxTime)
-        {
-            Debug.Log("Time's up!");
-            currentTime = maxTime;
-            timeValue.text = (currentTime * Time.timeScale).ToString();
-            gm.EndGame();
-        }*/
-
-        StartCoroutine(RaiseTime(diffIncreaseTime));
+        StartCoroutine(RaiseTime((int)nextValue));
     }
 }

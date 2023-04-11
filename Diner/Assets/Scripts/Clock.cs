@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class Clock : MonoBehaviour, IUIElement
 {
-    private const int diffIncreaseTime = 60, updateValue = 1;
+    private const int diffIncreaseTime = 10, updateValue = 1;
     private const float clockSizeMultiplier = 1.25f;
 
     private GameManager gm;
@@ -48,6 +48,8 @@ public class Clock : MonoBehaviour, IUIElement
     {
         float valueModifier = 0;
 
+        float changePerSecond = value * 2;
+
         while (currentTime < value)
         {
             if (!rating.InEmergency)
@@ -63,7 +65,18 @@ public class Clock : MonoBehaviour, IUIElement
             yield return null;
         }
 
-        currentValue = 0;
+        while (currentValue > 0)
+        {
+            currentValue = Mathf.Clamp(
+                currentValue - changePerSecond * Time.deltaTime, 0, value);
+
+            valueModifier = currentValue / value;
+            fillImg.fillAmount = valueModifier;
+
+            yield return null;
+        }
+
+        if (currentValue < 0) currentValue = 0;
 
         yield return new WaitForEndOfFrame();
         StartCoroutine(Fill((int)nextValue));

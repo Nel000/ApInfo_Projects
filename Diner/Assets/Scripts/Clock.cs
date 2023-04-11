@@ -58,9 +58,9 @@ public class Clock : MonoBehaviour, IUIElement
 
                 valueModifier = currentValue / value;
                 fillImg.fillAmount = valueModifier;
-
-                yield return null;
             }
+
+            yield return null;
         }
 
         currentValue = 0;
@@ -89,6 +89,8 @@ public class Clock : MonoBehaviour, IUIElement
 
                 yield return new WaitForSeconds(1.0f);
             }
+
+            yield return null;
         }
 
         currentTime = -1;

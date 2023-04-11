@@ -28,7 +28,7 @@ public class CustomerGenerator : MonoBehaviour
         StartCoroutine(CreateCustomer(customerPrefab));
     }
 
-    private IEnumerator CreateCustomer(GameObject customer)
+    private IEnumerator CreateCustomer(GameObject customer, bool critic = false)
     {
         yield return new WaitForSeconds(rand.Next(5, 10));
 
@@ -42,15 +42,14 @@ public class CustomerGenerator : MonoBehaviour
                     transform.position, Quaternion.identity);
                 currentCustomer.name = $"Customer {gm.TotalCustomers}";
                 gm.AddCustomer(currentCustomer);
+
+                if (critic) gm.ResetCriticProbability();
             }
 
             int prob = rand.Next(0, 100);
 
             if (prob <= gm.CriticProbability && !gm.HasCritic)
-            {
-                StartCoroutine(CreateCustomer(criticPrefab));
-                gm.ResetCriticProbability();
-            }
+                StartCoroutine(CreateCustomer(criticPrefab, true));
             else StartCoroutine(CreateCustomer(customerPrefab));
         }
         else StartCoroutine(CreateCustomer(customerPrefab));

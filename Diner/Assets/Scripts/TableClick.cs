@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class TableClick : MonoBehaviour
 {
-    [SerializeField] private Table table;
+    [SerializeField] private Component obj;
 
     private void Start()
     {
-        table = GetComponentInParent<Table>();
+        obj = GetComponentInParent(typeof(IClickableObject));
     }
 
     private void OnMouseUpAsButton()
     {
-        table.Clicked = true;
+        ((IClickableObject)obj).Click();
     }
 }

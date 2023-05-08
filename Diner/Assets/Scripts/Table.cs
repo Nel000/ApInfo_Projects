@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Table : MonoBehaviour
+public class Table : MonoBehaviour, IClickableObject
 {
     private Waiter waiterScr;
 
@@ -17,13 +17,8 @@ public class Table : MonoBehaviour
 
         waiterScr = FindObjectOfType<Waiter>();
     }
-
-    private void Update()
-    {
-        if (Clicked) ClickTable();
-    }
-
-    private void ClickTable()
+    
+    public void Click()
     {
         Debug.Log("Clicked table");
 

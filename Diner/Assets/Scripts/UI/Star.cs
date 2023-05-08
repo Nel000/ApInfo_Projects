@@ -6,6 +6,8 @@ public class Star : MonoBehaviour, IUIElement
 {
     private const float updateTime = 0.5f;
 
+    [SerializeField] private Image border;
+
     [SerializeField] private Image fillImg;
     public Image FillImg => fillImg;
 
@@ -81,12 +83,22 @@ public class Star : MonoBehaviour, IUIElement
         {
             currentValue = totalWeight;
             filled = true;
-            if (complete) completed = true;
+            fillImg.color = new Color32(255, 255, 255, 255);
+            if (complete)
+            {
+                completed = true;
+                border.color = new Color32(255, 255, 255, 255);
+            } 
         }
         else if (currentValue < totalWeight && filled)
         {
             filled = false;
-            if (completed) completed = false;
+            fillImg.color = new Color32(255, 255, 255, 150);
+            if (completed)
+            {
+                completed = false;
+                border.color = new Color32(255, 255, 255, 150);
+            } 
         }
 
         if (currentValue <= 0)
